@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import Image from 'next/image'
-import { Stack, Text } from '@chakra-ui/react'
+import { Stack, Text, HStack } from '@chakra-ui/react'
 import { Inter } from '@next/font/google'
 import styles from '@/styles/Home.module.css'
 
@@ -16,11 +16,14 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-        <Stack>
-          <Text>
-            Test Run
-          </Text>
-        </Stack>
+        <HStack>
+          <Stack>
+            <Text fontSize={{ base: '10px', md: '15px', xl: '22px' }} id="something">
+              Hello
+            </Text>
+          </Stack>
+          <Stack><Text>Hello 2</Text></Stack>
+        </HStack>
       </main>
     </>
   )
