@@ -1,4 +1,4 @@
-import { Stack } from "@chakra-ui/react"
+import { Stack, HStack } from "@chakra-ui/react"
 
 export default function Navbar() {
     return (
@@ -8,9 +8,21 @@ export default function Navbar() {
             alignItems='center'
             backgroundColor='#EEE'
         >
-            <Stack width='95%'>
-
-            </Stack>
+            <HStack width='95%' justifyContent='space-between'>
+                <Stack>
+                    {/* 
+                    Logo + Navigation Items.
+                    
+                    Probably going to set up CMS so we can update the logo + nav items anytime we need to.
+                    Saves time and separates UI/UX from code
+                     */}
+                </Stack>
+                <Stack>
+                    {/* 
+                    Username and Profile Link
+                    */}
+                </Stack>
+            </HStack>
         </Stack>
     )
 }

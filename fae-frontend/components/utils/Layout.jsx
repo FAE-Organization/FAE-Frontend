@@ -1,5 +1,6 @@
 import { Stack } from "@chakra-ui/react";
 import Navbar from "./Navbar";
+import Footer from "./Footer";
 
 export default function Layout({ children }) {
     return (
@@ -8,7 +9,7 @@ export default function Layout({ children }) {
         >
             <Navbar />
             {children}
-            {/* Footer component here */}
+            <Footer />
         </Stack>
     )
 }
