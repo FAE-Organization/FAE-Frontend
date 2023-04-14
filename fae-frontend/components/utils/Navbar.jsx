@@ -19,14 +19,14 @@ export default function Navbar() {
           <NextLink href="/">
             <Link>
                 {/* TODO: Might need to adjust height and width later */}
-              <img src="fae-logo.png" alt="Logo" height="auto" width="150" />
+              <img src="logo/fae-logo.png" alt="Logo" height="auto" width="150" />
             </Link>
           </NextLink>
         </Box>
         <Box>
-          <NextLink href="/">
+          <NextLink href="/directory">
             <Link>
-              <Button variant="ghost" color="black" mr={2}>
+              <Button variant="ghost" color="black" mr={2} onClick={() => router.push('/directory')}>
                 {/* TODO: change font to poppins */}
                 Directory
               </Button>
