@@ -14,7 +14,7 @@ export default function DirectoryGrid({ cards }) {
                 gap='20px'
                 align="flex-start"
             >
-                {cards.map((entry, index) => (
+                {cards.map((_, index) => (
                     <Stack
                         key={index}
                         w='315px'
@@ -35,18 +35,7 @@ export default function DirectoryGrid({ cards }) {
                                 backgroundImage={`url(${'https://besthqwallpapers.com/Uploads/21-12-2019/116771/thumb-purple-neon-lights-black-background-purple-neon-light-neon-background.jpg'})`}
                                 backgroundPosition='center'
                                 backgroundSize='cover'
-                                transition='background-size 0.3s ease-in-out'
-                                filter={hoveredIndex === index ? "brightness(75%)" : ""}
-                                _hover={{
-                                    backgroundSize: '120%',
-                                    filter: "brightness(50%)",
-                                    transition: 'background-size 0.3s ease-in-out, filter 0.3s ease-in-out'
-                                }}
                             >
-                                {/* _hover={{
-                                    transform: 'scale(1.5)',
-                                    transition: 'transform 0.3s ease-in-out, filter 0.3s ease-in-out'
-                                }} */}
                                 <Stack zIndex={1}>
                                     <Badge
                                         width={{ base: '75%', md: '60^', lg: '50%' }}
@@ -74,8 +63,9 @@ export default function DirectoryGrid({ cards }) {
                             </Box>
                         </Link>
                     </Stack>
-                ))}
-            </HStack>
-        </Stack>
+                ))
+                }
+            </HStack >
+        </Stack >
     )
 }
