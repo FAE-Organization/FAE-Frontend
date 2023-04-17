@@ -79,7 +79,6 @@ export default function FilterSidebar() {
         if (data) {
             toast({
                 position: 'top',
-                status: 'success',
                 duration: 10000,
                 isClosable: true,
                 title: JSON.stringify(data)
@@ -240,24 +239,85 @@ export default function FilterSidebar() {
                             <Controller
                                 control={control}
                                 name='salary'
-                                render={({ fields: { onChange, value } }) => (
+                                render={({ field: { onChange, value } }) => (
                                     <>
                                         <Text>Salary Expectation</Text>
                                         <HStack>
-                                            <Select defaultChecked='usd'>
+                                            <Select
+                                                defaultChecked='usd'
+                                                value={value.currency}
+                                                onChange={(event) => {
+                                                    onChange({ ...value, currency: event.currentTarget.value })
+                                                    handleChange({
+                                                        category: category,
+                                                        subcategories: subcategories,
+                                                        game: game,
+                                                        location: location,
+                                                        siteType: siteType,
+                                                        salary: { ...value, currency: event.currentTarget.value },
+                                                        experience: experience
+                                                    })
+                                                }}
+                                            >
                                                 <option value="usd">USD</option>
                                                 <option value="cad">CAD</option>
                                                 <option value="gbp">GBP</option>
                                             </Select>
-                                            <Select>
+                                            <Select
+                                                defaultChecked='hourly'
+                                                value={value.compensationType}
+                                                onChange={(event) => {
+                                                    onChange({ ...value, compensationType: event.currentTarget.value })
+                                                    handleChange({
+                                                        category: category,
+                                                        subcategories: subcategories,
+                                                        game: game,
+                                                        location: location,
+                                                        siteType: siteType,
+                                                        salary: { ...value, compensationType: event.currentTarget.value },
+                                                        experience: experience
+                                                    })
+                                                }}
+                                            >
                                                 <option value="hourly">Hourly</option>
                                                 <option value="salary">Salary</option>
                                                 <option value="milestone">Milestone</option>
                                             </Select>
                                         </HStack>
                                         <HStack>
-                                            <Input placeholder="Min." />
-                                            <Input placeholder="Max." />
+                                            <Input
+                                                placeholder="Min."
+                                                value={value.min}
+                                                onChange={(event) => {
+                                                    onChange({ ...value, min: event.currentTarget.value })
+                                                    handleChange({
+                                                        category: category,
+                                                        subcategories: subcategories,
+                                                        game: game,
+                                                        location: location,
+                                                        siteType: siteType,
+                                                        salary: { ...value, min: event.currentTarget.value },
+                                                        experience: experience
+                                                    })
+
+                                                }}
+                                            />
+                                            <Input
+                                                placeholder="Max."
+                                                value={value.max}
+                                                onChange={(event) => {
+                                                    onChange({ ...value, max: event.currentTarget.value })
+                                                    handleChange({
+                                                        category: category,
+                                                        subcategories: subcategories,
+                                                        game: game,
+                                                        location: location,
+                                                        siteType: siteType,
+                                                        salary: { ...value, max: event.currentTarget.value },
+                                                        experience: experience
+                                                    })
+                                                }}
+                                            />
                                         </HStack>
                                     </>
 
@@ -265,21 +325,33 @@ export default function FilterSidebar() {
                             />
                         </Stack>
                         <Stack>
-                            <Text>Experience Level</Text>
-                            <CheckboxGroup>
-                                <Checkbox>
-                                    Entry (0-1 years)
-                                </Checkbox>
-                                <Checkbox>
-                                    Junior (1-2 years)
-                                </Checkbox>
-                                <Checkbox>
-                                    Intermediate (2-5 years)
-                                </Checkbox>
-                                <Checkbox>
-                                    Senior (5+ß years)
-                                </Checkbox>
-                            </CheckboxGroup>
+                            <Controller
+                                control={control}
+                                name='experience'
+                                render={() => (
+                                    <>
+                                        <Text>Experience Level</Text>
+                                        <CheckboxGroup
+                                            onChange={(values) => {
+                                                handleChange({
+                                                    category: category,
+                                                    subcategories: subcategories,
+                                                    game: game,
+                                                    location: location,
+                                                    siteType: siteType,
+                                                    salary: salary,
+                                                    experience: values
+                                                })
+                                            }}
+                                        >
+                                            <Checkbox value='entry'>Entry (0-1 years)</Checkbox>
+                                            <Checkbox value='junior'>Junior (1-2 years)</Checkbox>
+                                            <Checkbox value='intermediate'>Intermediate (2-5 years)</Checkbox>
+                                            <Checkbox value='senior'>Senior (5+ years)</Checkbox>
+                                        </CheckboxGroup>
+                                    </>
+                                )}
+                            />
                         </Stack>
                     </Stack>
                 </form>
