@@ -13,6 +13,34 @@ import { useForm, FormProvider, Controller } from 'react-hook-form'
 
 export default function FilterSidebar() {
 
+    /**
+     * Temporary data
+     * 
+     */
+
+    const tempCheckboxData = [
+        'Caster',
+        'Host',
+        'Observer',
+        'Replay Operator',
+        'Technical Directory'
+    ]
+
+    /**
+     * 
+     * 
+     */
+
+    useEffect(() => {
+        const handleBeforeUnload = () => {
+            localStorage.setItem('beforeAll', JSON.stringify([]));
+        };
+        window.addEventListener('beforeunload', handleBeforeUnload);
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+    }, []);
+
     const [values, setValues] = useState({
         category: 'broadcasting',
         subcategories: '',
@@ -23,6 +51,8 @@ export default function FilterSidebar() {
         experience: '',
     })
 
+    const [currentSelection, setCurrentSelection] = useState([])
+
     const toast = useToast()
 
     const methods = useForm({
@@ -32,7 +62,7 @@ export default function FilterSidebar() {
         }
     })
 
-    const { watch, control, } = methods
+    const { watch, control } = methods
 
     const category = watch('category')
     const subcategories = watch('subcategories')
@@ -44,6 +74,7 @@ export default function FilterSidebar() {
 
     const [gameValue, setGameValue] = useState('')
     const [locationValue, setLocationValue] = useState('')
+    const [allChecked, setAllChecked] = useState(false)
 
     // Delay user input for game input (aka debounce) so that
     // the backend is not overloaded by requests
@@ -59,6 +90,9 @@ export default function FilterSidebar() {
         return () => clearTimeout(timer)
     }, [gameValue])
 
+    //
+    //
+
     useEffect(() => {
         const timer = setTimeout(async () => {
             await handleChange({
@@ -70,10 +104,29 @@ export default function FilterSidebar() {
         return () => clearTimeout(timer)
     }, [locationValue])
 
+    const [flag, setFlag] = useState(false)
+
     const handleChange = async (data) => {
+
+        if (allChecked) {
+            setAllChecked(false)
+            data.subcategories = JSON.parse(localStorage.getItem('beforeAll'))
+        }
+
+        if (data.subcategories.length === 5 && !data.subcategories.includes('All')) {
+            setFlag(true)
+        }
+
+        if (flag) {
+            console.log('flag triggered')
+            data.subcategories = [...data.subcategories.filter(item => item !== 'All')]
+            setFlag(false)
+        }
+
+        console.log('data: ', data.subcategories)
         setValues((previousValues) => ({
             ...previousValues,
-            ...data
+            ...data,
         }))
 
         if (data) {
@@ -93,6 +146,8 @@ export default function FilterSidebar() {
             })
         }
     }
+
+    console.log('all checked: ', allChecked)
 
     return (
         <Stack width='335px' border='1px solid' padding='20px'>
@@ -143,6 +198,7 @@ export default function FilterSidebar() {
                                     <>
                                         <Text>Subcategories</Text>
                                         <CheckboxGroup
+                                            value={currentSelection}
                                             onChange={(values) => {
                                                 handleChange({
                                                     category: category,
@@ -155,12 +211,54 @@ export default function FilterSidebar() {
                                                 })
                                             }}
                                         >
-                                            <Checkbox value='All'>All</Checkbox>
-                                            <Checkbox value='Caster'>Caster</Checkbox>
-                                            <Checkbox value='Host'>Host</Checkbox>
-                                            <Checkbox value='Observer'>Observer</Checkbox>
-                                            <Checkbox value='Replay Operator'>Replay Operator</Checkbox>
-                                            <Checkbox value='Technical Directory'>Technical Directory</Checkbox>
+                                            <Checkbox
+                                                value='All'
+                                                onChange={(event) => {
+                                                    if (event.currentTarget.checked) {
+                                                        if (!allChecked) {
+                                                            setCurrentSelection(['All', ...tempCheckboxData])
+                                                            setAllChecked(true)
+                                                        }
+                                                    } else {
+                                                        const previousData = localStorage.key('beforeAll') ?
+                                                            JSON.parse(localStorage.getItem('beforeAll')) : []
+                                                        setCurrentSelection(
+                                                            previousData.length === tempCheckboxData.length ?
+                                                                [] : previousData
+                                                        )
+                                                    }
+                                                }}
+                                            >
+                                                All
+                                            </Checkbox>
+                                            {tempCheckboxData.map((entry, index) => (
+                                                <Checkbox
+                                                    key={index}
+                                                    value={entry}
+                                                    onChange={(event) => {
+                                                        if (event.currentTarget.checked) {
+                                                            if (currentSelection.length + 1 === tempCheckboxData.length) {
+                                                                setCurrentSelection(['All', ...currentSelection, entry])
+                                                            } else {
+                                                                setCurrentSelection([...currentSelection, entry])
+                                                            }
+                                                            localStorage.setItem('beforeAll', JSON.stringify([...currentSelection, entry]))
+                                                        } else {
+                                                            setCurrentSelection(currentSelection.filter(
+                                                                item => {
+                                                                    return item !== entry && item !== 'All'
+                                                                }
+                                                            ))
+
+                                                            localStorage.setItem('beforeAll', JSON.stringify(currentSelection.filter(
+                                                                item => item !== entry && item !== 'All'
+                                                            )))
+                                                        }
+                                                    }}
+                                                >
+                                                    {entry}
+                                                </Checkbox>
+                                            ))}
                                         </CheckboxGroup>
                                     </>
                                 )}
