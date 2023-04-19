@@ -54,7 +54,7 @@ export default function FilterSidebar({ filterProps: {
 
     const [currentSelection, setCurrentSelection] = states
 
-    const [currentSelection, setCurrentSelection] = useState([])
+    const [currentSelection, setCurrentSelection] = states
 
     const toast = useToast()
 

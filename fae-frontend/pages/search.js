@@ -33,6 +33,9 @@ export default function Search({ tempCards, directory }) {
         test()
     }, [])
 
+    const [currentSelection, setCurrentSelection] = useState([])
+    const router = useRouter()
+
     return (
         <Stack width='100%' alignItems='center'>
             <Stack width='90%'>
