@@ -11,7 +11,7 @@ import {
 import { useState, useEffect } from "react";
 import { useForm, FormProvider, Controller } from 'react-hook-form'
 
-export default function FilterSidebar() {
+export default function FilterSidebar({ states }) {
 
     /**
      * Temporary data
@@ -24,6 +24,29 @@ export default function FilterSidebar() {
         'Observer',
         'Replay Operator',
         'Technical Directory'
+    ]
+
+    const tempDropdownData = [
+        'Broadcasting',
+        'Business Operations',
+        'Communications & Marketing',
+        'Content Creation',
+        'Perforamnce',
+        'Tournament & events'
+    ]
+
+    const tempSiteTypeData = [
+        'On-Site',
+        'Remote',
+        'Hybrid',
+        'Open to Relocation'
+    ]
+
+    const tempExperienceData = [
+        'Entry (0-1 years)',
+        'Junior (1-2 years)',
+        'Intermediate (2-5 years)',
+        'Senior (5+ years)'
     ]
 
     /**
@@ -47,11 +70,16 @@ export default function FilterSidebar() {
         game: '',
         location: '',
         siteType: '',
-        salary: '',
+        salary: {
+            currency: 'usd',
+            compensationType: 'hourly',
+            min: '',
+            max: ''
+        },
         experience: '',
     })
 
-    const [currentSelection, setCurrentSelection] = useState([])
+    const [currentSelection, setCurrentSelection] = states
 
     const toast = useToast()
 
@@ -74,7 +102,6 @@ export default function FilterSidebar() {
 
     const [gameValue, setGameValue] = useState('')
     const [locationValue, setLocationValue] = useState('')
-    const [allChecked, setAllChecked] = useState(false)
 
     // Delay user input for game input (aka debounce) so that
     // the backend is not overloaded by requests
@@ -104,24 +131,7 @@ export default function FilterSidebar() {
         return () => clearTimeout(timer)
     }, [locationValue])
 
-    const [flag, setFlag] = useState(false)
-
     const handleChange = async (data) => {
-
-        if (allChecked) {
-            setAllChecked(false)
-            data.subcategories = JSON.parse(localStorage.getItem('beforeAll'))
-        }
-
-        if (data.subcategories.length === 5 && !data.subcategories.includes('All')) {
-            setFlag(true)
-        }
-
-        if (flag) {
-            console.log('flag triggered')
-            data.subcategories = [...data.subcategories.filter(item => item !== 'All')]
-            setFlag(false)
-        }
 
         console.log('data: ', data.subcategories)
         setValues((previousValues) => ({
@@ -147,10 +157,13 @@ export default function FilterSidebar() {
         }
     }
 
-    console.log('all checked: ', allChecked)
-
     return (
-        <Stack width='335px' border='1px solid' padding='20px'>
+        <Stack
+            width='335px'
+            border='1px solid #A6A6A6'
+            padding='20px'
+            borderRadius='10px'
+        >
             <FormProvider {...methods}>
                 <form>
                     <Stack gap='20px'>
@@ -160,7 +173,7 @@ export default function FilterSidebar() {
                                 name='category'
                                 render={({ field: { onChange, value } }) => (
                                     <>
-                                        <Text>
+                                        <Text className='filter-title'>
                                             Category
                                         </Text>
                                         <Select
@@ -179,12 +192,9 @@ export default function FilterSidebar() {
                                             }}
                                             value={value}
                                         >
-                                            <option value='broadcasting'>Broadcasting</option>
-                                            <option value='Business Operations'>Business Operations</option>
-                                            <option value='Communications & Marketing'>Communications & Marketing</option>
-                                            <option value='Content Creation'>Content Creation</option>
-                                            <option value='Performance'>Performance</option>
-                                            <option value='Tournaments & Events'>Tournaments & Events</option>
+                                            {tempDropdownData.map((entry, index) => (
+                                                <option key={index} value={entry}>{entry}</option>
+                                            ))}
                                         </Select>
                                     </>
                                 )}
@@ -196,7 +206,7 @@ export default function FilterSidebar() {
                                 name='subcategories'
                                 render={() => (
                                     <>
-                                        <Text>Subcategories</Text>
+                                        <Text className='filter-title'>Subcategories</Text>
                                         <CheckboxGroup
                                             value={currentSelection}
                                             onChange={(values) => {
@@ -211,48 +221,17 @@ export default function FilterSidebar() {
                                                 })
                                             }}
                                         >
-                                            <Checkbox
-                                                value='All'
-                                                onChange={(event) => {
-                                                    if (event.currentTarget.checked) {
-                                                        if (!allChecked) {
-                                                            setCurrentSelection(['All', ...tempCheckboxData])
-                                                            setAllChecked(true)
-                                                        }
-                                                    } else {
-                                                        const previousData = localStorage.key('beforeAll') ?
-                                                            JSON.parse(localStorage.getItem('beforeAll')) : []
-                                                        setCurrentSelection(
-                                                            previousData.length === tempCheckboxData.length ?
-                                                                [] : previousData
-                                                        )
-                                                    }
-                                                }}
-                                            >
-                                                All
-                                            </Checkbox>
                                             {tempCheckboxData.map((entry, index) => (
                                                 <Checkbox
                                                     key={index}
                                                     value={entry}
                                                     onChange={(event) => {
                                                         if (event.currentTarget.checked) {
-                                                            if (currentSelection.length + 1 === tempCheckboxData.length) {
-                                                                setCurrentSelection(['All', ...currentSelection, entry])
-                                                            } else {
-                                                                setCurrentSelection([...currentSelection, entry])
-                                                            }
-                                                            localStorage.setItem('beforeAll', JSON.stringify([...currentSelection, entry]))
+                                                            setCurrentSelection([...currentSelection, event.currentTarget.value].sort())
                                                         } else {
-                                                            setCurrentSelection(currentSelection.filter(
-                                                                item => {
-                                                                    return item !== entry && item !== 'All'
-                                                                }
-                                                            ))
-
-                                                            localStorage.setItem('beforeAll', JSON.stringify(currentSelection.filter(
-                                                                item => item !== entry && item !== 'All'
-                                                            )))
+                                                            setCurrentSelection([...currentSelection.filter(item => {
+                                                                return item !== event.currentTarget.value
+                                                            })].sort())
                                                         }
                                                     }}
                                                 >
@@ -270,7 +249,7 @@ export default function FilterSidebar() {
                                 name='game'
                                 render={({ field: { onChange, value } }) => (
                                     <>
-                                        <Text>Game</Text>
+                                        <Text className='filter-title'>Game</Text>
                                         <Input
                                             placeholder='e.g. VALORANT'
                                             type='text'
@@ -290,7 +269,7 @@ export default function FilterSidebar() {
                                 name='location'
                                 render={({ field: { onChange, value } }) => (
                                     <>
-                                        <Text>Location</Text>
+                                        <Text className='filter-title'>Location</Text>
                                         <Input
                                             placeholder='e.g. USA'
                                             type='text'
@@ -310,7 +289,7 @@ export default function FilterSidebar() {
                                 name='siteType'
                                 render={() => (
                                     <>
-                                        <Text>Subcategories</Text>
+                                        <Text className='filter-title'>Subcategories</Text>
                                         <CheckboxGroup
                                             onChange={(values) => {
                                                 handleChange({
@@ -324,10 +303,9 @@ export default function FilterSidebar() {
                                                 })
                                             }}
                                         >
-                                            <Checkbox value='onSite'>On-site</Checkbox>
-                                            <Checkbox value='remote'>Remote</Checkbox>
-                                            <Checkbox value='hybrid'>Hybrid</Checkbox>
-                                            <Checkbox value='openToRelocation'>Open to relocation</Checkbox>
+                                            {tempSiteTypeData.map((entry, index) => (
+                                                <Checkbox key={index} value={entry}>{entry}</Checkbox>
+                                            ))}
                                         </CheckboxGroup>
                                     </>
                                 )}
@@ -339,7 +317,7 @@ export default function FilterSidebar() {
                                 name='salary'
                                 render={({ field: { onChange, value } }) => (
                                     <>
-                                        <Text>Salary Expectation</Text>
+                                        <Text className='filter-title'>Salary Expectation</Text>
                                         <HStack>
                                             <Select
                                                 defaultChecked='usd'
@@ -428,7 +406,7 @@ export default function FilterSidebar() {
                                 name='experience'
                                 render={() => (
                                     <>
-                                        <Text>Experience Level</Text>
+                                        <Text className='filter-title'>Experience Level</Text>
                                         <CheckboxGroup
                                             onChange={(values) => {
                                                 handleChange({
@@ -442,10 +420,9 @@ export default function FilterSidebar() {
                                                 })
                                             }}
                                         >
-                                            <Checkbox value='entry'>Entry (0-1 years)</Checkbox>
-                                            <Checkbox value='junior'>Junior (1-2 years)</Checkbox>
-                                            <Checkbox value='intermediate'>Intermediate (2-5 years)</Checkbox>
-                                            <Checkbox value='senior'>Senior (5+ years)</Checkbox>
+                                            {tempExperienceData.map((entry, index) => (
+                                                <Checkbox key={index} value={entry}>{entry}</Checkbox>
+                                            ))}
                                         </CheckboxGroup>
                                     </>
                                 )}
