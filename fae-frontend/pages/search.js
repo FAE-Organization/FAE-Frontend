@@ -1,24 +1,50 @@
 import FilterSidebar from "@/components/ui/queryComponents/filterSidebar"
-import { useState } from "react"
-import { Icon, Button, HStack, Stack, Text } from "@chakra-ui/react"
-import { useRouter } from "next/router"
+import { useEffect, useState } from "react"
+import { Icon, HStack, Stack, Text } from "@chakra-ui/react"
 import { MdOutlineKeyboardArrowLeft } from 'react-icons/md'
 import Link from "next/link"
 import SearchBar from "@/components/ui/queryComponents/searchBar"
 import UserCards from "@/components/ui/user-cards"
+import { URLSearchParams } from "next/dist/compiled/@edge-runtime/primitives/url"
+
 
 export default function Search({ tempCards }) {
+
     const [currentSelection, setCurrentSelection] = useState([])
-    const router = useRouter()
+    let allCategories = [
+        'Broadcasting',
+        'Business Operations',
+        'Communications & Marketing',
+        'Content Creation',
+        'Performance',
+        'Tournament & events'
+    ]
+
+    const [currentCategory, setCurrentCategory] = useState('')
+
+    useEffect(() => {
+        const searchParams = new URLSearchParams(window.location.search)
+        const params = {};
+        for (const [key, value] of searchParams.entries()) {
+            params[key] = value;
+        }
+        setCurrentCategory(params.category)
+
+    }, [])
+
+    const filterProps = {
+        states: [currentSelection, setCurrentSelection],
+        categoryStates: [currentCategory, setCurrentCategory],
+        allCategories: allCategories
+    }
 
     return (
         <Stack width='100%' alignItems='center'>
             <Stack width='90%'>
-                <Link href='/directory'>
+                <Link href='/directory' style={{ width: 'fit-content' }}>
                     <HStack
                         color='#6742CE'
                         borderRadius='5px'
-                        width='fit-content'
                         padding='5px'
                         _hover={{
                             transition: '0.3s',
@@ -28,10 +54,10 @@ export default function Search({ tempCards }) {
                         <Text>Back to Directory</Text>
                     </HStack>
                 </Link>
-                <Text width='335px'>Freelancers in Broadcasting</Text>
-                <HStack alignItems='flex-start'>
-                    <FilterSidebar states={[currentSelection, setCurrentSelection]} />
-                    <Stack width='100%'>
+                <Text width='335px'>Freelancers in {currentCategory}</Text>
+                <HStack alignItems='flex-start' gap='15px'>
+                    <FilterSidebar filterProps={filterProps} />
+                    <Stack width='100%' gap='15px'>
                         <SearchBar />
                         <UserCards cards={tempCards} />
                     </Stack>
@@ -41,7 +67,8 @@ export default function Search({ tempCards }) {
     )
 }
 
-export async function getStaticProps() {
+export async function getStaticProps(context) {
+    const { query } = context
     /**
      * Temporary data
      * 
@@ -161,9 +188,10 @@ export async function getStaticProps() {
             }
         },
     ]
+
     return {
         props: {
-            tempCards: tempCards
+            tempCards: tempCards,
         }
     }
 }

@@ -11,7 +11,9 @@ import {
 import { useState, useEffect } from "react";
 import { useForm, FormProvider, Controller } from 'react-hook-form'
 
-export default function FilterSidebar({ states }) {
+export default function FilterSidebar({ filterProps: {
+    states, categoryStates, allCategories
+} }) {
 
     /**
      * Temporary data
@@ -24,15 +26,6 @@ export default function FilterSidebar({ states }) {
         'Observer',
         'Replay Operator',
         'Technical Directory'
-    ]
-
-    const tempDropdownData = [
-        'Broadcasting',
-        'Business Operations',
-        'Communications & Marketing',
-        'Content Creation',
-        'Perforamnce',
-        'Tournament & events'
     ]
 
     const tempSiteTypeData = [
@@ -54,6 +47,8 @@ export default function FilterSidebar({ states }) {
      * 
      */
 
+    const [currentCategory, setCurrentCategory] = categoryStates
+
     useEffect(() => {
         const handleBeforeUnload = () => {
             localStorage.setItem('beforeAll', JSON.stringify([]));
@@ -64,8 +59,7 @@ export default function FilterSidebar({ states }) {
         };
     }, []);
 
-    const [values, setValues] = useState({
-        category: 'broadcasting',
+    const values = {
         subcategories: '',
         game: '',
         location: '',
@@ -77,7 +71,7 @@ export default function FilterSidebar({ states }) {
             max: ''
         },
         experience: '',
-    })
+    }
 
     const [currentSelection, setCurrentSelection] = states
 
@@ -92,7 +86,7 @@ export default function FilterSidebar({ states }) {
 
     const { watch, control } = methods
 
-    const category = watch('category')
+
     const subcategories = watch('subcategories')
     const game = watch('game')
     const location = watch('location')
@@ -132,19 +126,20 @@ export default function FilterSidebar({ states }) {
     }, [locationValue])
 
     const handleChange = async (data) => {
-
-        console.log('data: ', data.subcategories)
-        setValues((previousValues) => ({
-            ...previousValues,
-            ...data,
-        }))
+        // setValues((previousValues) => ({
+        //     ...previousValues,
+        //     ...data,
+        // }))
 
         if (data) {
             toast({
                 position: 'top',
                 duration: 10000,
                 isClosable: true,
-                title: JSON.stringify(data)
+                title: JSON.stringify({
+                    currentCategory,
+                    data
+                })
             })
         } else {
             toast({
@@ -167,39 +162,27 @@ export default function FilterSidebar({ states }) {
             <FormProvider {...methods}>
                 <form>
                     <Stack gap='20px'>
-                        <Stack>
-                            <Controller
-                                control={control}
-                                name='category'
-                                render={({ field: { onChange, value } }) => (
-                                    <>
-                                        <Text className='filter-title'>
-                                            Category
-                                        </Text>
-                                        <Select
-                                            defaultChecked='broadcasting'
-                                            onChange={(event) => {
-                                                onChange(event.target.value)
-                                                handleChange({
-                                                    category: event.target.value,
-                                                    subcategories: subcategories,
-                                                    game: game,
-                                                    location: location,
-                                                    siteType: siteType,
-                                                    salary: salary,
-                                                    experience: experience
-                                                })
-                                            }}
-                                            value={value}
-                                        >
-                                            {tempDropdownData.map((entry, index) => (
-                                                <option key={index} value={entry}>{entry}</option>
-                                            ))}
-                                        </Select>
-                                    </>
-                                )}
-                            />
-                        </Stack>
+                        <Text className='filter-title'>
+                            Category
+                        </Text>
+                        <Select
+                            onChange={(event) => {
+                                setCurrentCategory(event.target.value)
+                                handleChange({
+                                    subcategories: subcategories,
+                                    game: game,
+                                    location: location,
+                                    siteType: siteType,
+                                    salary: salary,
+                                    experience: experience
+                                })
+                            }}
+                            value={currentCategory}
+                        >
+                            {allCategories.map((entry, index) => (
+                                <option key={index} value={entry}>{entry}</option>
+                            ))}
+                        </Select>
                         <Stack>
                             <Controller
                                 control={control}

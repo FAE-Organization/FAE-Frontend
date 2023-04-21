@@ -42,12 +42,10 @@ export default function SearchBar() {
     const toast = useToast()
 
     const { handleSubmit, control } = methods
-
-    console.log(trigger)
     return (
         <FormProvider {...methods}>
             <form
-                style={{ width: '100%' }}
+                style={{ width: '100%', padding: '15px 0px' }}
                 onSubmit={(event) => {
                     handleSubmit(onSubmit)(event)
                 }}
@@ -59,7 +57,7 @@ export default function SearchBar() {
                 }}
             >
                 <HStack width='100%' spacing={0}>
-                    <Stack flex={1}>
+                    <Stack flex={{ base: 3, md: 1 }}>
                         <Controller
                             control={control}
                             name='category'
@@ -120,6 +118,7 @@ export default function SearchBar() {
                             onClick={() => { setTrigger(true) }}
                             backgroundColor='#6742CE'
                             color='#FFF'
+                            fontSize={{ base: '12px', md: '14px', lg: '16px' }}
                         >
                             Search
                         </Button>
