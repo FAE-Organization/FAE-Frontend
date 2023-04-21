@@ -6,11 +6,14 @@ import Link from "next/link"
 import SearchBar from "@/components/ui/queryComponents/searchBar"
 import UserCards from "@/components/ui/user-cards"
 import { URLSearchParams } from "next/dist/compiled/@edge-runtime/primitives/url"
+import { useRouter } from "next/router"
 
 
 export default function Search({ tempCards }) {
 
     const [currentSelection, setCurrentSelection] = useState([])
+    const router = useRouter()
+
     let allCategories = [
         'Broadcasting',
         'Business Operations',
@@ -20,17 +23,8 @@ export default function Search({ tempCards }) {
         'Tournament & events'
     ]
 
-    const [currentCategory, setCurrentCategory] = useState('')
+    const [currentCategory, setCurrentCategory] = useState(router.query.category)
 
-    useEffect(() => {
-        const searchParams = new URLSearchParams(window.location.search)
-        const params = {};
-        for (const [key, value] of searchParams.entries()) {
-            params[key] = value;
-        }
-        setCurrentCategory(params.category)
-
-    }, [])
 
     const filterProps = {
         states: [currentSelection, setCurrentSelection],
@@ -67,8 +61,7 @@ export default function Search({ tempCards }) {
     )
 }
 
-export async function getStaticProps(context) {
-    const { query } = context
+export async function getStaticProps() {
     /**
      * Temporary data
      * 
