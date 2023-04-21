@@ -17,6 +17,7 @@ import {
 } from '@chakra-ui/icons';
 
 export default function NavBar() {
+    const router = useRouter()
     const { isOpen, onToggle } = useDisclosure();
 
     return (
