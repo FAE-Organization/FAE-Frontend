@@ -90,7 +90,7 @@ export default function FilterSidebar({ filterProps: {
                 duration: 5000,
                 isClosable: true,
                 title: JSON.stringify({
-                    currentCategory,
+                    category: (currentCategory == null ? 'Broadcasting' : currentCategory),
                     {
                     category: (currentCategory == null ? 'Broadcasting' : currentCategory),
                     data
@@ -131,6 +131,7 @@ export default function FilterSidebar({ filterProps: {
 
     console.log('all checked: ', allChecked)
 
+>>>>>>> bf92dc0 (fixed minor issues with no queries in search)
     return (
         <React.Fragment>
             {isSmallScreen ? (
