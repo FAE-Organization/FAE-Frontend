@@ -1,6 +1,9 @@
-import { Stack, HStack } from "@chakra-ui/react"
+import { Stack, HStack, IconButton } from "@chakra-ui/react"
+import { CgProfile } from 'react-icons/cg'
+import { useRouter } from "next/router"
 
 export default function Navbar() {
+    const router = useRouter()
     return (
         <Stack
             width='100%'
@@ -8,8 +11,12 @@ export default function Navbar() {
             alignItems='center'
             backgroundColor='#EEE'
         >
-            <HStack width='95%' justifyContent='space-between'>
-                <Stack>
+            <HStack
+                width='95%'
+                justifyContent='space-between'
+                height='100%'
+            >
+                <Stack border='1px solid' width='100%'>
                     {/* 
                     Logo + Navigation Items.
                     
@@ -18,6 +25,12 @@ export default function Navbar() {
                      */}
                 </Stack>
                 <Stack>
+                    <IconButton
+                        icon={<CgProfile />}
+                        onClick={() => {
+                            router.push('/auth/account')
+                        }}
+                    />
                     {/* 
                     Username and Profile Link
                     */}
