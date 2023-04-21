@@ -34,6 +34,8 @@ export default function Search({ tempCards, directory }) {
     }, [])
 
     const [currentSelection, setCurrentSelection] = useState([])
+    const router = useRouter()
+
     let allCategories = [
         'Broadcasting',
         'Business Operations',
