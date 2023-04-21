@@ -48,7 +48,7 @@ export default function Search({ tempCards }) {
                         <Text>Back to Directory</Text>
                     </HStack>
                 </Link>
-                <Text width='335px'>Freelancers in {currentCategory}</Text>
+                <Text width='335px'>Freelancers in {currentCategory ? currentCategory : 'Broadcasting'}</Text>
                 <HStack alignItems='flex-start' gap='15px'>
                     <FilterSidebar filterProps={filterProps} />
                     <Stack width='100%' gap='15px'>

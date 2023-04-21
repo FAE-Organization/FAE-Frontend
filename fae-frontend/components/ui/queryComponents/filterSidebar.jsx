@@ -137,7 +137,7 @@ export default function FilterSidebar({ filterProps: {
                 duration: 10000,
                 isClosable: true,
                 title: JSON.stringify({
-                    currentCategory,
+                    category: (currentCategory == null ? 'Broadcasting' : currentCategory),
                     data
                 })
             })
