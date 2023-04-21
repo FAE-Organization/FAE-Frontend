@@ -14,7 +14,7 @@ export default function DirectoryGrid({ cards }) {
                 gap='20px'
                 align="flex-start"
             >
-                {cards.map((_, index) => (
+                {cards.map((categoryTitle, index) => (
                     <Stack
                         key={index}
                         w='315px'
@@ -27,7 +27,7 @@ export default function DirectoryGrid({ cards }) {
                         transition="transform 0.2s ease-in-out, filter 0.2s ease-in-out"
                         transform={hoveredIndex === index ? "scale(1.03)" : ""}
                     >
-                        <Link href={`/directory/category?id=${index}`}>
+                        <Link href={`/search?category=${encodeURIComponent(categoryTitle)}`}>
                             <Stack
                                 h="200px"
                                 justifyContent='space-between'
@@ -38,8 +38,9 @@ export default function DirectoryGrid({ cards }) {
                             >
                                 <Stack zIndex={1}>
                                     <Badge
-                                        width={{ base: '75%', md: '60^', lg: '50%' }}
-                                        backgroundColor='purple.500' color='#FFF'
+                                        width={{ base: '75%', md: '60%', lg: '50%' }}
+                                        backgroundColor='purple.500'
+                                        color='#FFF'
                                         borderRadius='5px'
                                     >
                                         100+ profiles
@@ -53,7 +54,7 @@ export default function DirectoryGrid({ cards }) {
                                         color='#FEFEFE'
                                         fontSize='26px'
                                     >
-                                        Title Goes Here
+                                        {categoryTitle}
                                     </Text>
                                 </Stack>
                             </Stack>

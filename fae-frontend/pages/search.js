@@ -34,7 +34,32 @@ export default function Search({ tempCards, directory }) {
     }, [])
 
     const [currentSelection, setCurrentSelection] = useState([])
-    const router = useRouter()
+    let allCategories = [
+        'Broadcasting',
+        'Business Operations',
+        'Communications & Marketing',
+        'Content Creation',
+        'Performance',
+        'Tournament & events'
+    ]
+
+    const [currentCategory, setCurrentCategory] = useState('')
+
+    useEffect(() => {
+        const searchParams = new URLSearchParams(window.location.search)
+        const params = {};
+        for (const [key, value] of searchParams.entries()) {
+            params[key] = value;
+        }
+        setCurrentCategory(params.category)
+
+    }, [])
+
+    const filterProps = {
+        states: [currentSelection, setCurrentSelection],
+        categoryStates: [currentCategory, setCurrentCategory],
+        allCategories: allCategories
+    }
 
     return (
         <Stack width='100%' alignItems='center'>

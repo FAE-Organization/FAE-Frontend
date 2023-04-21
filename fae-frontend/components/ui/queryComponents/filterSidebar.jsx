@@ -28,6 +28,8 @@ export default function FilterSidebar({ filterProps: {
     const [currentCategory, setCurrentCategory] = categoryStates
     const [types, setTypes] = subcategoryStates
 
+    const [currentCategory, setCurrentCategory] = categoryStates
+
     useEffect(() => {
         const handleBeforeUnload = () => {
             localStorage.setItem('beforeAll', JSON.stringify([]));
@@ -50,7 +52,7 @@ export default function FilterSidebar({ filterProps: {
             max: ''
         },
         experience: '',
-    }), []);
+    }, []);
 
     const [currentSelection, setCurrentSelection] = states
 
@@ -88,8 +90,11 @@ export default function FilterSidebar({ filterProps: {
                 duration: 5000,
                 isClosable: true,
                 title: JSON.stringify({
+                    currentCategory,
+                    {
                     category: (currentCategory == null ? 'Broadcasting' : currentCategory),
                     data
+                }
                 })
             })
         } else {
