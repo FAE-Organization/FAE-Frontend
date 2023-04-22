@@ -1,7 +1,7 @@
-import Login from "@/components/ui/session/login";
+import Signup from "@/components/ui/session/signup";
 
 export default function Account() {
     return (
-        <Login />
+        <Signup />
     )
 }

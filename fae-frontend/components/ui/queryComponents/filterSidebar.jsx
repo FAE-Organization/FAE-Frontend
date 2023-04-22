@@ -194,7 +194,6 @@ export default function FilterSidebar({ filterProps: {
                                             value={currentSelection}
                                             onChange={(values) => {
                                                 handleChange({
-                                                    category: category,
                                                     subcategories: values,
                                                     game: game,
                                                     location: location,
