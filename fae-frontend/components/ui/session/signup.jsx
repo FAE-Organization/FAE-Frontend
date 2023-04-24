@@ -1,5 +1,5 @@
 import { Stack, FormControl, Input, FormErrorMessage, Button, HStack, Text, FormLabel, Select } from "@chakra-ui/react";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useForm, FormProvider, Controller } from "react-hook-form";
 
 export default function Signup() {
