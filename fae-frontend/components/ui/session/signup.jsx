@@ -29,7 +29,7 @@ export default function Signup() {
         }, {
             keepIsValid: true
         })
-    }, [isSubmitSuccessful, reset])
+    }, [isSubmitSuccessful, reset, defaultValues])
 
     const onSubmit = (data) => {
         console.log(JSON.stringify(data))

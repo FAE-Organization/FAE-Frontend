@@ -9,7 +9,7 @@ export default function UserCards({ cards }) {
     // Use useEffect to update the cards whenever the tempCards prop changes
     useEffect(() => {
         setCardVals(cards);
-    }, [cardVals]);
+    }, [cards]);
 
     return (
         <Stack width='100%'>

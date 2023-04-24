@@ -109,7 +109,7 @@ export default function FilterSidebar({ filterProps: {
         }, 1000)
 
         return () => clearTimeout(timer)
-    }, [gameValue])
+    }, [gameValue, handleChange, values])
 
     //
     //
@@ -123,7 +123,7 @@ export default function FilterSidebar({ filterProps: {
         }, 1000)
 
         return () => clearTimeout(timer)
-    }, [locationValue])
+    }, [locationValue, handleChange, values])
 
     const handleChange = async (data) => {
         // setValues((previousValues) => ({

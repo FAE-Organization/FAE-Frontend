@@ -22,21 +22,6 @@ export default function Home() {
             </Head>
             <main className={styles.main}>
                 <HStack>
-                    <Button
-                        onClick={() => {
-                            router.push('/api/auth/login')
-                        }}
-                    >
-                        Login
-                    </Button>
-                    <Button
-                        onClick={() => {
-                            router.push('/api/auth/logout')
-                        }}
-                    >
-                        Logout
-                    </Button>
-
                     {user && !error && (
                         isLoading ?
                             <div>Loading...</div> :

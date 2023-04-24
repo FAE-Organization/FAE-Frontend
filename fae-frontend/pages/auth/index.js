@@ -6,7 +6,7 @@ export default function Account() {
 
     useEffect(() => {
         router.push('/auth/account')
-    }, [])
+    })
     return (
         <React.Fragment />
     )
