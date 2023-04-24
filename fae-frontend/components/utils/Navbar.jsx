@@ -29,16 +29,17 @@ export default function Navbar() {
                 <HStack>
                     {!user && (
                         <>
-                            <Button
+                            {/* <Button
                                 color='#6642CE'
                                 backgroundColor='#FFF'
                                 border='2px solid #6642CE'
                                 onClick={() => {
-                                    window.location.href = 'https://auth0-fae.us.auth0.com/u/signup?state=hKFo2SA3RDZKZG5GQ2hDMVAxTDBGeVRyTjMzRmlydy0xNTF4R6Fur3VuaXZlcnNhbC1sb2dpbqN0aWTZIDB5ZGhlR19IazNLdGZBTWRVRnBBSkt3bGIyeFZXREpqo2NpZNkgTzhDTFNMaGJhUHZLZzhOblA1UGNVZzNBZXZQWHRSWm0'
+                                    window.location.href =
+                                        'https://auth0-fae.us.auth0.com/u/signup?state=hKFo2SBOb0tneGV5ZThoc0oxYXNNMU9wNHVpNHFNT0NFa3dOYaFur3VuaXZlcnNhbC1sb2dpbqN0aWTZIEdwNVZmTzZaUmhHZ2tMSTdhNllmMExNaVhBOHlVVkpyo2NpZNkgTzhDTFNMaGJhUHZLZzhOblA1UGNVZzNBZXZQWHRSWm0'
                                 }}
                             >
                                 Sign up
-                            </Button>
+                            </Button> */}
                             <Button
                                 backgroundColor='#6642CE'
                                 color='#FFF'

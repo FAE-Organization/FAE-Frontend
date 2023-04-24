@@ -7,6 +7,8 @@ export default function UserCards({ cards }) {
     const [cardVals, setCardVals] = useState(cards); // Initial state is set to the prop value
 
     // Use useEffect to update the cards whenever the tempCards prop changes
+    // Maybe useReducer instead of useEffect if cards change often and management
+    // becomes more complex.
     useEffect(() => {
         setCardVals(cards);
     }, [cards]);

@@ -8,8 +8,16 @@ import {
     Input,
     useToast
 } from "@chakra-ui/react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useForm, FormProvider, Controller } from 'react-hook-form'
+
+/**
+ * TODO
+
+ *  2.
+ *  The 'handleChange' function makes the dependencies of useEffect Hook (at line 112) 
+ *  change on every render. To fix this, wrap the definition of 'handleChange' in its own useCallback() Hook.
+ */
 
 export default function FilterSidebar({ filterProps: {
     states, categoryStates, allCategories
@@ -59,7 +67,7 @@ export default function FilterSidebar({ filterProps: {
         };
     }, []);
 
-    const values = {
+    const values = useMemo(() => ({
         subcategories: '',
         game: '',
         location: '',
@@ -71,7 +79,7 @@ export default function FilterSidebar({ filterProps: {
             max: ''
         },
         experience: '',
-    }
+    }), []);
 
     const [currentSelection, setCurrentSelection] = states
 
@@ -125,7 +133,7 @@ export default function FilterSidebar({ filterProps: {
         return () => clearTimeout(timer)
     }, [locationValue, handleChange, values])
 
-    const handleChange = async (data) => {
+    const handleChange = useCallback(async (data) => {
         // setValues((previousValues) => ({
         //     ...previousValues,
         //     ...data,
@@ -150,7 +158,7 @@ export default function FilterSidebar({ filterProps: {
                 title: 'Error: something went wrong'
             })
         }
-    }
+    })
 
     return (
         <Stack
