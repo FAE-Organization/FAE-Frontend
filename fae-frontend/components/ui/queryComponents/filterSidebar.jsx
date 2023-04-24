@@ -105,33 +105,6 @@ export default function FilterSidebar({ filterProps: {
     const [gameValue, setGameValue] = useState('')
     const [locationValue, setLocationValue] = useState('')
 
-    // Delay user input for game input (aka debounce) so that
-    // the backend is not overloaded by requests
-
-    useEffect(() => {
-        const timer = setTimeout(async () => {
-            await handleChange({
-                ...values,
-                game: gameValue
-            })
-        }, 1000)
-
-        return () => clearTimeout(timer)
-    }, [gameValue, handleChange, values])
-
-    //
-    //
-
-    useEffect(() => {
-        const timer = setTimeout(async () => {
-            await handleChange({
-                ...values,
-                location: locationValue
-            })
-        }, 1000)
-
-        return () => clearTimeout(timer)
-    }, [locationValue, handleChange, values])
 
     const handleChange = useCallback(async (data) => {
         // setValues((previousValues) => ({
@@ -158,7 +131,35 @@ export default function FilterSidebar({ filterProps: {
                 title: 'Error: something went wrong'
             })
         }
-    })
+    }, [currentCategory])
+
+    // Delay user input for game input (aka debounce) so that
+    // the backend is not overloaded by requests
+    useEffect(() => {
+        const timer = setTimeout(async () => {
+            await handleChange({
+                ...values,
+                game: gameValue
+            })
+        }, 1000)
+
+        return () => clearTimeout(timer)
+    }, [gameValue, handleChange, values])
+
+    //
+    //
+
+    useEffect(() => {
+        const timer = setTimeout(async () => {
+            await handleChange({
+                ...values,
+                location: locationValue
+            })
+        }, 1000)
+
+        return () => clearTimeout(timer)
+    }, [locationValue, handleChange, values])
+
 
     return (
         <Stack

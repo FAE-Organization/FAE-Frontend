@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useForm, FormProvider, Controller } from "react-hook-form";
 
 export default function Signup() {
-    const defaultValues = {
+    const defaultValues = useMemo(() => ({
         firstName: '',
         lastName: '',
         displayName: '',
@@ -12,7 +12,8 @@ export default function Signup() {
         password: '',
         confirmPassword: '',
         region: 'Select Region'
-    }
+    }), [])
+
     const methods = useForm({
         mode: 'onSubmit',
         defaultValues: {
