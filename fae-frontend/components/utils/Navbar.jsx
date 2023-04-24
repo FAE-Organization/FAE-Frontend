@@ -20,6 +20,7 @@ export default function NavBar() {
     const router = useRouter()
     const { isOpen, onToggle } = useDisclosure();
 
+    const { user, error, isLoading } = useUser()
     return (
         <Box bg='#FFF'>
             <Flex

@@ -11,6 +11,7 @@ import {
 import { Inter } from '@next/font/google'
 import styles from '@/styles/Home.module.css'
 import { useRouter } from 'next/router'
+import { useUser } from '@auth0/nextjs-auth0/client'
 
 import Head from 'next/head'
 
