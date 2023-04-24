@@ -11,7 +11,7 @@ export default function Signup() {
         // birthday: '', for managing nsfw content?
         password: '',
         confirmPassword: '',
-        region: 'NA'
+        region: 'Select Region'
     }
     const methods = useForm({
         mode: 'onSubmit',
@@ -20,7 +20,8 @@ export default function Signup() {
         }
     })
 
-    const { handleSubmit, reset, control, formState: { isSubmitSuccessful } } = methods
+    const { handleSubmit, reset, control, watch, formState: { isSubmitSuccessful } } = methods
+    const password = watch('password')
 
     useEffect(() => {
         reset({
@@ -30,8 +31,8 @@ export default function Signup() {
         })
     }, [isSubmitSuccessful, reset])
 
-    const onSubmit = () => {
-        console.log('Form submit successful')
+    const onSubmit = (data) => {
+        console.log(JSON.stringify(data))
     }
 
     return (
@@ -49,28 +50,28 @@ export default function Signup() {
                             }
                         }}
                     >
-                        <HStack>
+                        <HStack padding='10px'>
                             <Controller
                                 name='firstName'
                                 control={control}
                                 rules={{
                                     validate: (data) => {
-                                        if (data.length === 0) return 'Please enter a first name'
+                                        if (data.length == 0) return 'Please enter a first name'
                                         return true
                                     }
                                 }}
                                 render={({ field: { onChange, value }, fieldState: { error } }) => (
                                     <FormControl isInvalid={!!error}>
                                         <Input
+                                            id='firstName'
                                             variant='flushed'
                                             placeholder='First name'
                                             value={value}
                                             onChange={onChange}
                                         />
+                                        <FormLabel htmlFor="firstName">First Name</FormLabel>
                                         <FormErrorMessage>
-                                            {error && (
-                                                <Text>{error.message}</Text>
-                                            )}
+                                            <Text>{error ? error.message : ''}</Text>
                                         </FormErrorMessage>
                                     </FormControl>
                                 )}
@@ -80,28 +81,28 @@ export default function Signup() {
                                 control={control}
                                 rules={{
                                     validate: (data) => {
-                                        if (data.length === 0) return 'Please enter a last name'
+                                        if (data.length == 0) return 'Please enter a last name'
                                         return true
                                     }
                                 }}
-                                render={({ field: { onChange, value }, formState: { error } }) => (
-                                    <FormControl isINvalid={!!error}>
+                                render={({ field: { onChange, value }, fieldState: { error } }) => (
+                                    <FormControl isInvalid={!!error}>
                                         <Input
+                                            id='lastName'
                                             variant='flushed'
                                             placeholder='Last Name'
                                             value={value}
                                             onChange={onChange}
                                         />
+                                        <FormLabel htmlFor="lastName">Last Name</FormLabel>
                                         <FormErrorMessage>
-                                            {error && (
-                                                <Text>{error.message}</Text>
-                                            )}
+                                            <Text>{error ? error.message : ''}</Text>
                                         </FormErrorMessage>
                                     </FormControl>
                                 )}
                             />
                         </HStack>
-                        <Stack>
+                        <Stack padding='10px'>
                             <Controller
                                 control={control}
                                 name='displayName'
@@ -119,14 +120,16 @@ export default function Signup() {
                                         return true
                                     }
                                 }}
-                                render={({ field: { onChange, value }, formState: error }) => (
+                                render={({ field: { onChange, value }, fieldState: { error } }) => (
                                     <FormControl isInvalid={!!error}>
                                         <Input
+                                            id='display'
                                             variant='flushed'
                                             placeholder='Display Name'
                                             value={value}
                                             onChange={onChange}
                                         />
+                                        <FormLabel htmlFor="display">Display Name</FormLabel>
                                         <FormErrorMessage>
                                             {error && (
                                                 <Text>{error.message}</Text>
@@ -149,15 +152,17 @@ export default function Signup() {
                                         if (emailExists) return 'Email already exists, try loggin in'
                                     }
                                 }}
-                                render={({ field: { onChange, value }, formState: { error } }) => (
+                                render={({ field: { onChange, value }, fieldState: { error } }) => (
                                     <FormControl isInvalid={!!error}>
                                         <Input
+                                            id='email'
                                             variant='flushed'
                                             placeholder='Email Address'
                                             value={value}
                                             onChange={onChange}
                                             type='email'
                                         />
+                                        <FormLabel htmlFor="email">Email Address</FormLabel>
                                         <FormErrorMessage>
                                             {error && (
                                                 <Text>{error.message}</Text>
@@ -170,15 +175,36 @@ export default function Signup() {
                                 <Controller
                                     control={control}
                                     name='password'
-                                    render={({ field: { onChange, value }, formState: { error } }) => (
+                                    rules={{
+                                        validate: (data) => {
+                                            if (data.length < 8) {
+                                                return "Password must be at least 8 characters long";
+                                            }
+
+                                            if (!/[A-Z]/.test(data)) {
+                                                return "Password must contain at least one uppercase letter";
+                                            }
+
+                                            if (!/[0-9]/.test(data)) {
+                                                return "Password must contain at least one numeric digit";
+                                            }
+
+                                            if (!/[!@#$%^&*]/.test(data)) {
+                                                return "Password must contain at least one special character";
+                                            }
+                                        }
+                                    }}
+                                    render={({ field: { onChange, value }, fieldState: { error } }) => (
                                         <FormControl isInvalid={!!error}>
                                             <Input
+                                                id='password'
                                                 variant='flushed'
                                                 placeholder='Password'
                                                 value={value}
                                                 onChange={onChange}
                                                 type='password'
                                             />
+                                            <FormLabel htmlFor="password">Password</FormLabel>
                                             <FormErrorMessage>
                                                 {error && (
                                                     <Text>{error.message}</Text>
@@ -190,15 +216,25 @@ export default function Signup() {
                                 <Controller
                                     control={control}
                                     name='confirm password'
-                                    render={({ field: { onChange, value }, formState: { error } }) => (
+                                    rules={{
+                                        validate: (data) => {
+                                            if (password !== data) {
+                                                return 'Passwords do not match'
+                                            }
+                                            return true
+                                        }
+                                    }}
+                                    render={({ field: { onChange, value }, fieldState: { error } }) => (
                                         <FormControl isInvalid={!!error}>
                                             <Input
+                                                id='confirmPassword'
                                                 variant='flushed'
                                                 placeholder='Confirm Password'
                                                 value={value}
                                                 onChange={onChange}
                                                 type='password'
                                             />
+                                            <FormLabel htmlFor="confirmPassword">Confirm Password</FormLabel>
                                             <FormErrorMessage>
                                                 {error && (
                                                     <Text>{error.message}</Text>
@@ -211,19 +247,33 @@ export default function Signup() {
                             <Controller
                                 control={control}
                                 name='region'
-                                render={({ field: { onChange, value } }) => (
-                                    <Select
-                                        value={value}
-                                        onChange={onChange}
-                                    >
-                                        <option value="AF">AF</option>
-                                        <option value="AS">AS</option>
-                                        <option value="AN">AN</option>
-                                        <option value="EU">EU</option>
-                                        <option value="NA">NA</option>
-                                        <option value="OC">OC</option>
-                                        <option value="SA">SA</option>
-                                    </Select>
+                                rules={{
+                                    validate: (data) => {
+                                        if (data.length == 0) return 'Please select a region'
+                                        return true
+                                    }
+                                }}
+                                render={({ field: { onChange, value }, fieldState: { error } }) => (
+                                    <>
+                                        <Select
+                                            value={value}
+                                            onChange={onChange}
+                                        >
+                                            <option value="">Select Region</option>
+                                            <option value="AF">AF</option>
+                                            <option value="AS">AS</option>
+                                            <option value="AN">AN</option>
+                                            <option value="EU">EU</option>
+                                            <option value="NA">NA</option>
+                                            <option value="OC">OC</option>
+                                            <option value="SA">SA</option>
+                                        </Select>
+                                        <FormErrorMessage>
+                                            {error && (
+                                                <Text>{error.message}</Text>
+                                            )}
+                                        </FormErrorMessage>
+                                    </>
                                 )}
                             />
                         </Stack>

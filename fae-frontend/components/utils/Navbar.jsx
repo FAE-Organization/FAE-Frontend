@@ -1,9 +1,11 @@
-import { Stack, HStack, IconButton } from "@chakra-ui/react"
+import { Stack, HStack, IconButton, Button } from "@chakra-ui/react"
 import { CgProfile } from 'react-icons/cg'
 import { useRouter } from "next/router"
+import { useUser } from '@auth0/nextjs-auth0/client'
 
 export default function Navbar() {
     const router = useRouter()
+    const { user, error, isLoading } = useUser()
     return (
         <Stack
             width='100%'
@@ -16,7 +18,7 @@ export default function Navbar() {
                 justifyContent='space-between'
                 height='100%'
             >
-                <Stack border='1px solid' width='100%'>
+                <Stack width='100%'>
                     {/* 
                     Logo + Navigation Items.
                     
@@ -24,17 +26,53 @@ export default function Navbar() {
                     Saves time and separates UI/UX from code
                      */}
                 </Stack>
-                <Stack>
-                    <IconButton
-                        icon={<CgProfile />}
-                        onClick={() => {
-                            router.push('/auth/account')
-                        }}
-                    />
+                <HStack>
+                    {!user && (
+                        <>
+                            <Button
+                                color='#6642CE'
+                                backgroundColor='#FFF'
+                                border='2px solid #6642CE'
+                                onClick={() => {
+                                    window.location.href = 'https://auth0-fae.us.auth0.com/u/signup?state=hKFo2SA3RDZKZG5GQ2hDMVAxTDBGeVRyTjMzRmlydy0xNTF4R6Fur3VuaXZlcnNhbC1sb2dpbqN0aWTZIDB5ZGhlR19IazNLdGZBTWRVRnBBSkt3bGIyeFZXREpqo2NpZNkgTzhDTFNMaGJhUHZLZzhOblA1UGNVZzNBZXZQWHRSWm0'
+                                }}
+                            >
+                                Sign up
+                            </Button>
+                            <Button
+                                backgroundColor='#6642CE'
+                                color='#FFF'
+                                onClick={() => {
+                                    router.push('/api/auth/login')
+                                }}
+                            >
+                                Sign in
+                            </Button>
+                        </>
+                    )}
+                    {user && !error && !isLoading && (
+                        <>
+                            <Button
+                                backgroundColor='#6642CE'
+                                color='#FFF'
+                                onClick={() => {
+                                    router.push('/api/auth/logout')
+                                }}
+                            >
+                                Log out
+                            </Button>
+                            <IconButton
+                                icon={<CgProfile />}
+                                onClick={() => {
+                                    router.push('/auth/account')
+                                }}
+                            />
+                        </>
+                    )}
                     {/* 
                     Username and Profile Link
                     */}
-                </Stack>
+                </HStack>
             </HStack>
         </Stack>
     )
