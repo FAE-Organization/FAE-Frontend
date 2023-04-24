@@ -52,7 +52,7 @@ export default function FilterSidebar({ filterProps: {
             max: ''
         },
         experience: '',
-    }, []);
+    }), []);, []);
 
     const [currentSelection, setCurrentSelection] = states
 
@@ -120,7 +120,7 @@ export default function FilterSidebar({ filterProps: {
                     ...salary,
                     min: minMax.min,
                     max: minMax.max
-                }
+                })
             })
         }, 1000)
 
