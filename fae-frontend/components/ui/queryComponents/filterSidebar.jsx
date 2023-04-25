@@ -8,10 +8,20 @@ import {
     Input,
     useToast
 } from "@chakra-ui/react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { useForm, FormProvider, Controller } from 'react-hook-form'
 
-export default function FilterSidebar({ states }) {
+/**
+ * TODO
+
+ *  2.
+ *  The 'handleChange' function makes the dependencies of useEffect Hook (at line 112) 
+ *  change on every render. To fix this, wrap the definition of 'handleChange' in its own useCallback() Hook.
+ */
+
+export default function FilterSidebar({ filterProps: {
+    states, categoryStates, allCategories
+} }) {
 
     /**
      * Temporary data
@@ -24,15 +34,6 @@ export default function FilterSidebar({ states }) {
         'Observer',
         'Replay Operator',
         'Technical Directory'
-    ]
-
-    const tempDropdownData = [
-        'Broadcasting',
-        'Business Operations',
-        'Communications & Marketing',
-        'Content Creation',
-        'Perforamnce',
-        'Tournament & events'
     ]
 
     const tempSiteTypeData = [
@@ -54,6 +55,8 @@ export default function FilterSidebar({ states }) {
      * 
      */
 
+    const [currentCategory, setCurrentCategory] = categoryStates
+
     useEffect(() => {
         const handleBeforeUnload = () => {
             localStorage.setItem('beforeAll', JSON.stringify([]));
@@ -64,8 +67,7 @@ export default function FilterSidebar({ states }) {
         };
     }, []);
 
-    const [values, setValues] = useState({
-        category: 'broadcasting',
+    const values = useMemo(() => ({
         subcategories: '',
         game: '',
         location: '',
@@ -77,7 +79,7 @@ export default function FilterSidebar({ states }) {
             max: ''
         },
         experience: '',
-    })
+    }), []);
 
     const [currentSelection, setCurrentSelection] = states
 
@@ -92,7 +94,7 @@ export default function FilterSidebar({ states }) {
 
     const { watch, control } = methods
 
-    const category = watch('category')
+
     const subcategories = watch('subcategories')
     const game = watch('game')
     const location = watch('location')
@@ -103,9 +105,36 @@ export default function FilterSidebar({ states }) {
     const [gameValue, setGameValue] = useState('')
     const [locationValue, setLocationValue] = useState('')
 
+
+    const handleChange = useCallback(async (data) => {
+        // setValues((previousValues) => ({
+        //     ...previousValues,
+        //     ...data,
+        // }))
+
+        if (data) {
+            toast({
+                position: 'top',
+                duration: 10000,
+                isClosable: true,
+                title: JSON.stringify({
+                    category: (currentCategory == null ? 'Broadcasting' : currentCategory),
+                    data
+                })
+            })
+        } else {
+            toast({
+                position: 'top',
+                status: 'error',
+                duration: 3000,
+                isClosable: true,
+                title: 'Error: something went wrong'
+            })
+        }
+    }, [currentCategory])
+
     // Delay user input for game input (aka debounce) so that
     // the backend is not overloaded by requests
-
     useEffect(() => {
         const timer = setTimeout(async () => {
             await handleChange({
@@ -115,7 +144,7 @@ export default function FilterSidebar({ states }) {
         }, 1000)
 
         return () => clearTimeout(timer)
-    }, [gameValue])
+    }, [gameValue, handleChange, values])
 
     //
     //
@@ -129,33 +158,8 @@ export default function FilterSidebar({ states }) {
         }, 1000)
 
         return () => clearTimeout(timer)
-    }, [locationValue])
+    }, [locationValue, handleChange, values])
 
-    const handleChange = async (data) => {
-
-        console.log('data: ', data.subcategories)
-        setValues((previousValues) => ({
-            ...previousValues,
-            ...data,
-        }))
-
-        if (data) {
-            toast({
-                position: 'top',
-                duration: 10000,
-                isClosable: true,
-                title: JSON.stringify(data)
-            })
-        } else {
-            toast({
-                position: 'top',
-                status: 'error',
-                duration: 3000,
-                isClosable: true,
-                title: 'Error: something went wrong'
-            })
-        }
-    }
 
     return (
         <Stack
@@ -167,39 +171,27 @@ export default function FilterSidebar({ states }) {
             <FormProvider {...methods}>
                 <form>
                     <Stack gap='20px'>
-                        <Stack>
-                            <Controller
-                                control={control}
-                                name='category'
-                                render={({ field: { onChange, value } }) => (
-                                    <>
-                                        <Text className='filter-title'>
-                                            Category
-                                        </Text>
-                                        <Select
-                                            defaultChecked='broadcasting'
-                                            onChange={(event) => {
-                                                onChange(event.target.value)
-                                                handleChange({
-                                                    category: event.target.value,
-                                                    subcategories: subcategories,
-                                                    game: game,
-                                                    location: location,
-                                                    siteType: siteType,
-                                                    salary: salary,
-                                                    experience: experience
-                                                })
-                                            }}
-                                            value={value}
-                                        >
-                                            {tempDropdownData.map((entry, index) => (
-                                                <option key={index} value={entry}>{entry}</option>
-                                            ))}
-                                        </Select>
-                                    </>
-                                )}
-                            />
-                        </Stack>
+                        <Text className='filter-title'>
+                            Category
+                        </Text>
+                        <Select
+                            onChange={(event) => {
+                                setCurrentCategory(event.target.value)
+                                handleChange({
+                                    subcategories: subcategories,
+                                    game: game,
+                                    location: location,
+                                    siteType: siteType,
+                                    salary: salary,
+                                    experience: experience
+                                })
+                            }}
+                            value={currentCategory}
+                        >
+                            {allCategories.map((entry, index) => (
+                                <option key={index} value={entry}>{entry}</option>
+                            ))}
+                        </Select>
                         <Stack>
                             <Controller
                                 control={control}
@@ -211,7 +203,6 @@ export default function FilterSidebar({ states }) {
                                             value={currentSelection}
                                             onChange={(values) => {
                                                 handleChange({
-                                                    category: category,
                                                     subcategories: values,
                                                     game: game,
                                                     location: location,

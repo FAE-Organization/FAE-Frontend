@@ -13,7 +13,14 @@ export default function Directory(props) {
                         "Our directory is designed to help users understand the different sectors that make up the esports and gaming industry."
                     }
                 />
-                <DirectoryGrid cards={['blue.700', 'green.700', 'red.700', 'purple.700', 'yellow.700', 'pink.700']} />
+                <DirectoryGrid cards={[
+                    'Broadcasting',
+                    'Business Operations',
+                    'Communications & Marketing',
+                    'Content Creation',
+                    'Performance',
+                    'Tournament & Events']}
+                />
             </Stack>
         </React.Fragment >
     )
