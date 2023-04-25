@@ -5,9 +5,8 @@ import { MdOutlineKeyboardArrowLeft } from 'react-icons/md'
 import Link from "next/link"
 import SearchBar from "@/components/ui/queryComponents/searchBar"
 import UserCards from "@/components/ui/user-cards"
-import { URLSearchParams } from "next/dist/compiled/@edge-runtime/primitives/url"
 import { useRouter } from "next/router"
-
+import { getSubcategories } from "@/components/temp/lib/cms/getComponents/getSubcategories"
 
 export default function Search({ tempCards }) {
 
@@ -24,6 +23,16 @@ export default function Search({ tempCards }) {
     ]
 
     const [currentCategory, setCurrentCategory] = useState(router.query.category)
+
+    useEffect(() => {
+        const subCategory = async () => {
+            const data = await getSubcategories(currentCategory)
+            return data
+        }
+        const data = subCategory()
+        console.log(data)
+
+    }, [currentCategory])
 
 
     const filterProps = {
@@ -181,6 +190,7 @@ export async function getStaticProps() {
             }
         },
     ]
+
 
     return {
         props: {
