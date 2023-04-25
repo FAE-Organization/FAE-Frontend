@@ -60,7 +60,8 @@ export default function Search({ tempCards, directory }) {
     const filterProps = {
         states: [currentSelection, setCurrentSelection],
         categoryStates: [currentCategory, setCurrentCategory],
-        allCategories: allCategories
+        allCategories: allCategories,
+        types: subcategories
     }
 
     return (

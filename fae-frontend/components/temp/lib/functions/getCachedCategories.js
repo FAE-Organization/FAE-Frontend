@@ -1,16 +1,16 @@
 import { getSubcategories } from "../cms/getComponents/getSubcategories";
 import { cacheValidation } from "./cacheValidation";
 
-async function getCachedCategories(cardId) {
+async function getCachedCategories(name) {
 
-    const cachedData = localStorage.getItem(`categories_${cardId}`);
+    const cachedData = localStorage.getItem(`categories_${name}`);
     if (cachedData) {
 
         return JSON.parse(cachedData);
     } else {
-        const categories = await fetchCategoriesFromCMS(cardId);
+        const categories = await getSubcategories(name);
         const expirationTime = new Date().getTime() + 3600000; // 1 hour in milliseconds
-        localStorage.setItem(`categories_${cardId}`, JSON.stringify({ data: categories, expires: expirationTime }));
+        localStorage.setItem(`categories_${name}`, JSON.stringify({ data: categories, expires: expirationTime }));
         return categories;
     }
 }
@@ -21,11 +21,13 @@ export async function fetchAndDisplayCategories(name) {
         // If cache has expired, fetch fresh data from CMS and update cache
         const categories = await getSubcategories(name);
         const expirationTime = new Date().getTime() + 3600000; // 1 hour in milliseconds
-        localStorage.setItem(`categories_${cardId}`, JSON.stringify({ data: categories, expires: expirationTime }));
+        localStorage.setItem(`categories_${name}`, JSON.stringify({ data: categories, expires: expirationTime }));
         // Display fresh data
         console.log('Categories:', categories);
+        return categories
     } else {
         // Use cached data
         console.log('Categories (cached):', cachedData.data);
+        return cachedData.data
     }
 }
