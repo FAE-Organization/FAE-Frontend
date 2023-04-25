@@ -11,13 +11,6 @@ import {
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { useForm, FormProvider, Controller } from 'react-hook-form'
 
-/**
- * TODO
-
- *  2.
- *  The 'handleChange' function makes the dependencies of useEffect Hook (at line 112) 
- *  change on every render. To fix this, wrap the definition of 'handleChange' in its own useCallback() Hook.
- */
 
 export default function FilterSidebar({ filterProps: {
     states, categoryStates, allCategories
@@ -176,6 +169,13 @@ export default function FilterSidebar({ filterProps: {
                         </Text>
                         <Select
                             onChange={(event) => {
+                                /**
+                                 * Make a fetch call to CMS to get appropriate
+                                 * subcategories and set allCategories state.
+                                 * The state will be passed in from a HOC,
+                                 * most likely the search.js component. DONT
+                                 * FORGET ONCHANGE WILL HAVE TO BE ASYNC NOW
+                                 */
                                 setCurrentCategory(event.target.value)
                                 handleChange({
                                     subcategories: subcategories,
