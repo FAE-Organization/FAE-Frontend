@@ -7,6 +7,7 @@ import SearchBar from "@/components/ui/queryComponents/searchBar"
 import UserCards from "@/components/ui/user-cards"
 import { useRouter } from "next/router"
 import { getSubcategories } from "@/components/temp/lib/cms/getComponents/getSubcategories"
+import { fetchAndDisplayCategories } from "@/components/temp/lib/functions/getCachedCategories"
 
 export default function Search({ tempCards }) {
 
@@ -21,16 +22,18 @@ export default function Search({ tempCards }) {
         'Performance',
         'Tournament & events'
     ]
-
+    const [subcategories, setSubcategories] = useState([])
     const [currentCategory, setCurrentCategory] = useState(router.query.category)
 
     useEffect(() => {
         const subCategory = async () => {
-            const data = await getSubcategories(currentCategory)
-            return data
+            const data = await fetchAndDisplayCategories(
+                currentCategory ? currentCategory : 'Broadcasting'
+            )
+            console.log(data)
+            setSubcategories(data)
         }
-        const data = subCategory()
-        console.log(data)
+        subCategory()
 
     }, [currentCategory])
 
@@ -38,7 +41,8 @@ export default function Search({ tempCards }) {
     const filterProps = {
         states: [currentSelection, setCurrentSelection],
         categoryStates: [currentCategory, setCurrentCategory],
-        allCategories: allCategories
+        allCategories: allCategories,
+        types: subcategories
     }
 
     return (
@@ -191,10 +195,9 @@ export async function getStaticProps() {
         },
     ]
 
-
     return {
         props: {
-            tempCards: tempCards,
+            tempCards: tempCards
         }
     }
 }

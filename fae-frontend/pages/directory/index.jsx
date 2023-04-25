@@ -5,6 +5,7 @@ import React from "react";
 import { getDirectory } from "@/components/temp/lib/cms/getComponents/getDirectory";
 
 export default function Directory(props) {
+    console.log(props.directory)
     return (
         <React.Fragment>
             <Stack gap='20px'>

@@ -1,3 +1,4 @@
+import { capitalizeFirstWord } from "@/components/temp/lib/functions/capitalizeFirstWord";
 import {
     Select,
     HStack,
@@ -20,21 +21,13 @@ import { useForm, FormProvider, Controller } from 'react-hook-form'
  */
 
 export default function FilterSidebar({ filterProps: {
-    states, categoryStates, allCategories
+    states, categoryStates, allCategories, types
 } }) {
 
     /**
      * Temporary data
      * 
      */
-
-    const tempCheckboxData = [
-        'Caster',
-        'Host',
-        'Observer',
-        'Replay Operator',
-        'Technical Directory'
-    ]
 
     const tempSiteTypeData = [
         'On-Site',
@@ -212,7 +205,7 @@ export default function FilterSidebar({ filterProps: {
                                                 })
                                             }}
                                         >
-                                            {tempCheckboxData.map((entry, index) => (
+                                            {types.map((entry, index) => (
                                                 <Checkbox
                                                     key={index}
                                                     value={entry}
@@ -226,7 +219,7 @@ export default function FilterSidebar({ filterProps: {
                                                         }
                                                     }}
                                                 >
-                                                    {entry}
+                                                    {capitalizeFirstWord(entry)}
                                                 </Checkbox>
                                             ))}
                                         </CheckboxGroup>
