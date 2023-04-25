@@ -14,10 +14,12 @@ export default function DirectoryGrid({ cards }) {
                 gap='20px'
                 align="flex-start"
             >
-                {cards.map((categoryTitle, index) => (
+                {cards.map((card, index) => (
                     <Stack
                         key={index}
                         w='315px'
+                        height='325px'
+                        noOfLines={4}
                         border="1px solid #CFCFCF"
                         borderRadius="md"
                         overflow="hidden"
@@ -27,12 +29,12 @@ export default function DirectoryGrid({ cards }) {
                         transition="transform 0.2s ease-in-out, filter 0.2s ease-in-out"
                         transform={hoveredIndex === index ? "scale(1.03)" : ""}
                     >
-                        <Link href={`/search?category=${encodeURIComponent(categoryTitle)}`}>
+                        <Link href={`/search?category=${encodeURIComponent(card.title)}`}>
                             <Stack
                                 h="200px"
                                 justifyContent='space-between'
                                 padding='5px'
-                                backgroundImage={`url(${'https://besthqwallpapers.com/Uploads/21-12-2019/116771/thumb-purple-neon-lights-black-background-purple-neon-light-neon-background.jpg'})`}
+                                backgroundImage={`url(${card.image.src})`}
                                 backgroundPosition='center'
                                 backgroundSize='cover'
                             >
@@ -54,13 +56,13 @@ export default function DirectoryGrid({ cards }) {
                                         color='#FEFEFE'
                                         fontSize='26px'
                                     >
-                                        {categoryTitle}
+                                        {card.title}
                                     </Text>
                                 </Stack>
                             </Stack>
                             <Box p="20px">
-                                <Text fontWeight="semibold">Card {index + 1} </Text>
-                                <Text>Some text here.</Text>
+                                {/* <Text fontWeight="semibold">Card {index + 1} </Text> */}
+                                <Text>{card.description}</Text>
                             </Box>
                         </Link>
                     </Stack>
