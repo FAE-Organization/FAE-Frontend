@@ -16,38 +16,38 @@ export default function Navbar() {
     >
       <Flex align="center" mr={5}>
         <Box p={2} bg="white">
-          <NextLink href="/">
-            <Link>
+          {/* <NextLink > */}
+            <Link href="/">
                 {/* TODO: Might need to adjust height and width later */}
               <img src="logo/fae-logo.png" alt="Logo" height="auto" width="150" />
             </Link>
-          </NextLink>
+          {/* </NextLink> */}
         </Box>
         <Box>
-          <NextLink href="/directory">
-            <Link>
+          {/* <NextLink > */}
+            <Link href="/directory">
               <Button variant="ghost" color="black" mr={2} onClick={() => router.push('/directory')}>
                 {/* TODO: change font to poppins */}
                 Directory
               </Button>
             </Link>
-          </NextLink>
-          <NextLink href="/search">
-            <Link>
+          {/* </NextLink> */}
+          {/* <NextLink > */}
+            <Link href="/search">
               <Button variant="ghost" color="black">
                 {/* TODO: change font to poppins */}
                 Search
               </Button>
             </Link>
-          </NextLink>
-          <NextLink href="/about">
-            <Link>
+          {/* </NextLink> */}
+          {/* <NextLink > */}
+            <Link href="/about">
               <Button variant="ghost" color="black">
                 {/* TODO: change font to poppins */}
                 About
               </Button>
             </Link>
-          </NextLink>
+          {/* </NextLink> */}
         </Box>
       </Flex>
       <Spacer />
