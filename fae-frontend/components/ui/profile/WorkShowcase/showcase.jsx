@@ -1,5 +1,6 @@
-import { VStack, Stack, Text } from "@chakra-ui/react";
+import { VStack, Box, Stack, Text } from "@chakra-ui/react";
 import EventDetail from "./event-detail"
+import Subheader from "../ProfileBody/subheader";
 
 const fakeEventData = {
     imageUrl: './public/logo/fae-icon.png',
@@ -10,17 +11,19 @@ const fakeEventData = {
 
 export default function Showcase({ title, description }) {
     return (
-        <VStack
-            width='30%'
-            bgColor='lavender'
+        <Stack
+            align='left'
+            mr='20px'
         >
-         <Text>
-            WORK SHOWCASE
-         </Text>
-         <Stack>
-            <Text>
-                PAST EVENTS
-            </Text>
+         <Subheader 
+            category='Work Showcase'
+            fontSize='24px'
+         />
+
+         <Box>
+            <Subheader 
+                category='Past Events'
+            />
             <EventDetail
                 imageUrl={'/eventMockImage_1.png'}
                 eventTitle={'Calling All Heroes 2022'} 
@@ -34,7 +37,7 @@ export default function Showcase({ title, description }) {
                 gameTitle={'Overwatch 2'} 
                 userRole={'Tournament Admin'}
             />
-         </Stack>
-        </VStack>
+         </Box>
+        </Stack>
     )
 }

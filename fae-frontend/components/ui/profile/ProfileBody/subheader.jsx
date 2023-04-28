@@ -1,12 +1,13 @@
-import {Text } from "@chakra-ui/react";
+import { Text } from "@chakra-ui/react";
 
-export default function Subheader({ category }) {
+export default function Subheader({ category, fontSize, width }) {
     return (
         <Text
             as='b'
-            fontSize='sm'
+            fontSize={ fontSize || '20px' }
+            width={ width || 'auto' }
         >
-          {category}
+          {category.toUpperCase()}
         </Text>
     )
 }

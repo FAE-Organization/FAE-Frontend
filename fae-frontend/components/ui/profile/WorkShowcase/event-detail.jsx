@@ -4,7 +4,7 @@ export default function EventDetail({ imageUrl, eventTitle, gameTitle, userRole 
     return (
         <HStack
             width='100%'
-            alignItems='align-center'
+            align='align-center'
         >
             <Box width='25%'>
                 <Image

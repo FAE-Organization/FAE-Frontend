@@ -3,10 +3,7 @@ import Subheader from "@/components/ui/profile/ProfileBody/subheader"
 
 export default function ObserverReel( props ) {
     return (
-        <Stack
-            width='50%'
-            // align='align-left'
-        >
+        <Stack>
             <Subheader 
                 category='Observer Reel' // TODO: may need to refactor this later.
             />

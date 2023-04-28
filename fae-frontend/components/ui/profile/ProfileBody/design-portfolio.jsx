@@ -5,7 +5,6 @@ import PortfolioBody from "./portfolio-body";
 export default function DesignPortfolio({ props}) {
     return (
         <VStack
-            width='30%'
             align='left'
         >
             <Subheader 
