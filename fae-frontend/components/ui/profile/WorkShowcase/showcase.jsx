@@ -1,15 +1,8 @@
-import { VStack, Box, Stack, Text } from "@chakra-ui/react";
+import { Box, Stack } from "@chakra-ui/react";
 import EventDetail from "./event-detail"
 import Subheader from "../ProfileBody/subheader";
 
-const fakeEventData = {
-    imageUrl: './public/logo/fae-icon.png',
-    eventTitle: 'Calling All Heroes 2022', 
-    gameTitle: 'Overwatch 2', 
-    userRole: 'Tournament Admin',
-};
-
-export default function Showcase({ title, description }) {
+export default function Showcase() {
     return (
         <Stack
             align='left'

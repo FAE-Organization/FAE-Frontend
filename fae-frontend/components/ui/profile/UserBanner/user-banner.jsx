@@ -1,14 +1,13 @@
-import { Box, VStack, HStack, Image, Text } from "@chakra-ui/react";
+import { VStack, HStack, Image } from "@chakra-ui/react";
 import UserHeader from "./user-header.jsx";
 import UserCategories from "./user-categories.jsx";
 import UserBio from "./user-bio.jsx";
-import Showcase from "../WorkShowcase/showcase.jsx";
 
-export default function UserBanner({ stuff }) {
+export default function UserBanner() {
     return (
         <HStack
-            align='left'
-            width='100%'
+            align='top'
+            maxWidth='85%'
         >
 
             <Image 

@@ -1,4 +1,4 @@
-import { Box, VStack, HStack, Image, Text } from "@chakra-ui/react";
+import { VStack, Text } from "@chakra-ui/react";
 import Subheader from "../ProfileBody/subheader.jsx";
 
 export default function UserBio() {

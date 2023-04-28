@@ -1,8 +1,8 @@
-import { HStack, VStack, Box, Image, Stack, Text, Flex } from "@chakra-ui/react";
+import { VStack } from "@chakra-ui/react";
 import Subheader from "./subheader";
 import PortfolioBody from "./portfolio-body";
 
-export default function DesignPortfolio({ props}) {
+export default function DesignPortfolio() {
     return (
         <VStack
             align='left'

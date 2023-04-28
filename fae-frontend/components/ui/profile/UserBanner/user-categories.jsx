@@ -1,8 +1,8 @@
-import { VStack, HStack, Box, Button, Image, Text, SimpleGrid, Flex } from "@chakra-ui/react";
+import { VStack, HStack, Flex } from "@chakra-ui/react";
 import Subheader from "../ProfileBody/subheader";
 import Capsule from "./capsule";
 
-export default function UserCategories({ stuff }) {
+export default function UserCategories() {
     return (
         <HStack
             align='top'
@@ -63,7 +63,7 @@ export default function UserCategories({ stuff }) {
 
 
             <VStack
-                width='300px'
+                width='100px'
                 align='left'
             >
                 {/* REGION */}

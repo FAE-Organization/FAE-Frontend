@@ -1,4 +1,4 @@
-import { Flex, Text, Center, Tag, TagLabel } from "@chakra-ui/react";
+import { Tag, TagLabel } from "@chakra-ui/react";
 
 export default function Capsule({ color, capName }) {
     return (

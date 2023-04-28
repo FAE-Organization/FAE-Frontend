@@ -1,4 +1,4 @@
-import { VStack, HStack, Box, Button, Image, Text, Spacer } from "@chakra-ui/react";
+import { VStack, HStack, Box, Button, Image, Spacer } from "@chakra-ui/react";
 import Subheader from "../ProfileBody/subheader";
 
 export default function UserHeader({ username, pronouns, payrate }) {

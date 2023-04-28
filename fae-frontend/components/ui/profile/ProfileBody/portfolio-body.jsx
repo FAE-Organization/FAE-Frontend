@@ -1,10 +1,7 @@
-import { VStack, Box, HStack, Image, Text } from "@chakra-ui/react";
-import ObserverReel from "./observer-reel";
-import DesignPortfolio from "./design-portfolio";
-import Subheader from "./subheader";
+import { Box, Image } from "@chakra-ui/react";
 import  { SimpleGrid } from "@chakra-ui/react";
 
-export default function PortfolioBody({ title, description }) {
+export default function PortfolioBody() {
     return (
         <SimpleGrid columns={2} spacing={1} >
             <Box>
