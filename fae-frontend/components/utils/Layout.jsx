@@ -4,7 +4,6 @@ import Footer from "./Footer";
 
 export default function Layout({ children }) {
     return (
-        // Styling in <Stack> impacts ENTIRE application !!!!!
         <Stack
             fontFamily={'Poppins'}
             color="black"
