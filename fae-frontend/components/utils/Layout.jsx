@@ -6,6 +6,7 @@ export default function Layout({ children }) {
     return (
         <Stack
         // font='something'
+        fontFamily={'Poppins'}
         >
             <Navbar />
             {children}
