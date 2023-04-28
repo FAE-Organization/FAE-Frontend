@@ -25,8 +25,9 @@ export default function Navbar() {
             <Button
               variant="ghost"
               color="black"
-              fontSize={{ base: '20px', md: '30px', lg: '40px' }}
-              onClick={() => router.push('/directory')} >
+              fontSize={{ base: '14px', md: '16px', lg: '18px' }}
+              onClick={() => router.push('/directory')} 
+            >
               Directory
             </Button>
           </Link>
@@ -34,7 +35,8 @@ export default function Navbar() {
             <Button
               variant="ghost"
               color="black"
-              fontSize={{ base: '20px', md: '30px', lg: '40px' }} >
+              fontSize={{ base: '14px', md: '16px', lg: '18px' }}            
+            >
               Search
             </Button>
           </Link>
@@ -42,10 +44,23 @@ export default function Navbar() {
             <Button
               variant="ghost"
               color="black"
-              fontSize={{ base: '20px', md: '30px', lg: '40px' }} >
+              fontSize={{ base: '14px', md: '16px', lg: '18px' }}            
+            >
               About
             </Button>
           </Link>
+
+          <Link href="/profile">
+            <Button
+              variant="ghost"
+              color="black"
+              fontSize={{ base: '14px', md: '16px', lg: '18px' }} 
+              onClick={() => router.push('/profile')}
+            >
+              Profile
+            </Button>
+          </Link>
+
         </Box>
       </Flex>
       <Spacer />
