@@ -1,4 +1,4 @@
-import { capitalizeFirstWord } from "@/components/temp/lib/functions/capitalizeFirstWord";
+import { capitalizeFirstWord } from "@/lib/functions/capitalizeFirstWord";
 import {
     Select,
     HStack,
@@ -105,25 +105,25 @@ export default function FilterSidebar({ filterProps: {
         //     ...data,
         // }))
 
-        if (data) {
-            toast({
-                position: 'top',
-                duration: 10000,
-                isClosable: true,
-                title: JSON.stringify({
-                    category: (currentCategory == null ? 'Broadcasting' : currentCategory),
-                    data
-                })
-            })
-        } else {
-            toast({
-                position: 'top',
-                status: 'error',
-                duration: 3000,
-                isClosable: true,
-                title: 'Error: something went wrong'
-            })
-        }
+        // if (data) {
+        //     toast({
+        //         position: 'top',
+        //         duration: 10000,
+        //         isClosable: true,
+        //         title: JSON.stringify({
+        //             category: (currentCategory == null ? 'Broadcasting' : currentCategory),
+        //             data
+        //         })
+        //     })
+        // } else {
+        //     toast({
+        //         position: 'top',
+        //         status: 'error',
+        //         duration: 3000,
+        //         isClosable: true,
+        //         title: 'Error: something went wrong'
+        //     })
+        // }
     }, [currentCategory])
 
     // Delay user input for game input (aka debounce) so that
@@ -182,7 +182,12 @@ export default function FilterSidebar({ filterProps: {
                             value={currentCategory}
                         >
                             {allCategories.map((entry, index) => (
-                                <option key={index} value={entry}>{entry}</option>
+                                <option
+                                    key={index}
+                                    value={entry}
+                                >
+                                    {entry}
+                                </option>
                             ))}
                         </Select>
                         <Stack>
@@ -205,7 +210,7 @@ export default function FilterSidebar({ filterProps: {
                                                 })
                                             }}
                                         >
-                                            {types.map((entry, index) => (
+                                            {types && (types.map((entry, index) => (
                                                 <Checkbox
                                                     key={index}
                                                     value={entry}
@@ -221,7 +226,7 @@ export default function FilterSidebar({ filterProps: {
                                                 >
                                                     {capitalizeFirstWord(entry)}
                                                 </Checkbox>
-                                            ))}
+                                            )))}
                                         </CheckboxGroup>
                                     </>
                                 )}

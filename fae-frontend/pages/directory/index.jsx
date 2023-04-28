@@ -1,11 +1,18 @@
 import { Stack } from "@chakra-ui/react";
 import CenteredTitle from "@/components/ui/centered-title";
 import DirectoryGrid from "@/components/ui/directory-grid";
-import React from "react";
-import { getDirectory } from "@/components/temp/lib/cms/getComponents/getDirectory";
+import React, { useEffect } from "react";
+import { getDirectory } from "@/lib/cms/getComponents/getDirectory";
+import { fetchAndDisplayCategories } from "@/lib/functions/getCachedCategories";
 
 export default function Directory(props) {
-    console.log(props.directory)
+
+    useEffect(() => {
+        props.directory.map((entry) => {
+            fetchAndDisplayCategories(entry.title)
+        })
+    }, [])
+
     return (
         <React.Fragment>
             <Stack gap='20px'>

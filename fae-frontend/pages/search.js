@@ -6,10 +6,10 @@ import Link from "next/link"
 import SearchBar from "@/components/ui/queryComponents/searchBar"
 import UserCards from "@/components/ui/user-cards"
 import { useRouter } from "next/router"
-import { getSubcategories } from "@/components/temp/lib/cms/getComponents/getSubcategories"
-import { fetchAndDisplayCategories } from "@/components/temp/lib/functions/getCachedCategories"
+import { getDirectory } from "@/lib/cms/getComponents/getDirectory";
+import { fetchAndDisplayCategories } from "@/lib/functions/getCachedCategories"
 
-export default function Search({ tempCards }) {
+export default function Search({ tempCards, directory }) {
 
     const [currentSelection, setCurrentSelection] = useState([])
     const router = useRouter()
@@ -26,17 +26,16 @@ export default function Search({ tempCards }) {
     const [currentCategory, setCurrentCategory] = useState(router.query.category)
 
     useEffect(() => {
-        const subCategory = async () => {
-            const data = await fetchAndDisplayCategories(
-                currentCategory ? currentCategory : 'Broadcasting'
-            )
-            console.log(data)
+        const { category } = router.query
+        const test = async () => {
+            const data = await fetchAndDisplayCategories(category)
             setSubcategories(data)
         }
-        subCategory()
+        setCurrentCategory(category)
+        test()
+    }, [])
 
-    }, [currentCategory])
-
+    console.log('subcat: ', subcategories)
 
     const filterProps = {
         states: [currentSelection, setCurrentSelection],
@@ -74,12 +73,13 @@ export default function Search({ tempCards }) {
     )
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
     /**
      * Temporary data
      * 
      * The ids will be whatever id is set in MongoDB instead of numbers
      */
+    const directory = await getDirectory()
     const tempCards = [
         {
             id: '1',
@@ -194,10 +194,10 @@ export async function getStaticProps() {
             }
         },
     ]
-
     return {
         props: {
-            tempCards: tempCards
+            tempCards: tempCards,
+            directory: directory,
         }
     }
 }
