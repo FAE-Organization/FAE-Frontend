@@ -6,7 +6,7 @@ export default function EventDetail({ imageUrl, eventTitle, gameTitle, userRole 
             width='100%'
             alignItems='align-center'
         >
-            <Box width='25%' >
+            <Box width='25%'>
                 <Image
                     src={imageUrl}
                     alt='event image'

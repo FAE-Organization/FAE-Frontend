@@ -1,12 +1,17 @@
-import CenteredTitle from "@/components/ui/centered-title";
-import DirectoryGrid from "@/components/ui/directory-grid";
+import ProfileBody from "@/components/ui/profile/ProfileBody/profile-body";
 import Showcase from "@/components/ui/profile/WorkShowcase/showcase";
 import React from "react";
+import { HStack } from "@chakra-ui/react";
 
 export default function Profile(props) {
     return (
         <React.Fragment>
-            <Showcase />
+            <HStack
+                width='80%'
+            >
+                <Showcase />
+                <ProfileBody />
+            </HStack>
            
         </React.Fragment >
     )

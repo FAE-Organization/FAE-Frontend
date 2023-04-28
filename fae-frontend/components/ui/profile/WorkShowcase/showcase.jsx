@@ -11,7 +11,7 @@ const fakeEventData = {
 export default function Showcase({ title, description }) {
     return (
         <VStack
-            width='50%'
+            width='30%'
             bgColor='lavender'
         >
          <Text>
