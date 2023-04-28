@@ -6,7 +6,7 @@ export default function Navbar() {
             width='100%'
             height='100px'
             alignItems='center'
-            backgroundColor='#EEE'
+            backgroundColor='white'
         >
             <HStack width='95%' justifyContent='space-between'>
                 <Stack>
