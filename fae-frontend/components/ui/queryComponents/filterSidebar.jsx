@@ -11,17 +11,11 @@ import {
 } from "@chakra-ui/react";
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { useForm, FormProvider, Controller } from 'react-hook-form'
-
-/**
- * TODO
-
- *  2.
- *  The 'handleChange' function makes the dependencies of useEffect Hook (at line 112) 
- *  change on every render. To fix this, wrap the definition of 'handleChange' in its own useCallback() Hook.
- */
+import { getCachedCategories } from "@/lib/functions/getCachedCategories";
+import SelectTest from "./select";
 
 export default function FilterSidebar({ filterProps: {
-    states, categoryStates, allCategories, types
+    states, categoryStates, allCategories, subcategoryStates, isLoading
 } }) {
 
     /**
@@ -49,6 +43,7 @@ export default function FilterSidebar({ filterProps: {
      */
 
     const [currentCategory, setCurrentCategory] = categoryStates
+    const [types, setTypes] = subcategoryStates
 
     useEffect(() => {
         const handleBeforeUnload = () => {
@@ -100,30 +95,33 @@ export default function FilterSidebar({ filterProps: {
 
 
     const handleChange = useCallback(async (data) => {
-        // setValues((previousValues) => ({
-        //     ...previousValues,
-        //     ...data,
-        // }))
 
-        // if (data) {
-        //     toast({
-        //         position: 'top',
-        //         duration: 10000,
-        //         isClosable: true,
-        //         title: JSON.stringify({
-        //             category: (currentCategory == null ? 'Broadcasting' : currentCategory),
-        //             data
-        //         })
-        //     })
-        // } else {
-        //     toast({
-        //         position: 'top',
-        //         status: 'error',
-        //         duration: 3000,
-        //         isClosable: true,
-        //         title: 'Error: something went wrong'
-        //     })
-        // }
+        console.log(
+            {
+                category: (currentCategory == null ? 'Broadcasting' : currentCategory),
+                data
+            }
+        )
+
+        if (data) {
+            toast({
+                position: 'top',
+                duration: 10000,
+                isClosable: true,
+                title: JSON.stringify({
+                    category: (currentCategory == null ? 'Broadcasting' : currentCategory),
+                    data
+                })
+            })
+        } else {
+            toast({
+                position: 'top',
+                status: 'error',
+                duration: 3000,
+                isClosable: true,
+                title: 'Error: something went wrong'
+            })
+        }
     }, [currentCategory])
 
     // Delay user input for game input (aka debounce) so that
@@ -139,8 +137,6 @@ export default function FilterSidebar({ filterProps: {
         return () => clearTimeout(timer)
     }, [gameValue, handleChange, values])
 
-    //
-    //
 
     useEffect(() => {
         const timer = setTimeout(async () => {
@@ -153,6 +149,19 @@ export default function FilterSidebar({ filterProps: {
         return () => clearTimeout(timer)
     }, [locationValue, handleChange, values])
 
+    const handleSubcategoriesChange = async (event) => {
+        setCurrentCategory(event.target.value);
+        const data = await getCachedCategories(encodeURIComponent(event.target.value));
+        setTypes(data);
+        handleChange({
+            subcategories: data,
+            game: game,
+            location: location,
+            siteType: siteType,
+            salary: salary,
+            experience: experience
+        });
+    };
 
     return (
         <Stack
@@ -170,6 +179,11 @@ export default function FilterSidebar({ filterProps: {
                         <Select
                             onChange={(event) => {
                                 setCurrentCategory(event.target.value)
+                                const getSubCategoryOnChange = async (event) => {
+                                    const data = await getCachedCategories(encodeURIComponent(event.target.value))
+                                    setTypes(data)
+                                }
+                                getSubCategoryOnChange(event)
                                 handleChange({
                                     subcategories: subcategories,
                                     game: game,
@@ -210,23 +224,29 @@ export default function FilterSidebar({ filterProps: {
                                                 })
                                             }}
                                         >
-                                            {types && (types.map((entry, index) => (
-                                                <Checkbox
-                                                    key={index}
-                                                    value={entry}
-                                                    onChange={(event) => {
-                                                        if (event.currentTarget.checked) {
-                                                            setCurrentSelection([...currentSelection, event.currentTarget.value].sort())
-                                                        } else {
-                                                            setCurrentSelection([...currentSelection.filter(item => {
-                                                                return item !== event.currentTarget.value
-                                                            })].sort())
-                                                        }
-                                                    }}
-                                                >
-                                                    {capitalizeFirstWord(entry)}
-                                                </Checkbox>
-                                            )))}
+                                            {isLoading ? (
+                                                <div>Loading...</div>
+                                            ) : (
+                                                <>
+                                                    {types.map((entry, index) => (
+                                                        <Checkbox
+                                                            key={index}
+                                                            value={entry}
+                                                            onChange={(event) => {
+                                                                if (event.currentTarget.checked) {
+                                                                    setCurrentSelection([...currentSelection, event.currentTarget.value].sort())
+                                                                } else {
+                                                                    setCurrentSelection([...currentSelection.filter(item => {
+                                                                        return item !== event.currentTarget.value
+                                                                    })].sort())
+                                                                }
+                                                            }}
+                                                        >
+                                                            {capitalizeFirstWord(entry)}
+                                                        </Checkbox>
+                                                    ))}
+                                                </>
+                                            )}
                                         </CheckboxGroup>
                                     </>
                                 )}

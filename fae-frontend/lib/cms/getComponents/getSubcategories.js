@@ -5,7 +5,7 @@ export async function getSubcategories(name) {
         content_type: 'directoryCards',
         include: 10,
         select: 'fields',
-        'fields.title': `${decodeURIComponent(name)}`
+        'fields.title': `${decodeURIComponent(name ?? 'Broadcasting')}`
     })).items[0].fields.subcategories
 
     return data

@@ -3,13 +3,13 @@ import CenteredTitle from "@/components/ui/centered-title";
 import DirectoryGrid from "@/components/ui/directory-grid";
 import React, { useEffect } from "react";
 import { getDirectory } from "@/lib/cms/getComponents/getDirectory";
-import { fetchAndDisplayCategories } from "@/lib/functions/getCachedCategories";
+import { getCachedCategories } from "@/lib/functions/getCachedCategories";
 
 export default function Directory(props) {
 
     useEffect(() => {
         props.directory.map((entry) => {
-            fetchAndDisplayCategories(entry.title)
+            getCachedCategories(entry.title)
         })
     }, [])
 

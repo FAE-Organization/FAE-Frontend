@@ -7,42 +7,28 @@ import SearchBar from "@/components/ui/queryComponents/searchBar"
 import UserCards from "@/components/ui/user-cards"
 import { useRouter } from "next/router"
 import { getDirectory } from "@/lib/cms/getComponents/getDirectory";
-import { fetchAndDisplayCategories } from "@/lib/functions/getCachedCategories"
+import { getCachedCategories } from "@/lib/functions/getCachedCategories"
 
 export default function Search({ tempCards, directory }) {
 
     const [currentSelection, setCurrentSelection] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
     const router = useRouter()
 
-    let allCategories = [
-        'Broadcasting',
-        'Business Operations',
-        'Communications & Marketing',
-        'Content Creation',
-        'Performance',
-        'Tournament & events'
-    ]
-    const [subcategories, setSubcategories] = useState([])
-    const [currentCategory, setCurrentCategory] = useState(router.query.category)
+    let allCategories = directory.map((entry) => entry.title)
+    const [types, setTypes] = useState([])
+    const [currentCategory, setCurrentCategory] = useState('Broadcasting')
 
     useEffect(() => {
         const { category } = router.query
         const test = async () => {
-            const data = await fetchAndDisplayCategories(category)
-            setSubcategories(data)
+            const data = await getCachedCategories(category ?? 'Broadcasting')
+            setTypes(data)
+            setIsLoading(false)
         }
         setCurrentCategory(category)
         test()
     }, [])
-
-    console.log('subcat: ', subcategories)
-
-    const filterProps = {
-        states: [currentSelection, setCurrentSelection],
-        categoryStates: [currentCategory, setCurrentCategory],
-        allCategories: allCategories,
-        types: subcategories
-    }
 
     return (
         <Stack width='100%' alignItems='center'>
@@ -62,7 +48,13 @@ export default function Search({ tempCards, directory }) {
                 </Link>
                 <Text width='335px'>Freelancers in {currentCategory ? currentCategory : 'Broadcasting'}</Text>
                 <HStack alignItems='flex-start' gap='15px'>
-                    <FilterSidebar filterProps={filterProps} />
+                    <FilterSidebar filterProps={{
+                        states: [currentSelection, setCurrentSelection],
+                        categoryStates: [currentCategory, setCurrentCategory],
+                        allCategories: allCategories,
+                        subcategoryStates: [types, setTypes],
+                        isLoading: isLoading
+                    }} />
                     <Stack width='100%' gap='15px'>
                         <SearchBar />
                         <UserCards cards={tempCards} />
@@ -74,12 +66,6 @@ export default function Search({ tempCards, directory }) {
 }
 
 export async function getServerSideProps() {
-    /**
-     * Temporary data
-     * 
-     * The ids will be whatever id is set in MongoDB instead of numbers
-     */
-    const directory = await getDirectory()
     const tempCards = [
         {
             id: '1',
@@ -194,10 +180,11 @@ export async function getServerSideProps() {
             }
         },
     ]
+    const directory = await getDirectory()
     return {
         props: {
             tempCards: tempCards,
-            directory: directory,
+            directory: directory
         }
     }
 }
