@@ -131,7 +131,7 @@ export default function FilterSidebar({ filterProps: {
                         <ModalCloseButton />
                         <Stack padding='25px' maxHeight='65vh' overflow='scroll'>
                             <Form
-                                methods={...methods}
+                                methods={methods}
                                 currentCategory={currentCategory}
                                 allCategories={allCategories}
                                 currentSelection={currentSelection}
