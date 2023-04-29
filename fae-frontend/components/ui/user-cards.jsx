@@ -1,14 +1,10 @@
 import { Stack, Grid, GridItem, Image, HStack, Text, Badge, Icon } from "@chakra-ui/react"
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { BiDollarCircle } from 'react-icons/bi'
 
 export default function UserCards({ cards }) {
-    const [cardVals, setCardVals] = useState(cards); // Initial state is set to the prop value
-
-    // Use useEffect to update the cards whenever the tempCards prop changes
-    // Maybe useReducer instead of useEffect if cards change often and management
-    // becomes more complex.
+    const [cardVals, setCardVals] = useState(cards);
     useEffect(() => {
         setCardVals(cards);
     }, [cards]);
@@ -18,11 +14,12 @@ export default function UserCards({ cards }) {
             <Grid
                 templateColumns={{
                     base: '1fr',
-                    md: 'repeat(2, 1fr)',
+                    sm: 'repeat(2, 1fr)',
                     lg: 'repeat(3, 1fr)',
                     xl: 'repeat(4, 1fr)'
                 }}
                 gap='20px'
+                placeItems='center'
             >
                 {cardVals.map(card => (
                     <GridItem
@@ -35,10 +32,7 @@ export default function UserCards({ cards }) {
                         }}
                     >
                         <Link href={`/user/${card.id}`}>
-                            <Stack
-                            // overflow='clip' Cool little animation thing, maybe a nice-to-have later on
-                            >
-                                {/* Image field will be added to the cards as well */}
+                            <Stack>
                                 <Image
                                     src='https://besthqwallpapers.com/Uploads/21-12-2019/116771/thumb-purple-neon-lights-black-background-purple-neon-light-neon-background.jpg'
                                     alt={`Profile image for ${card.username}`}
@@ -46,21 +40,34 @@ export default function UserCards({ cards }) {
                                     borderTopRightRadius='5px'
                                     height='150px'
                                     objectFit='cover'
-                                // _hover={{
-                                //     transition: "transform 0.3s ease-in-out, filter 0.2s ease-in-out",
-                                //     transform: 'scale(2)'
-                                // }}
                                 />
                             </Stack>
-                            <Stack padding='0px 10px'>
-                                <HStack alignItems='center'>
+                            <Stack padding={{
+                                base: '0px 5px', md: '0px 10px'
+                            }}>
+                                <Stack
+                                    alignItems={{
+                                        md: 'center',
+                                    }}
+                                    direction={{
+                                        base: 'column',
+                                        md: 'row'
+                                    }}
+                                    spacing='0px'
+                                >
                                     <Text fontSize='22px' fontWeight={600}>{card.username}</Text>
                                     <Text fontSize='12px' color='#8F8F8F'>{`(${card.pronouns.join('/')})`}</Text>
-                                </HStack>
-                                <Stack height='150px' justifyContent='space-between'>
+                                </Stack>
+                                <Stack
+                                    height={{
+                                        base: '130px',
+                                        md: '150px'
+                                    }}
+                                    justifyContent='space-between'
+                                >
                                     <Stack>
                                         <Text>Roles</Text>
-                                        <HStack flexWrap='wrap' justifyContent='flex-start' noOfLines={2}> {/********************** */}
+                                        <HStack flexWrap='wrap' justifyContent='flex-start' noOfLines={2}>
                                             {card.roles.map((entry, index) => (
                                                 <Badge
                                                     key={index}
@@ -122,8 +129,7 @@ export default function UserCards({ cards }) {
                                         TAGS
                                     </Text>
                                     <HStack
-                                        // flexWrap='wrap'
-                                        noOfLines={1} // ********************************************************************************
+                                        noOfLines={1}
                                     >
                                         {card.tags.map((entry, index) => (
                                             <Badge key={index} fontSize='10px'>{entry}</Badge>
@@ -142,3 +148,4 @@ export default function UserCards({ cards }) {
         </Stack>
     )
 }
+
