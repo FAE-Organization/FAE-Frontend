@@ -168,7 +168,7 @@ export default function FilterSidebar({ filterProps: {
                     display={{ base: 'none', md: 'flex' }}
                 >
                     <Form
-                        methods={...methods}
+                        methods={methods}
                         currentCategory={currentCategory}
                         allCategories={allCategories}
                         currentSelection={currentSelection}
