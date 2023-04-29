@@ -12,16 +12,10 @@ import {
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { useForm, FormProvider, Controller } from 'react-hook-form'
 import { getCachedCategories } from "@/lib/functions/getCachedCategories";
-import SelectTest from "./select";
 
 export default function FilterSidebar({ filterProps: {
     states, categoryStates, allCategories, subcategoryStates, isLoading
 } }) {
-
-    /**
-     * Temporary data
-     * 
-     */
 
     const tempSiteTypeData = [
         'On-Site',
@@ -36,11 +30,6 @@ export default function FilterSidebar({ filterProps: {
         'Intermediate (2-5 years)',
         'Senior (5+ years)'
     ]
-
-    /**
-     * 
-     * 
-     */
 
     const [currentCategory, setCurrentCategory] = categoryStates
     const [types, setTypes] = subcategoryStates
@@ -92,21 +81,15 @@ export default function FilterSidebar({ filterProps: {
 
     const [gameValue, setGameValue] = useState('')
     const [locationValue, setLocationValue] = useState('')
+    const [minMax, setMinMax] = useState({ min: '', max: '' })
 
 
     const handleChange = useCallback(async (data) => {
 
-        console.log(
-            {
-                category: (currentCategory == null ? 'Broadcasting' : currentCategory),
-                data
-            }
-        )
-
         if (data) {
             toast({
                 position: 'top',
-                duration: 10000,
+                duration: 5000,
                 isClosable: true,
                 title: JSON.stringify({
                     category: (currentCategory == null ? 'Broadcasting' : currentCategory),
@@ -130,38 +113,18 @@ export default function FilterSidebar({ filterProps: {
         const timer = setTimeout(async () => {
             await handleChange({
                 ...values,
-                game: gameValue
+                location: locationValue,
+                game: gameValue,
+                salary: {
+                    ...salary,
+                    min: minMax.min,
+                    max: minMax.max
+                }
             })
         }, 1000)
 
         return () => clearTimeout(timer)
-    }, [gameValue, handleChange, values])
-
-
-    useEffect(() => {
-        const timer = setTimeout(async () => {
-            await handleChange({
-                ...values,
-                location: locationValue
-            })
-        }, 1000)
-
-        return () => clearTimeout(timer)
-    }, [locationValue, handleChange, values])
-
-    const handleSubcategoriesChange = async (event) => {
-        setCurrentCategory(event.target.value);
-        const data = await getCachedCategories(encodeURIComponent(event.target.value));
-        setTypes(data);
-        handleChange({
-            subcategories: data,
-            game: game,
-            location: location,
-            siteType: siteType,
-            salary: salary,
-            experience: experience
-        });
-    };
+    }, [gameValue, locationValue, minMax, handleChange, values])
 
     return (
         <Stack
@@ -182,16 +145,9 @@ export default function FilterSidebar({ filterProps: {
                                 const getSubCategoryOnChange = async (event) => {
                                     const data = await getCachedCategories(encodeURIComponent(event.target.value))
                                     setTypes(data)
+                                    setCurrentSelection([])
                                 }
                                 getSubCategoryOnChange(event)
-                                handleChange({
-                                    subcategories: subcategories,
-                                    game: game,
-                                    location: location,
-                                    siteType: siteType,
-                                    salary: salary,
-                                    experience: experience
-                                })
                             }}
                             value={currentCategory}
                         >
@@ -302,7 +258,6 @@ export default function FilterSidebar({ filterProps: {
                                         <CheckboxGroup
                                             onChange={(values) => {
                                                 handleChange({
-                                                    category: category,
                                                     subcategories: subcategories,
                                                     game: game,
                                                     location: location,
@@ -334,7 +289,6 @@ export default function FilterSidebar({ filterProps: {
                                                 onChange={(event) => {
                                                     onChange({ ...value, currency: event.currentTarget.value })
                                                     handleChange({
-                                                        category: category,
                                                         subcategories: subcategories,
                                                         game: game,
                                                         location: location,
@@ -354,7 +308,6 @@ export default function FilterSidebar({ filterProps: {
                                                 onChange={(event) => {
                                                     onChange({ ...value, compensationType: event.currentTarget.value })
                                                     handleChange({
-                                                        category: category,
                                                         subcategories: subcategories,
                                                         game: game,
                                                         location: location,
@@ -375,15 +328,7 @@ export default function FilterSidebar({ filterProps: {
                                                 value={value.min}
                                                 onChange={(event) => {
                                                     onChange({ ...value, min: event.currentTarget.value })
-                                                    handleChange({
-                                                        category: category,
-                                                        subcategories: subcategories,
-                                                        game: game,
-                                                        location: location,
-                                                        siteType: siteType,
-                                                        salary: { ...value, min: event.currentTarget.value },
-                                                        experience: experience
-                                                    })
+                                                    setMinMax({ min: event.target.value, max: minMax.max })
 
                                                 }}
                                             />
@@ -392,15 +337,7 @@ export default function FilterSidebar({ filterProps: {
                                                 value={value.max}
                                                 onChange={(event) => {
                                                     onChange({ ...value, max: event.currentTarget.value })
-                                                    handleChange({
-                                                        category: category,
-                                                        subcategories: subcategories,
-                                                        game: game,
-                                                        location: location,
-                                                        siteType: siteType,
-                                                        salary: { ...value, max: event.currentTarget.value },
-                                                        experience: experience
-                                                    })
+                                                    setMinMax({ min: minMax.min, max: event.currentTarget.value })
                                                 }}
                                             />
                                         </HStack>
@@ -419,7 +356,6 @@ export default function FilterSidebar({ filterProps: {
                                         <CheckboxGroup
                                             onChange={(values) => {
                                                 handleChange({
-                                                    category: category,
                                                     subcategories: subcategories,
                                                     game: game,
                                                     location: location,
