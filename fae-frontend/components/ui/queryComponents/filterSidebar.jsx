@@ -29,6 +29,7 @@ export default function FilterSidebar({ filterProps: {
     const [types, setTypes] = subcategoryStates
 
     const [currentCategory, setCurrentCategory] = categoryStates
+    const [types, setTypes] = subcategoryStates
 
     useEffect(() => {
         const handleBeforeUnload = () => {
