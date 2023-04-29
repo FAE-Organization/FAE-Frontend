@@ -10,7 +10,6 @@ export async function getCachedCategories(name) {
         const categories = await getSubcategories(name);
         const expirationTime = new Date().getTime() + 3600000; // 1 hour in milliseconds
         localStorage.setItem(`categories_${name}`, JSON.stringify({ data: categories, expires: expirationTime }));
-        console.log('Categories:', categories);
         return categories;
     }
 }

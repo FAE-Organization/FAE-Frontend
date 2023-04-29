@@ -1,4 +1,4 @@
-import { Stack, HStack, Box, Text, Badge, Image } from "@chakra-ui/react"
+import { Stack, HStack, Box, Text, Badge } from "@chakra-ui/react"
 import Link from "next/link"
 import { useState } from "react";
 
