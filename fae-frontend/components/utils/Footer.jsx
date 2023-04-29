@@ -23,7 +23,6 @@ export default function Footer() {
                             // TODO: Create theme component to style these buttons &
                             //       simplify this duplicated code
                             variant="ghost"
-                            color="black"
                             fontSize={{ base: '15px', lg: '20px', xl: '25px' }}
                             fontWeight="semibold"
                             onClick={() => router.push('/')} >
@@ -33,7 +32,6 @@ export default function Footer() {
                     <Link href="/">
                         <Button
                             variant="ghost"
-                            color="black"
                             fontSize={{ base: '15px', lg: '20px', xl: '25px' }}
                             fontWeight="semibold"
                             onClick={() => router.push('/')} >
@@ -43,7 +41,6 @@ export default function Footer() {
                     <Link href="/">
                         <Button
                             variant="ghost"
-                            color="black"
                             fontSize={{ base: '15px', lg: '20px', xl: '25px' }}
                             fontWeight="semibold"
                             onClick={() => router.push('/')} >
@@ -52,7 +49,7 @@ export default function Footer() {
                     </Link>
                 </HStack>
                 <Text 
-                    pb={{ base: '15', md: '20', xl: '25' }}
+                    pb={{ base: '15px', md: '20px', xl: '25px' }}
                     fontSize={{ base: '15px', lg: '20px' }}
                     fontWeight='light'
                 >
