@@ -21,6 +21,7 @@ export default function NavBar() {
     const { isOpen, onToggle } = useDisclosure();
 
     const { user, error, isLoading } = useUser()
+
     return (
         <Box bg='#FFF'>
             <Flex
