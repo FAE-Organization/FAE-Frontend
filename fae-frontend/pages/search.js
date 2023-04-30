@@ -1,36 +1,37 @@
 import FilterSidebar from "@/components/ui/queryComponents/filterSidebar"
 import { useEffect, useState } from "react"
-import { Icon, HStack, Stack, Text } from "@chakra-ui/react"
+import { Icon, HStack, Stack, Text, IconButton, useDisclosure } from "@chakra-ui/react"
 import { MdOutlineKeyboardArrowLeft } from 'react-icons/md'
+import { HiOutlineAdjustmentsHorizontal } from 'react-icons/hi2'
 import Link from "next/link"
 import SearchBar from "@/components/ui/queryComponents/searchBar"
 import UserCards from "@/components/ui/user-cards"
-import { URLSearchParams } from "next/dist/compiled/@edge-runtime/primitives/url"
 import { useRouter } from "next/router"
+import { getDirectory } from "@/lib/cms/getComponents/getDirectory";
+import { getCachedCategories } from "@/lib/functions/getCachedCategories"
 
-
-export default function Search({ tempCards }) {
+export default function Search({ tempCards, directory }) {
 
     const [currentSelection, setCurrentSelection] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
+
     const router = useRouter()
+    const { isOpen, onOpen, onClose } = useDisclosure()
 
-    let allCategories = [
-        'Broadcasting',
-        'Business Operations',
-        'Communications & Marketing',
-        'Content Creation',
-        'Performance',
-        'Tournament & events'
-    ]
+    let allCategories = directory.map((entry) => entry.title)
+    const [types, setTypes] = useState([])
+    const [currentCategory, setCurrentCategory] = useState('Broadcasting')
 
-    const [currentCategory, setCurrentCategory] = useState(router.query.category)
-
-
-    const filterProps = {
-        states: [currentSelection, setCurrentSelection],
-        categoryStates: [currentCategory, setCurrentCategory],
-        allCategories: allCategories
-    }
+    useEffect(() => {
+        const { category } = router.query
+        const test = async () => {
+            const data = await getCachedCategories(category ?? 'Broadcasting')
+            setTypes(data)
+            setIsLoading(false)
+        }
+        setCurrentCategory(category)
+        test()
+    }, [])
 
     return (
         <Stack width='100%' alignItems='center'>
@@ -48,11 +49,30 @@ export default function Search({ tempCards }) {
                         <Text>Back to Directory</Text>
                     </HStack>
                 </Link>
-                <Text width='335px'>Freelancers in {currentCategory ? currentCategory : 'Broadcasting'}</Text>
+                <Text fontSize='28px' fontWeight={700}>Freelancers in {currentCategory ? currentCategory : 'Broadcasting'}</Text>
                 <HStack alignItems='flex-start' gap='15px'>
-                    <FilterSidebar filterProps={filterProps} />
+                    <FilterSidebar filterProps={{
+                        states: [currentSelection, setCurrentSelection],
+                        categoryStates: [currentCategory, setCurrentCategory],
+                        allCategories: allCategories,
+                        subcategoryStates: [types, setTypes],
+                        isLoading: isLoading,
+                        isOpen: isOpen,
+                        onClose: onClose
+                    }} />
                     <Stack width='100%' gap='15px'>
-                        <SearchBar />
+                        <HStack>
+                            <SearchBar />
+                            <IconButton
+                                icon={<HiOutlineAdjustmentsHorizontal />}
+                                aria-label='open filter'
+                                display={{
+                                    base: 'flex',
+                                    md: 'none'
+                                }}
+                                onClick={onOpen}
+                            />
+                        </HStack>
                         <UserCards cards={tempCards} />
                     </Stack>
                 </HStack>
@@ -61,12 +81,7 @@ export default function Search({ tempCards }) {
     )
 }
 
-export async function getStaticProps() {
-    /**
-     * Temporary data
-     * 
-     * The ids will be whatever id is set in MongoDB instead of numbers
-     */
+export async function getServerSideProps() {
     const tempCards = [
         {
             id: '1',
@@ -181,10 +196,11 @@ export async function getStaticProps() {
             }
         },
     ]
-
+    const directory = await getDirectory()
     return {
         props: {
             tempCards: tempCards,
+            directory: directory
         }
     }
 }
