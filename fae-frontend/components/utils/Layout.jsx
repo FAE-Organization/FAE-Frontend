@@ -1,16 +1,15 @@
 import { Stack } from "@chakra-ui/react";
-import Navbar from "./Navbar";
+import NavBar from "./NavBar";
 import Footer from "./Footer";
 
 export default function Layout({ children }) {
     return (
         <Stack
-        // font='something'
-        fontFamily={'Poppins'}
-        color="black"
-        backgroundColor='#F5F5F5'
+            fontFamily={'Poppins'}
+            color="black"
+            backgroundColor='#F5F5F5'
         >
-            <Navbar />
+            <NavBar />
             {children}
             <Footer />
         </Stack>

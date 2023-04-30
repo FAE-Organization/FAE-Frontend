@@ -21,7 +21,7 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <Flex mt={20} mx={10} align="center">
+        <Flex  mx={10} align="center">
           <Box flex="1" p="8" color="white">
             <Text fontFamily="Poppins" fontSize="25" fontWeight="bold" mb={5} mr={15}>
               Freelancing platform for anything esports.
