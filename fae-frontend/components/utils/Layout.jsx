@@ -4,11 +4,13 @@ import Footer from "./Footer";
 
 export default function Layout({ children }) {
     return (
+        // Styling in <Stack> impacts ENTIRE application !!!!!
         <Stack
-        // font='something'
+            color='black'
+            bgColor='#F5F5F5'
         >
             <Navbar />
-            {children}
+                {children}
             <Footer />
         </Stack>
     )
