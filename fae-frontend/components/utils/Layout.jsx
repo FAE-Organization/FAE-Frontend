@@ -8,6 +8,7 @@ export default function Layout({ children }) {
         // font='something'
         fontFamily={'Poppins'}
         color="black"
+        backgroundColor='#F5F5F5'
         >
             <Navbar />
             {children}
