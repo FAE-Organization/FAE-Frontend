@@ -1,11 +1,15 @@
-import { Stack, HStack, IconButton, Button } from "@chakra-ui/react"
-import { CgProfile } from 'react-icons/cg'
+import { Stack, HStack, Text, Button, Image, IconButton, Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react"
+import { ChevronDownIcon } from '@chakra-ui/icons';
+import { useState } from 'react';
 import { useRouter } from "next/router"
 import { useUser } from '@auth0/nextjs-auth0/client'
+import Link from "next/link"
 
 export default function Navbar() {
     const router = useRouter()
+    const [isOpen, setIsOpen] = useState(false);
     const { user, error, isLoading } = useUser()
+
     return (
         <Stack
             width='100%'
@@ -52,8 +56,11 @@ export default function Navbar() {
                         </>
                     )}
                     {user && !error && !isLoading && (
-                        <>
-                            <Button
+                        <HStack
+                            width='250px'
+                            justifyContent='space-between'
+                        >
+                            {/* <Button
                                 backgroundColor='#6642CE'
                                 color='#FFF'
                                 onClick={() => {
@@ -61,14 +68,45 @@ export default function Navbar() {
                                 }}
                             >
                                 Log out
-                            </Button>
-                            <IconButton
-                                icon={<CgProfile />}
-                                onClick={() => {
-                                    router.push('/auth/account')
-                                }}
-                            />
-                        </>
+                            </Button> */}
+                            <Text fontSize='22px' fontWeight={600}>
+                                {user.name}
+                            </Text>
+                            <HStack >
+                                <Link href='/auth/account'>
+                                    <Image
+                                        src={user.picture}
+                                        alt='user profile picture'
+                                        borderRadius='full'
+                                        width='50px'
+                                    />
+                                </Link>
+                                <Menu>
+                                    {({ isOpen }) => (
+                                        <>
+                                            <MenuButton
+                                                isActive={isOpen}
+                                                as={IconButton}
+                                                icon={
+                                                    <ChevronDownIcon
+                                                        transform={isOpen ? 'rotate(180deg)' : null}
+                                                        transition='0.3s'
+                                                    />
+                                                }
+                                            />
+                                            <MenuList>
+                                                <MenuItem onClick={() => router.push('/profile')}>
+                                                    View Profile
+                                                </MenuItem>
+                                                <MenuItem onClick={() => router.push('/api/auth/logout')}>
+                                                    Log out
+                                                </MenuItem>
+                                            </MenuList>
+                                        </>
+                                    )}
+                                </Menu>
+                            </HStack>
+                        </HStack>
                     )}
                     {/* 
                     Username and Profile Link

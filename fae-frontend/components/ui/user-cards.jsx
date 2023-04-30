@@ -24,12 +24,14 @@ export default function UserCards({ cards }) {
                 {cardVals.map(card => (
                     <GridItem
                         key={card.id}
-                        height='550px'
+                        height='560px'
+                        width={{ base: '75%', sm: '100%' }}
                         boxShadow='1px 1px 15px #888'
                         _hover={{
                             transition: "transform 0.2s ease-in-out, filter 0.2s ease-in-out",
                             transform: 'scale(1.03)'
                         }}
+                        borderRadius='5px'
                     >
                         <Link href={`/user/${card.id}`}>
                             <Stack>
@@ -42,9 +44,7 @@ export default function UserCards({ cards }) {
                                     objectFit='cover'
                                 />
                             </Stack>
-                            <Stack padding={{
-                                base: '0px 5px', md: '0px 10px'
-                            }}>
+                            <Stack padding='10px'>
                                 <Stack
                                     alignItems={{
                                         md: 'center',
@@ -53,9 +53,8 @@ export default function UserCards({ cards }) {
                                         base: 'column',
                                         md: 'row'
                                     }}
-                                    spacing='0px'
                                 >
-                                    <Text fontSize='22px' fontWeight={600}>{card.username}</Text>
+                                    <Text fontSize='20px' fontWeight={600}>{card.username}</Text>
                                     <Text fontSize='12px' color='#8F8F8F'>{`(${card.pronouns.join('/')})`}</Text>
                                 </Stack>
                                 <Stack

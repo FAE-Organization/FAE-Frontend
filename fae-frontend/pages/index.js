@@ -22,18 +22,7 @@ export default function Home() {
             </Head>
             <main className={styles.main}>
                 <HStack>
-                    {user && !error && (
-                        isLoading ?
-                            <div>Loading...</div> :
-                            <div>
-                                <img src={user.picture} alt={user.name} />
-                                <h2>{user.name}</h2>
-                                <p>{user.email}</p>
-                            </div>
-                    )}
-                    {error && (
-                        <div>{error.message}</div>
-                    )}
+
                 </HStack>
             </main>
         </>
