@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import Image from 'next/image'
-import { HStack, Button } from '@chakra-ui/react'
+import { HStack, Button, Stack, Text } from '@chakra-ui/react'
 import { Inter } from "@next/font/google"
 import styles from '@/styles/Home.module.css'
 import { useRouter } from 'next/router'
@@ -10,8 +10,6 @@ const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
     const router = useRouter()
-
-    const { user, error, isLoading } = useUser()
     return (
         <>
             <Head>
@@ -22,18 +20,15 @@ export default function Home() {
             </Head>
             <main className={styles.main}>
                 <HStack>
-                    {user && !error && (
-                        isLoading ?
-                            <div>Loading...</div> :
-                            <div>
-                                <img src={user.picture} alt={user.name} />
-                                <h2>{user.name}</h2>
-                                <p>{user.email}</p>
-                            </div>
-                    )}
-                    {error && (
-                        <div>{error.message}</div>
-                    )}
+                    <Stack>
+                        <Text fontSize={{ base: '10px', md: '15px', xl: '22px' }} id="something">
+                            Hello
+                        </Text>
+                        <Button onClick={() => router.push('/profile')}>
+                            Profile Test
+                        </Button>
+                    </Stack>
+                    <Stack><Text>Hello 2</Text></Stack>
                 </HStack>
             </main>
         </>
