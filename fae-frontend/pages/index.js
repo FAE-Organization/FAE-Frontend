@@ -23,8 +23,8 @@ export default function Home() {
             <Text fontSize={{ base: '10px', md: '15px', xl: '22px' }} id="something">
               Hello
             </Text>
-            <Button onClick={() => router.push('/directory')}>
-              Directory Test
+            <Button onClick={() => router.push('/profile')}>
+              Profile Test
             </Button>
           </Stack>
           <Stack><Text>Hello 2</Text></Stack>
