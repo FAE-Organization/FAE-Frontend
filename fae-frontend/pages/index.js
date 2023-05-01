@@ -1,4 +1,3 @@
-import Head from 'next/head'
 import {
   Stack,
   Text,
@@ -12,6 +11,8 @@ import {
 import { Inter } from '@next/font/google'
 import styles from '@/styles/Home.module.css'
 import { useRouter } from 'next/router'
+
+import Head from 'next/head'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -29,18 +30,20 @@ export default function Home() {
 
       <main className={styles.main}>
         <HeroSection />
+        <InfoSection />
       </main>
     </Box>
   )
 }
 
+// Styling for Hero section of homepage
 export function HeroSection() {
   return (
     <Container maxW={'7xl'} bgGradient="radial-gradient(#D9CFF4 6%, #F5F5F5 70%)">
       <Stack
         align={'center'}
-        spacing={{ base: 8, md: 10 }}
-        py={{ base: 20, md: 28 }}
+        spacing={{ base: 8, md: 20 }}
+        py={{ base: 20 }}
         direction={{ base: 'column', md: 'row' }}>
         <Stack flex={1} spacing={{ base: 5, md: 10 }}>
           <Heading
@@ -71,12 +74,11 @@ export function HeroSection() {
               size={'lg'}
               fontWeight={'normal'}
               color={'white'}
-              px={6}
               bg={'purple.600'}
               _hover={{ bg: 'purple.500' }}>
               Search Now
             </Button>
-            <Text>
+            <Text px={6} fontSize={'lg'}>
               or
             </Text>
             <Button
@@ -84,8 +86,7 @@ export function HeroSection() {
               fontWeight={500}
               color={'black'}
               variant={'link'}
-              size={'lg'}
-              px={6}>
+              size={'lg'}>
               Create an account
             </Button>
           </Stack>
@@ -101,7 +102,6 @@ export function HeroSection() {
             height={'300px'}
             rounded={'2xl'}
             boxShadow={'2xl'}
-            width={'full'}
             overflow={'hidden'}>
             <Image
               alt={'Hero Image'}
@@ -109,44 +109,68 @@ export function HeroSection() {
               align={'center'}
               w={'100%'}
               h={'100%'}
-              src={'./homepage-imgs/homepage-img.png'} /* TODO: CMS stuff */
-            />
+              minW={'350px'}
+              src={'./homepage-imgs/homepage-img.png'} /* TODO: CMS stuff */ />
           </Box>
         </Flex>
-      </Stack>
-      <Stack>
-        <Heading as={'h2'} justify={ 'center' }>
-          <Text as={'b'}>
-            The #1 hub for esports freelancers
-          </Text>
-        </Heading>
-        <Stack>
-          {/* <SubHeading /> */}
-        </Stack>
       </Stack>
     </Container>
   );
 }
 
-const SubHeading = (headingText, content, imgSRC) => {
+// Styling for info section of homepage
+export function InfoSection() {
   return (
-    <Stack>
-      <Image src={ imgSRC }/>
-      <Text as={'b'}>
-        { headingText }
-      </Text>
-      <Text>
-        { content }
-      </Text>
+    <Stack align={'center'}>
+      <Heading as={'h2'} justify={'center'} pb={'80px'}>
+        <Text as={'b'}>
+          The #1 hub for esports freelancers
+        </Text>
+      </Heading>
+      <InfoContent />
+    </Stack>
+  )
+}
+
+// Styling for each content box within the info section
+const InfoContent = () => {
+  return (
+    <Stack spacing={100} >
+      {HOME_ITEMS.map((homeItem, i) => {
+        const infoPadding = {};
+
+        if (i % 2 == 0) {
+          // when even
+          infoPadding.pr = '40px'
+        } else {
+          // when odd
+          infoPadding.pl = '40px'
+        } 
+
+        return (
+          <Flex direction={i % 2 == 0 ? 'row' : 'row-reverse'}>
+            <Image src={homeItem.imgSRC} __css={ infoPadding } maxWidth={'300px'} maxH={'250px'}/>
+            <Flex flex={2} direction={'column'} pt={'10px'} fontSize={{ base: '20px' }}>
+              <Text as={'b'} casing={ 'uppercase' } pb={1}>
+                {homeItem.headingText}
+              </Text>
+              <Text>
+                {homeItem.content}
+              </Text>
+            </Flex>
+          </Flex>
+        )
+      })}
     </Stack>
   );
 };
 
+// Data to be displayed in InfoContent boxes within InfoSection of homepage
 const HOME_ITEMS = [
   {
-      headingText: 'Search for the perfect freelancer',
-      content: 'FAE acts as a resource to help esports individuals, teams, organizations, and companies find the perfect freelancer for their needs.',
-      imgSRC: './homepage-imgs/test.png',
+    headingText: 'Search for the perfect freelancer',
+    content: 'FAE acts as a resource to help esports individuals, teams, organizations, and companies find the perfect freelancer for their needs.',
+    imgSRC: './homepage-imgs/test.png',
   },
   {
     headingText: 'Build your esports portfolio',
