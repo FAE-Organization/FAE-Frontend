@@ -82,12 +82,15 @@ export function HeroSection() {
               or
             </Text>
             <Button
-              as={'u'}
+              pr={2}
               fontWeight={500}
               color={'black'}
               variant={'link'}
-              size={'lg'}>
-              Create an account
+              size={'lg'}
+              _hover={{ fontWeight: '600' }}>
+              <Text as={'u'}>
+                Create an account
+              </Text>
             </Button>
           </Stack>
         </Stack>
@@ -121,7 +124,7 @@ export function HeroSection() {
 // Styling for info section of homepage
 export function InfoSection() {
   return (
-    <Stack align={'center'}>
+    <Stack align={'center'} pt={'20px'}>
       <Heading as={'h2'} justify={'center'} pb={'80px'}>
         <Text as={'b'}>
           The #1 hub for esports freelancers
@@ -145,13 +148,13 @@ const InfoContent = () => {
         } else {
           // when odd
           infoPadding.pl = '40px'
-        } 
+        }
 
         return (
           <Flex direction={i % 2 == 0 ? 'row' : 'row-reverse'}>
-            <Image src={homeItem.imgSRC} __css={ infoPadding } maxWidth={'300px'} maxH={'250px'}/>
+            <Image src={homeItem.imgSRC} __css={infoPadding} maxWidth={'300px'} maxH={'250px'} />
             <Flex flex={2} direction={'column'} pt={'10px'} fontSize={{ base: '20px' }}>
-              <Text as={'b'} casing={ 'uppercase' } pb={1}>
+              <Text as={'b'} casing={'uppercase'} pb={1}>
                 {homeItem.headingText}
               </Text>
               <Text>
