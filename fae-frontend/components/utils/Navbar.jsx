@@ -1,27 +1,26 @@
-import { 
-  Stack, 
-  HStack, 
-  Text, 
-  Button, 
-  Image, 
-  IconButton,
-  Menu, 
-  MenuButton, 
-  MenuList, 
-  MenuItem,
-  Flex,
-  Box,
-  Spacer,
+import {
+    Stack,
+    HStack,
+    Text,
+    Button,
+    Image,
+    IconButton,
+    Menu,
+    MenuButton,
+    MenuList,
+    MenuItem,
+    Flex,
+    Box,
+    Spacer,
+    Switch,
 } from "@chakra-ui/react"
 import { ChevronDownIcon } from '@chakra-ui/icons';
-import { useState } from 'react';
 import { useRouter } from "next/router"
 import { useUser } from '@auth0/nextjs-auth0/client'
 import Link from "next/link"
 
 export default function Navbar() {
     const router = useRouter()
-    const [isOpen, setIsOpen] = useState(false);
     const { user, error, isLoading } = useUser()
 
     return (
@@ -90,17 +89,6 @@ export default function Navbar() {
                 <HStack>
                     {!user && (
                         <>
-                            {/* <Button
-                                color='#6642CE'
-                                backgroundColor='#FFF'
-                                border='2px solid #6642CE'
-                                onClick={() => {
-                                    window.location.href =
-                                        'https://auth0-fae.us.auth0.com/u/signup?state=hKFo2SBOb0tneGV5ZThoc0oxYXNNMU9wNHVpNHFNT0NFa3dOYaFur3VuaXZlcnNhbC1sb2dpbqN0aWTZIEdwNVZmTzZaUmhHZ2tMSTdhNllmMExNaVhBOHlVVkpyo2NpZNkgTzhDTFNMaGJhUHZLZzhOblA1UGNVZzNBZXZQWHRSWm0'
-                                }}
-                            >
-                                Sign up
-                            </Button> */}
                             <Button
                                 backgroundColor='#6642CE'
                                 color='#FFF'
@@ -117,20 +105,11 @@ export default function Navbar() {
                             width='250px'
                             justifyContent='space-between'
                         >
-                            {/* <Button
-                                backgroundColor='#6642CE'
-                                color='#FFF'
-                                onClick={() => {
-                                    router.push('/api/auth/logout')
-                                }}
-                            >
-                                Log out
-                            </Button> */}
                             <Text fontSize='22px' fontWeight={600}>
                                 {user.name}
                             </Text>
                             <HStack >
-                                <Link href='/auth/account'>
+                                <Link href='/profile'>
                                     <Image
                                         src={user.picture}
                                         alt='user profile picture'
@@ -142,6 +121,7 @@ export default function Navbar() {
                                     {({ isOpen }) => (
                                         <>
                                             <MenuButton
+                                                backgroundColor='#FFF'
                                                 isActive={isOpen}
                                                 as={IconButton}
                                                 icon={
@@ -152,11 +132,31 @@ export default function Navbar() {
                                                 }
                                             />
                                             <MenuList>
-                                                <MenuItem onClick={() => router.push('/profile')}>
-                                                    View Profile
+                                                <MenuItem
+                                                    onClick={() => router.push('/profile')}
+                                                    borderBottom='1px solid #BBB'
+                                                >
+                                                    Profile
+                                                </MenuItem>
+                                                <MenuItem
+                                                    onClick={() => router.push('/profile')}
+                                                    borderBottom='1px solid #BBB'
+                                                >
+                                                    Settings
+                                                </MenuItem>
+                                                <MenuItem
+                                                    closeOnSelect={false}
+                                                    width='100%'
+                                                    display='flex'
+                                                    flexDirection='row'
+                                                    justifyContent='space-between'
+                                                    borderBottom='1px solid #BBB'
+                                                >
+                                                    Dark Mode
+                                                    <Switch onChange={(event) => event.preventDefault()} />
                                                 </MenuItem>
                                                 <MenuItem onClick={() => router.push('/api/auth/logout')}>
-                                                    Log out
+                                                    Sign out
                                                 </MenuItem>
                                             </MenuList>
                                         </>

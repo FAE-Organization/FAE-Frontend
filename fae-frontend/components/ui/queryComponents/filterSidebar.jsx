@@ -79,6 +79,19 @@ export default function FilterSidebar({ filterProps: {
 
     const handleChange = useCallback(async (data) => {
 
+        // TODO
+        // const url = new URL('http://localhost:3000/api/v1/users');
+        // const params = {
+        //     subcategories,
+        //     game,
+        //     location,
+        //     siteType,
+        //     experience,
+        //     salary: JSON.stringify(salary) // convert to string for URL encoding
+        // };
+        // url.search = new URLSearchParams(params).toString();
+
+        // const response = await fetch(url.toString());
         if (data) {
             toast({
                 position: 'top',
