@@ -1,5 +1,5 @@
 import { Stack } from "@chakra-ui/react";
-import NavBar from "./NavBar";
+import NavBar from "./NavBar.jsx";
 import Footer from "./Footer";
 
 export default function Layout({ children }) {
