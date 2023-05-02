@@ -33,20 +33,6 @@ export default function Search({ tempCards, directory }) {
         test()
     }, [])
 
-    const [currentSelection, setCurrentSelection] = useState([])
-    const [isLoading, setIsLoading] = useState(true)
-    const router = useRouter()
-
-    let allCategories = [
-        'Broadcasting',
-        'Business Operations',
-        'Communications & Marketing',
-        'Content Creation',
-        'Performance',
-        'Tournament & events'
-    ]
-
-    const [currentCategory, setCurrentCategory] = useState('')
 
     useEffect(() => {
         const searchParams = new URLSearchParams(window.location.search)

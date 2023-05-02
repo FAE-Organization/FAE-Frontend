@@ -20,7 +20,6 @@ import { useUser } from '@auth0/nextjs-auth0/client';
 import { useRouter } from 'next/router'; 
 
 export default function NavBar() {
-  const router = useRouter();
   const { isOpen, onToggle } = useDisclosure();
   const { user, error, isLoading } = useUser()
 
@@ -106,14 +105,15 @@ export default function NavBar() {
 
 // Styling for Navbar links
 const DesktopNav = () => {
-
+  const router = useRouter();
+  
   return (
     <Stack direction={'row'} spacing={6}>
       {NAV_ITEMS.map((navItem) => (
         <Center key={navItem.label}>
           <Link
             p={2}
-            href={navItem.href ?? '#'}
+            onClick={() => router.push( navItem.href ?? '#')}
             fontSize={{ base: '20px' }}
             fontWeight={400}
             _hover={{
@@ -168,7 +168,7 @@ const MobileNavItem = ({ label, children, href }) => {
 const NAV_ITEMS = [
   {
     label: 'Directory',
-    href: '#',
+    href: '/directory',
   },
   {
     label: 'Search',
