@@ -1,5 +1,15 @@
 export default function Users(req, res) {
-    res.status(200).json([
+
+    // const data = JSON.parse(req.query)
+    // nned body-parser
+    const { subcategories } = req.body
+    console.log(JSON.parse(req.body))
+
+    const parsedSubcategories = subcategories ? (
+        subcategories.split(',')
+    ) : undefined
+
+    const tempDB = [
         {
             id: '1',
             username: 'asa',
@@ -112,5 +122,16 @@ export default function Users(req, res) {
                 currency: 'usd'
             }
         },
-    ])
+    ]
+
+
+    const filteredUsers = parsedSubcategories ? tempDB.filter(user => {
+        return user.roles.some(role => subcategories.includes(role));
+    }) : tempDB;
+
+
+    console.log(filteredUsers.length)
+
+
+    res.status(200).json(filteredUsers)
 }

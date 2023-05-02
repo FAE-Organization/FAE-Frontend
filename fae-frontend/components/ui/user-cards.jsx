@@ -3,11 +3,9 @@ import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import { BiDollarCircle } from 'react-icons/bi'
 
-export default function UserCards({ cards }) {
-    const [cardVals, setCardVals] = useState(cards);
-    useEffect(() => {
-        setCardVals(cards);
-    }, [cards]);
+export default function UserCards({ cardVals }) {
+
+    console.log(Array.from(cardVals))
 
     return (
         <Stack width='100%'>
@@ -21,7 +19,7 @@ export default function UserCards({ cards }) {
                 gap='20px'
                 placeItems='center'
             >
-                {cardVals.map(card => (
+                {cardVals && (Array.from(cardVals).map(card => (
                     <GridItem
                         key={card.id}
                         height='560px'
@@ -142,7 +140,7 @@ export default function UserCards({ cards }) {
                             </Stack>
                         </Link>
                     </GridItem>
-                ))}
+                )))}
             </Grid>
         </Stack>
     )

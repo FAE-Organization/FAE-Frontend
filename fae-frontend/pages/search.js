@@ -33,8 +33,9 @@ export default function Search({ tempCards, directory }) {
         test()
     }, [])
 
-    console.log(tempCards)
+    const data = Array.from(tempCards)
 
+    const [cardVals, setCardVals] = useState(data);
     return (
         <Stack width='100%' alignItems='center'>
             <Stack width='90%'>
@@ -60,7 +61,8 @@ export default function Search({ tempCards, directory }) {
                         subcategoryStates: [types, setTypes],
                         isLoading: isLoading,
                         isOpen: isOpen,
-                        onClose: onClose
+                        onClose: onClose,
+                        setCardVals: setCardVals
                     }} />
                     <Stack width='100%' gap='15px'>
                         <HStack>
@@ -75,7 +77,7 @@ export default function Search({ tempCards, directory }) {
                                 onClick={onOpen}
                             />
                         </HStack>
-                        <UserCards cards={tempCards} />
+                        <UserCards cardVals={cardVals} />
                     </Stack>
                 </HStack>
             </Stack>
