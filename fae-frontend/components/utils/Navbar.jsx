@@ -1,175 +1,185 @@
-import { 
-  Stack, 
-  HStack, 
-  Text, 
-  Button, 
-  Image, 
-  IconButton,
-  Menu, 
-  MenuButton, 
-  MenuList, 
-  MenuItem,
-  Flex,
-  Box,
-  Spacer,
-} from "@chakra-ui/react"
-import { ChevronDownIcon } from '@chakra-ui/icons';
-import { useState } from 'react';
-import { useRouter } from "next/router"
-import { useUser } from '@auth0/nextjs-auth0/client'
-import Link from "next/link"
+import {
+    Box,
+    Flex,
+    Text,
+    IconButton,
+    Button,
+    Stack,
+    Collapse,
+    Link,
+    useDisclosure,
+    Image,
+    Center,
+} from '@chakra-ui/react';
+import {
+    HamburgerIcon,
+    CloseIcon,
+} from '@chakra-ui/icons';
 
-export default function Navbar() {
-    const router = useRouter()
-    const [isOpen, setIsOpen] = useState(false);
-    const { user, error, isLoading } = useUser()
+import { useUser } from '@auth0/nextjs-auth0/client';
+import { useRouter } from 'next/router'; 
 
-    return (
+export default function NavBar() {
+  const { isOpen, onToggle } = useDisclosure();
+  const { user, error, isLoading } = useUser()
+
+  return (
+    <Box bg='#FFF'>
+      <Flex
+        py={{ base: 2 }}
+        px={{ base: 4 }}
+        align={'center'}
+        fontSize={{ base: '20px' }}
+      >
         <Flex
-            as="nav"
-            align="center"
-            justify="space-between"
-            wrap="wrap"
-            px={4}
-            py={2}
-            bg="#FFFFFF"
-            color="black"
+          flex={{ base: 1, md: 'auto' }}
+          ml={{ base: -2 }}
+          display={{ base: 'flex', md: 'none' }}
         >
-            <Flex align="center" mr={5}>
-                <Box p={2} bg="white">
-                    <Link href="/">
-                        {/* TODO: Might need to adjust height and width later */}
-                        <img src="logo/fae-logo.png" alt="Logo" height="auto" width="150" />
-                    </Link>
-                </Box>
-                <Box>
-                    <Link href="/directory">
-                        <Button
-                            variant="ghost"
-                            color="black"
-                            fontSize={{ base: '14px', md: '16px', lg: '18px' }}
-                            onClick={() => router.push('/directory')}
-                        >
-                            Directory
-                        </Button>
-                    </Link>
-                    <Link href="/search">
-                        <Button
-                            variant="ghost"
-                            color="black"
-                            fontSize={{ base: '14px', md: '16px', lg: '18px' }}
-                        >
-                            Search
-                        </Button>
-                    </Link>
-                    <Link href="/about">
-                        <Button
-                            variant="ghost"
-                            color="black"
-                            fontSize={{ base: '14px', md: '16px', lg: '18px' }}
-                        >
-                            About
-                        </Button>
-                    </Link>
-
-                    <Link href="/profile">
-                        <Button
-                            variant="ghost"
-                            color="black"
-                            fontSize={{ base: '14px', md: '16px', lg: '18px' }}
-                            onClick={() => router.push('/profile')}
-                        >
-                            Profile
-                        </Button>
-                    </Link>
-
-                </Box>
-            </Flex>
-            <Spacer />
-            <Box>
-                <HStack>
-                    {!user && (
-                        <>
-                            {/* <Button
-                                color='#6642CE'
-                                backgroundColor='#FFF'
-                                border='2px solid #6642CE'
-                                onClick={() => {
-                                    window.location.href =
-                                        'https://auth0-fae.us.auth0.com/u/signup?state=hKFo2SBOb0tneGV5ZThoc0oxYXNNMU9wNHVpNHFNT0NFa3dOYaFur3VuaXZlcnNhbC1sb2dpbqN0aWTZIEdwNVZmTzZaUmhHZ2tMSTdhNllmMExNaVhBOHlVVkpyo2NpZNkgTzhDTFNMaGJhUHZLZzhOblA1UGNVZzNBZXZQWHRSWm0'
-                                }}
-                            >
-                                Sign up
-                            </Button> */}
-                            <Button
-                                backgroundColor='#6642CE'
-                                color='#FFF'
-                                onClick={() => {
-                                    router.push('/api/auth/login')
-                                }}
-                            >
-                                Sign in
-                            </Button>
-                        </>
-                    )}
-                    {user && !error && !isLoading && (
-                        <HStack
-                            width='250px'
-                            justifyContent='space-between'
-                        >
-                            {/* <Button
-                                backgroundColor='#6642CE'
-                                color='#FFF'
-                                onClick={() => {
-                                    router.push('/api/auth/logout')
-                                }}
-                            >
-                                Log out
-                            </Button> */}
-                            <Text fontSize='22px' fontWeight={600}>
-                                {user.name}
-                            </Text>
-                            <HStack >
-                                <Link href='/auth/account'>
-                                    <Image
-                                        src={user.picture}
-                                        alt='user profile picture'
-                                        borderRadius='full'
-                                        width='50px'
-                                    />
-                                </Link>
-                                <Menu>
-                                    {({ isOpen }) => (
-                                        <>
-                                            <MenuButton
-                                                isActive={isOpen}
-                                                as={IconButton}
-                                                icon={
-                                                    <ChevronDownIcon
-                                                        transform={isOpen ? 'rotate(180deg)' : null}
-                                                        transition='0.3s'
-                                                    />
-                                                }
-                                            />
-                                            <MenuList>
-                                                <MenuItem onClick={() => router.push('/profile')}>
-                                                    View Profile
-                                                </MenuItem>
-                                                <MenuItem onClick={() => router.push('/api/auth/logout')}>
-                                                    Log out
-                                                </MenuItem>
-                                            </MenuList>
-                                        </>
-                                    )}
-                                </Menu>
-                            </HStack>
-                        </HStack>
-                    )}
-                    {/* 
-                    Username and Profile Link
-                    */}
-                </HStack>
-            </Box>
+          <IconButton
+            onClick={onToggle}
+            icon={
+              isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />
+            }
+            variant={'ghost'}
+            aria-label={'Toggle Navigation'}
+          />
         </Flex>
-    );
-}
+        <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }}>
+          <Link href="/">
+            {/* Style rules for header logo */}
+            <Image
+              width={{ base: '150px' }}
+              src="logo/fae-logo.png"
+              alt="For Anything Esports logo"
+            />
+          </Link>
+
+          {/* desktop nav links */}
+          <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
+            <DesktopNav />
+          </Flex>
+        </Flex>
+
+        {/* Styling rules for sign in & sign up buttons */}
+        <Stack
+          flex={{ base: 1, md: 0 }}
+          justify={'flex-end'}
+          direction={'row'}
+          spacing={6}
+          mr={6}
+        >
+          {/* Sign In button */}
+          <Button
+            as={'a'}
+            fontWeight={600}
+            variant={'outline'}
+            href={'#'}
+
+            color={'purple.600'} >
+            Sign In
+          </Button>
+
+          {/* Sign Up button */}
+          <Button
+            as={'a'}
+            display={{ base: 'none', md: 'inline-flex' }}
+            fontWeight={600}
+            color={'white'}
+            bg={'purple.600'}
+            href={'#'}
+            _hover={{
+              bg: 'purple.500',
+            }}>
+            Sign Up
+          </Button>
+        </Stack>
+      </Flex>
+
+      <Collapse in={isOpen} animateOpacity>
+        <MobileNav />
+      </Collapse>
+    </Box>
+  );
+};
+
+// Styling for Navbar links
+const DesktopNav = () => {
+  const router = useRouter();
+  
+  return (
+    <Stack direction={'row'} spacing={6}>
+      {NAV_ITEMS.map((navItem) => (
+        <Center key={navItem.label}>
+          <Link
+            p={2}
+            onClick={() => router.push( navItem.href ?? '#')}
+            fontSize={{ base: '20px' }}
+            fontWeight={400}
+            _hover={{
+              textDecoration: 'none',
+              color: 'purple.800'
+            }}>
+            {navItem.label}
+          </Link>
+        </Center>
+      ))}
+    </Stack>
+  );
+};
+
+const MobileNav = () => {
+  return (
+    <Stack
+      bg='#FFF'
+      p={4}
+      display={{ md: 'none' }}>
+
+      {NAV_ITEMS.map((navItem) => (
+        <MobileNavItem key={navItem.label} {...navItem} />
+      ))}
+
+    </Stack>
+  );
+};
+
+const MobileNavItem = ({ label, children, href }) => {
+  const { onToggle } = useDisclosure();
+
+  return (
+    <Stack spacing={4} onClick={children && onToggle}>
+      <Flex
+        py={2}
+        as={Link}
+        href={href ?? '#'}
+        justify={'space-between'}
+        align={'center'}
+        _hover={{
+          textDecoration: 'none',
+        }}>
+        <Text fontWeight={600}>
+          {label}
+        </Text>
+      </Flex>
+    </Stack>
+  );
+};
+
+const NAV_ITEMS = [
+  {
+    label: 'Directory',
+    href: '/directory',
+  },
+  {
+    label: 'Search',
+    href: '/search',
+  },
+  {
+    label: 'About',
+    href: '#',
+  },
+  {
+    label: 'Profile',
+    href: '/profile',
+  }
+];

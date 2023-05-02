@@ -1,13 +1,15 @@
 import { Stack } from "@chakra-ui/react";
-import Navbar from "./Navbar";
+import Navbar from "./Navbar.jsx";
 import Footer from "./Footer";
+import "@fontsource/poppins";
 
 export default function Layout({ children }) {
     return (
         // Styling in <Stack> impacts ENTIRE application !!!!!
         <Stack
-            color='black'
-            bgColor='#F5F5F5'
+            fontFamily={'Poppins'}
+            color="black"
+            backgroundColor='#F5F5F5'
         >
             <Navbar />
                 {children}
