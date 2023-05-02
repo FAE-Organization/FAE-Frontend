@@ -1,5 +1,5 @@
 import { Stack } from "@chakra-ui/react";
-import NavBar from "./NavBar.jsx";
+import Navbar from "./Navbar.jsx";
 import Footer from "./Footer";
 
 export default function Layout({ children }) {
@@ -10,7 +10,7 @@ export default function Layout({ children }) {
             backgroundColor='#F5F5F5'
         >
             <Navbar />
-                {children}
+            {children}
             <Footer />
         </Stack>
     )
