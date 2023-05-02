@@ -44,13 +44,6 @@ export default function Search({ tempCards, directory }) {
 
     }, [])
 
-    const filterProps = {
-        states: [currentSelection, setCurrentSelection],
-        categoryStates: [currentCategory, setCurrentCategory],
-        allCategories: allCategories,
-        types: subcategories
-    }
-
     return (
         <Stack width='100%' alignItems='center'>
             <Stack width='90%'>

@@ -28,9 +28,6 @@ export default function FilterSidebar({ filterProps: {
     const [currentCategory, setCurrentCategory] = categoryStates
     const [types, setTypes] = subcategoryStates
 
-    const [currentCategory, setCurrentCategory] = categoryStates
-    const [types, setTypes] = subcategoryStates
-
     useEffect(() => {
         const handleBeforeUnload = () => {
             localStorage.setItem('beforeAll', JSON.stringify([]));
@@ -53,9 +50,7 @@ export default function FilterSidebar({ filterProps: {
             max: ''
         },
         experience: '',
-    }), []);, []);
-
-    const [currentSelection, setCurrentSelection] = states
+    }), []);
 
     const [currentSelection, setCurrentSelection] = states
 
@@ -92,10 +87,7 @@ export default function FilterSidebar({ filterProps: {
                 isClosable: true,
                 title: JSON.stringify({
                     category: (currentCategory == null ? 'Broadcasting' : currentCategory),
-                    {
-                    category: (currentCategory == null ? 'Broadcasting' : currentCategory),
                     data
-                }
                 })
             })
         } else {
@@ -121,7 +113,7 @@ export default function FilterSidebar({ filterProps: {
                     ...salary,
                     min: minMax.min,
                     max: minMax.max
-                })
+                }
             })
         }, 1000)
 
@@ -132,7 +124,6 @@ export default function FilterSidebar({ filterProps: {
 
     console.log('all checked: ', allChecked)
 
->>>>>>> bf92dc0 (fixed minor issues with no queries in search)
     return (
         <React.Fragment>
             {isSmallScreen ? (

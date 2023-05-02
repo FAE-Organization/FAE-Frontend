@@ -172,7 +172,7 @@ const NAV_ITEMS = [
   },
   {
     label: 'Search',
-    href: '#',
+    href: '/search',
   },
   {
     label: 'About',
