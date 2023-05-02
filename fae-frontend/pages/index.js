@@ -152,7 +152,7 @@ const InfoContent = () => {
         }
 
         return (
-          <Flex direction={i % 2 == 0 ? 'row' : 'row-reverse'}>
+          <Flex key={i} direction={i % 2 == 0 ? 'row' : 'row-reverse'}>
             <Image src={homeItem.imgSRC} __css={infoPadding} maxWidth={'300px'} maxH={'250px'} />
             <Flex flex={2} direction={'column'} pt={'10px'} fontSize={{ base: '20px' }}>
               <Text as={'b'} casing={'uppercase'} pb={1}>
