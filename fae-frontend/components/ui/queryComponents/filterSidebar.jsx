@@ -75,7 +75,6 @@ export default function FilterSidebar({ filterProps: {
     const [gameValue, setGameValue] = useState('')
     const [locationValue, setLocationValue] = useState('')
     const [minMax, setMinMax] = useState({ min: '', max: '' })
-    const [allChecked, setAllChecked] = useState(false)
 
 
     const handleChange = useCallback(async (data) => {
@@ -121,8 +120,6 @@ export default function FilterSidebar({ filterProps: {
     }, [gameValue, locationValue, minMax, handleChange, values])
 
     const isSmallScreen = useBreakpointValue({ base: true, md: false })
-
-    console.log('all checked: ', allChecked)
 
     return (
         <React.Fragment>

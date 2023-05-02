@@ -33,17 +33,6 @@ export default function Search({ tempCards, directory }) {
         test()
     }, [])
 
-
-    useEffect(() => {
-        const searchParams = new URLSearchParams(window.location.search)
-        const params = {};
-        for (const [key, value] of searchParams.entries()) {
-            params[key] = value;
-        }
-        setCurrentCategory(params.category)
-
-    }, [])
-
     return (
         <Stack width='100%' alignItems='center'>
             <Stack width='90%'>
