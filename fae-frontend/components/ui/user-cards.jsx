@@ -1,11 +1,8 @@
 import { Stack, Grid, GridItem, Image, HStack, Text, Badge, Icon } from "@chakra-ui/react"
 import Link from "next/link";
-import { useState, useEffect, useRef } from "react";
 import { BiDollarCircle } from 'react-icons/bi'
 
 export default function UserCards({ cardVals }) {
-
-    console.log(Array.from(cardVals))
 
     return (
         <Stack width='100%'>
@@ -51,6 +48,8 @@ export default function UserCards({ cardVals }) {
                                         base: 'column',
                                         md: 'row'
                                     }}
+                                    flexWrap='wrap'
+                                // Maybe do this instead: JoannaC... (they/them) 
                                 >
                                     <Text fontSize='20px' fontWeight={600}>{card.username}</Text>
                                     <Text fontSize='12px' color='#8F8F8F'>{`(${card.pronouns.join('/')})`}</Text>
@@ -140,6 +139,7 @@ export default function UserCards({ cardVals }) {
                             </Stack>
                         </Link>
                     </GridItem>
+
                 )))}
             </Grid>
         </Stack>

@@ -23,7 +23,7 @@ import { getCachedCategories } from "@/lib/functions/getCachedCategories";
 import { URLSearchParams } from "next/dist/compiled/@edge-runtime/primitives/url";
 
 export default function FilterSidebar({ filterProps: {
-    states, categoryStates, allCategories, subcategoryStates, isLoading, isOpen, onClose, setCardVals
+    states, categoryStates, allCategories, subcategoryStates, isLoading, isOpen, onClose, setCardVals, setIsUserCardLoading
 } }) {
 
     const [currentCategory, setCurrentCategory] = categoryStates
@@ -79,6 +79,7 @@ export default function FilterSidebar({ filterProps: {
 
 
     const handleChange = useCallback(async (data) => {
+        setIsUserCardLoading(true)
 
         if (process.env.NODE_ENV === 'development') {
 
@@ -90,23 +91,29 @@ export default function FilterSidebar({ filterProps: {
                 location: data.location,
                 siteType: data.siteType,
                 experience: data.experience,
-                salary: JSON.stringify(data.salary)// convert to string for URL encoding
+                salary: JSON.stringify(data.salary)
             };
-            // url.search = new URLSearchParams(params).toString();
 
-            // const response = (await fetch(url.toString()));
-            const response = await (await fetch(url, {
-                method: 'POST',
-                body: JSON.stringify(params)
-            })).json()
-            setCardVals(response)
+            // Using fake timeouts because we expect to be fetching
+            // data asynchronously here
+            const fakeAsyncTimeout = setTimeout(async () => {
+                const response = await (await fetch(url, {
+                    method: 'POST',
+                    body: JSON.stringify(params)
+                })).json()
+                setCardVals(response)
+                setIsUserCardLoading(false)
+            }, 3000)
+            return () => clearTimeout(fakeAsyncTimeout)
         } else {
             toast({
                 title: 'success',
                 duration: 3000,
                 status: 'success'
             })
+            setIsUserCardLoading(false)
         }
+
     }, [currentCategory])
 
     // Delay user input for game input (aka debounce) so that
