@@ -4,7 +4,7 @@ import {
     IconButton,
     Button,
     Stack,
-    Collapse,
+    Spinner,
     useDisclosure,
     Center,
     HStack,
@@ -27,11 +27,10 @@ import Link from "next/link"
 import { useUser } from '@auth0/nextjs-auth0/client';
 import { useRouter } from 'next/router';
 
-export default function NavBar() {
+export default function NavBar({ logo, isLoading }) {
     const { isOpen, onToggle } = useDisclosure();
     const isSmallScreen = useBreakpointValue({ base: true, md: false })
 
-    console.log(isSmallScreen)
 
     return (
         <Box bg='#FFF' padding='10px' width='100%'>
@@ -42,15 +41,18 @@ export default function NavBar() {
                     <HStack width='100%' justify={{ base: 'center', md: 'start' }}>
                         <Flex flex={1}>
                             <Link href="/">
-                                {/* Style rules for header logo */}
-                                <Image
-                                    width={{ base: '150px' }}
-                                    src="logo/fae-logo.png"
-                                    alt="For Anything Esports logo"
-                                />
+                                {isLoading ? (
+                                    <Spinner />
+                                ) : (
+                                    <Image
+                                        width='100px'
+                                        src={`https:${logo.fields.file.url}`}
+                                        alt={logo.fields.title}
+                                    />
+                                )}
                             </Link>
                         </Flex>
-                        <Flex flex={8}>
+                        <Flex flex={{ md: 6, lg: 10 }}>
                             <DesktopNav />
                         </Flex>
                     </HStack>
@@ -66,20 +68,21 @@ const DesktopNav = () => {
 
     return (
         <Stack direction='row' width='100%' justifyContent='space-between'>
-            <HStack gap='25px'>
+            <HStack gap={{ base: '15px', md: '10px', lg: '20px' }}>
                 {NAV_ITEMS.map((navItem) => (
                     <Center key={navItem.label}>
-                        <Link
-                            href={''}
-                            p={2}
-                            onClick={() => router.push(navItem.href ?? '#')}
-                            fontSize={{ base: '20px' }}
-                            fontWeight={400}
-                            _hover={{
-                                textDecoration: 'none',
-                                color: 'purple.800'
-                            }}>
-                            {navItem.label}
+                        <Link href={navItem.href ?? '#'}>
+                            <Text
+                                p={2}
+                                fontSize={{ base: '14px', md: '16px', lg: '18px' }}
+                                fontWeight={400}
+                                _hover={{
+                                    textDecoration: 'none',
+                                    color: 'purple.800'
+                                }}
+                            >
+                                {navItem.label}
+                            </Text>
                         </Link>
                     </Center>
                 ))}
@@ -98,9 +101,10 @@ const MobileNav = ({ isOpen, onToggle }) => {
             bg='#FFF'
             padding='5px'
         >
-            <HStack alignItems='flex-start'>
-                <Stack>
-                    <IconButton
+            <HStack alignItems='center'>
+                <Menu>
+                    <MenuButton
+                        as={IconButton}
                         onClick={onToggle}
                         icon={
                             isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />
@@ -109,15 +113,17 @@ const MobileNav = ({ isOpen, onToggle }) => {
                         variant={'ghost'}
                         aria-label={'Toggle Navigation'}
                     />
-                    <Collapse in={isOpen} animateOpacity>
+                    <MenuList>
                         {NAV_ITEMS.map((navItem) => (
-                            <MobileNavItem key={navItem.label} {...navItem} />
+                            <MenuItem key={navItem.label}>
+                                <MobileNavItem {...navItem} />
+                            </MenuItem>
                         ))}
-                    </Collapse>
-                </Stack>
+                    </MenuList>
+                </Menu>
                 <Link href="/">
                     <Image
-                        width={{ base: '75px' }}
+                        width='80px'
                         src="logo/fae-logo.png"
                         alt="For Anything Esports logo"
                     />
@@ -193,20 +199,25 @@ function UserActions() {
             )}
             {user && !error && !isLoading && (
                 <HStack
-                    width='250px'
+                    width={{ base: 'fit-content', md: '200px', lg: '250px' }}
                     justifyContent='space-between'
                 >
-                    <Text fontSize='22px' fontWeight={600}>
+                    <Text
+                        fontSize={{ base: '16px', md: '18px', lg: '20px' }}
+                        fontWeight={600}
+                    >
                         {user.name}
                     </Text>
-                    <HStack >
+                    <HStack>
                         <Link href='/profile'>
-                            <Image
-                                src={user.picture}
-                                alt='user profile picture'
-                                borderRadius='full'
-                                width='50px'
-                            />
+                            <Stack width={{ base: '30px', md: '40px', lg: '50px' }}>
+                                <Image
+                                    src={user.picture}
+                                    alt='user profile picture'
+                                    borderRadius='full'
+                                    width='50px'
+                                />
+                            </Stack>
                         </Link>
                         <Menu>
                             {({ isOpen }) => (

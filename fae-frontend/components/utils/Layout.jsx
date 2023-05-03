@@ -4,9 +4,23 @@ import Footer from "./Footer";
 import "@fontsource/poppins";
 import { useRouterAsHeader } from "@/lib/hooks/useRouteAsHeader";
 import Head from "next/head";
+import { useEffect, useState } from "react";
+import { getLogo } from "@/lib/cms/getComponents/getLogo.js";
 
 export default function Layout({ children }) {
     const title = useRouterAsHeader()
+    const [logo, setLogo] = useState({})
+    const [isLoading, setIsLoading] = useState(true)
+    useEffect(() => {
+        const fetchLogo = async () => {
+            const logo = await getLogo()
+            setLogo(logo)
+            setIsLoading(false)
+        }
+        fetchLogo()
+    }, [])
+
+    console.log(logo)
     return (
         // Styling in <Stack> impacts ENTIRE application !!!!!
         <>
@@ -32,7 +46,7 @@ export default function Layout({ children }) {
                     color='black'
                     bgColor='#F5F5F5'
                 >
-                    <Navbar />
+                    <Navbar logo={logo} isLoading={isLoading} />
                     {children}
                     <Footer />
                 </Stack>
