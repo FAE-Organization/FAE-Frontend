@@ -4,7 +4,7 @@ import DesignPortfolio from "./design-portfolio";
 import Showcase from "../WorkShowcase/showcase";
 
 
-export default function ProfileBody() {
+export default function ProfileBody({ index }) {
     return (
             <HStack
                 maxWidth='100%'
@@ -14,9 +14,9 @@ export default function ProfileBody() {
                 <Showcase />
             <HStack>
                 <Spacer />
-                <ObserverReel />
+                <ObserverReel index={index} />
                 <DesignPortfolio />
             </HStack>
-            </HStack>
+        </HStack>
     )
 }

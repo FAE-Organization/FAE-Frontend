@@ -10,8 +10,16 @@ export default function test() {
             <VStack
                 padding='50px'
             >
-                <UserBanner />
-                <ProfileBody />
+                <UserBanner
+                    roles={['Caster', 'Observer', 'Producer']}
+                    tags={['English', 'Flexible Pay']}
+                    region={'NA'}
+                    image={2}
+                    username={'Jaay'}
+                    pronouns={'he/him'}
+                    payrate='$35/hr'
+                />
+                <ProfileBody index={2} />
             </VStack>
         </React.Fragment >
     )
