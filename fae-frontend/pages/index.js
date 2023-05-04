@@ -44,25 +44,27 @@ export function HeroSection() {
       <Stack
         align={'center'}
         spacing={{ base: 8, md: 20 }}
-        py={{ base: 20 }}
+        pt={{ base: '2em' }}
+        pb={{ base: '10em' }}
         direction={{ base: 'column', md: 'row' }}>
         <Stack flex={1} spacing={{ base: 5, md: 10 }}>
           <Heading
             as={'h1'}
-            lineHeight={1.1}
+            lineHeight={0.6}
             fontWeight={600}
-            fontSize={{ base: '3xl', sm: '4xl', lg: '6xl' }}>
+            pb={'8px'}
+            fontSize={{ base: '4xl', lg: '5xl', xl: '6xl' }}
+            whiteSpace={'nowrap'}>
             <Text
-              as={'span'}
               position={'relative'}>
               Freelancing platform
             </Text>
             <br />
-            <Text as={'span'}>
+            <Text as={'i'}>
               for anything esports.
             </Text>
           </Heading>
-          <Text fontSize={'20px'}>
+          <Text fontSize={{ sm: '16px', md: '20px', lg: '24px'}}>
             FAE brings the spotlight to those who work behind the scenes in
             esports and gaming to showcase their talent.
           </Text>
@@ -100,7 +102,8 @@ export function HeroSection() {
           justify={'center'}
           align={'center'}
           position={'relative'}
-          w={'full'}>
+          w={'full'}
+          minW={{ base: '20em' }}>
           <Box
             position={'relative'}
             height={'300px'}
@@ -113,7 +116,6 @@ export function HeroSection() {
               align={'center'}
               w={'100%'}
               h={'100%'}
-              minW={'350px'}
               src={'./homepage-imgs/homepage-img.png'} /* TODO: CMS stuff */ />
           </Box>
         </Flex>
@@ -126,7 +128,10 @@ export function HeroSection() {
 export function InfoSection() {
   return (
     <Stack align={'center'} pt={'20px'}>
-      <Heading as={'h2'} justify={'center'} pb={'80px'}>
+      <Heading 
+        justify={'center'} 
+        pb={'80px'}
+        fontSize={{ base: '20px', md: '25px', lg: '30px'}}>
         <Text as={'b'}>
           The #1 hub for esports freelancers
         </Text>

@@ -118,7 +118,8 @@ const DesktopNav = () => {
             fontWeight={400}
             _hover={{
               textDecoration: 'none',
-              color: 'purple.800'
+              color: 'purple.800',
+              fontWeight: 'semibold',
             }}>
             {navItem.label}
           </Link>
