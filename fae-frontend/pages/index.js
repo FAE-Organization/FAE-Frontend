@@ -45,7 +45,7 @@ export function HeroSection() {
         align={'center'}
         spacing={{ base: 8, md: 20 }}
         pt={{ base: '2em' }}
-        pb={{ base: '10em' }}
+        pb={{ sm: '5em', md: '10em' }}
         direction={{ base: 'column', md: 'row' }}>
         <Stack flex={1} spacing={{ base: 5, md: 10 }}>
           <Heading
@@ -64,7 +64,7 @@ export function HeroSection() {
               for anything esports.
             </Text>
           </Heading>
-          <Text fontSize={{ sm: '16px', md: '20px', lg: '24px'}}>
+          <Text fontSize={{ sm: '16px', md: '20px', lg: '24px' }}>
             FAE brings the spotlight to those who work behind the scenes in
             esports and gaming to showcase their talent.
           </Text>
@@ -74,7 +74,7 @@ export function HeroSection() {
             justify={'center'}
             align={'center'}>
             <Button
-              size={'lg'}
+              size={{ base: 'md', lg: 'lg' }}
               fontWeight={'normal'}
               color={'white'}
               bg={'purple.600'}
@@ -89,7 +89,7 @@ export function HeroSection() {
               fontWeight={500}
               color={'black'}
               variant={'link'}
-              size={'lg'}
+              size={{ base: 'md', lg: 'lg' }}
               _hover={{ fontWeight: '600' }}>
               <Text as={'u'}>
                 Create an account
@@ -127,11 +127,11 @@ export function HeroSection() {
 // Styling for info section of homepage
 export function InfoSection() {
   return (
-    <Stack align={'center'} pt={'20px'}>
-      <Heading 
-        justify={'center'} 
+    <Stack align={'center'} pt={{ base:'4em', md: '20px' }}>
+      <Heading
+        justify={'center'}
         pb={'80px'}
-        fontSize={{ base: '20px', md: '25px', lg: '30px'}}>
+        fontSize={{ base: '30px', lg: '40px' }}>
         <Text as={'b'}>
           The #1 hub for esports freelancers
         </Text>
@@ -157,8 +157,10 @@ const InfoContent = () => {
         }
 
         return (
-          <Flex key={i} direction={i % 2 == 0 ? 'row' : 'row-reverse'}>
-            <Image src={homeItem.imgSRC} __css={infoPadding} maxWidth={'300px'} maxH={'250px'} />
+          <Flex key={i} direction={{ base: 'column', md: (i % 2 == 0) ? 'row' : 'row-reverse'}}>
+            <Flex>
+              <Image src={homeItem.imgSRC} __css={infoPadding} maxWidth={'300px'} maxH={'250px'} />
+            </Flex>
             <Flex flex={2} direction={'column'} pt={'10px'} fontSize={{ base: '20px' }}>
               <Text as={'b'} casing={'uppercase'} pb={1}>
                 {homeItem.headingText}
