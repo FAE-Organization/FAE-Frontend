@@ -20,7 +20,6 @@ export default function Layout({ children }) {
         fetchLogo()
     }, [])
 
-    console.log(logo)
     return (
         // Styling in <Stack> impacts ENTIRE application !!!!!
         <>
