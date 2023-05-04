@@ -28,7 +28,8 @@ export default function UserCards({ cardVals }) {
                         }}
                         borderRadius='5px'
                     >
-                        <Link href={`/user/${card.id}`}>
+                        {/* <Link href={`/user/${card.id}`}> */}
+                        <Link href={`/user/profile?id='609030e4a4a51a001f9e440a'`}>
                             <Stack>
                                 <Image
                                     src='https://besthqwallpapers.com/Uploads/21-12-2019/116771/thumb-purple-neon-lights-black-background-purple-neon-light-neon-background.jpg'
