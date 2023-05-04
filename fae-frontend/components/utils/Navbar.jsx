@@ -64,28 +64,32 @@ export default function NavBar({ logo, isLoading }) {
 
 // Styling for Navbar links
 const DesktopNav = () => {
-  const router = useRouter();
-  
-  return (
-    <Stack direction={'row'} spacing={6}>
-      {NAV_ITEMS.map((navItem) => (
-        <Center key={navItem.label}>
-          <Link
-            p={2}
-            onClick={() => router.push( navItem.href ?? '#')}
-            fontSize={{ base: '20px' }}
-            fontWeight={400}
-            _hover={{
-              textDecoration: 'none',
-              color: 'purple.800',
-              fontWeight: 'semibold',
-            }}>
-            {navItem.label}
-          </Link>
-        </Center>
-      ))}
-    </Stack>
-  );
+    const router = useRouter();
+
+    return (
+        <Stack direction='row' width='100%' justifyContent='space-between'>
+            <HStack gap={{ base: '15px', md: '10px', lg: '20px' }}>
+                {NAV_ITEMS.map((navItem) => (
+                    <Center key={navItem.label}>
+                        <Link href={navItem.href ?? '#'}>
+                            <Text
+                                p={2}
+                                fontSize={{ base: '14px', md: '16px', lg: '18px' }}
+                                fontWeight={400}
+                                _hover={{
+                                    textDecoration: 'none',
+                                    color: 'purple.800'
+                                }}
+                            >
+                                {navItem.label}
+                            </Text>
+                        </Link>
+                    </Center>
+                ))}
+            </HStack>
+            <UserActions />
+        </Stack >
+    );
 };
 
 const MobileNav = ({ isOpen, onToggle }) => {
