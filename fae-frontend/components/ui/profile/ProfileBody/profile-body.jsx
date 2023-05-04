@@ -7,7 +7,7 @@ import Showcase from "../WorkShowcase/showcase";
 export default function ProfileBody() {
     return (
             <HStack
-                maxWidth='85%'
+                maxWidth='100%'
                 gap='2'
                 align='top'
             >

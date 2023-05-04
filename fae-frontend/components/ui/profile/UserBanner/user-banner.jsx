@@ -7,7 +7,7 @@ export default function UserBanner() {
     return (
         <HStack
             align='top'
-            maxWidth='85%'
+            maxWidth='100%'
         >
 
             <Image 

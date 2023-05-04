@@ -7,10 +7,12 @@ import UserBanner from "@/components/ui/profile/UserBanner/user-banner";
 export default function Profile(props) {
     return (
         <React.Fragment>
+            <Center>
                 <VStack padding='50px' maxW={'7xl'}>
                     <UserBanner />
                     <ProfileBody />
                 </VStack>
+            </Center>
         </React.Fragment >
     )
 }
