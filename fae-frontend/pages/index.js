@@ -44,8 +44,7 @@ export function HeroSection() {
       <Stack
         align={'center'}
         spacing={{ base: 8, md: 20 }}
-        pt={{ base: '2em' }}
-        pb={{ sm: '5em', md: '10em' }}
+        pb={{ base: '5em', md: '10em' }}
         direction={{ base: 'column', md: 'row' }}>
         <Stack flex={1} spacing={{ base: 5, md: 10 }}>
           <Heading
