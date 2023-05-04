@@ -1,13 +1,8 @@
 import { Stack, Grid, GridItem, Image, HStack, Text, Badge, Icon } from "@chakra-ui/react"
 import Link from "next/link";
-import { useState, useEffect, useRef } from "react";
 import { BiDollarCircle } from 'react-icons/bi'
 
-export default function UserCards({ cards }) {
-    const [cardVals, setCardVals] = useState(cards);
-    useEffect(() => {
-        setCardVals(cards);
-    }, [cards]);
+export default function UserCards({ cardVals }) {
 
     return (
         <Stack width='100%'>
@@ -21,7 +16,7 @@ export default function UserCards({ cards }) {
                 gap='20px'
                 placeItems='center'
             >
-                {cardVals.map(card => (
+                {cardVals && (Array.from(cardVals).map(card => (
                     <GridItem
                         key={card.id}
                         height='560px'
@@ -33,7 +28,8 @@ export default function UserCards({ cards }) {
                         }}
                         borderRadius='5px'
                     >
-                        <Link href={`/user/${card.id}`}>
+                        {/* <Link href={`/user/${card.id}`}> */}
+                        <Link href={`/user/profile?id='609030e4a4a51a001f9e440a'`}>
                             <Stack>
                                 <Image
                                     src='https://besthqwallpapers.com/Uploads/21-12-2019/116771/thumb-purple-neon-lights-black-background-purple-neon-light-neon-background.jpg'
@@ -53,6 +49,8 @@ export default function UserCards({ cards }) {
                                         base: 'column',
                                         md: 'row'
                                     }}
+                                    flexWrap='wrap'
+                                // Maybe do this instead: JoannaC... (they/them) 
                                 >
                                     <Text fontSize='20px' fontWeight={600}>{card.username}</Text>
                                     <Text fontSize='12px' color='#8F8F8F'>{`(${card.pronouns.join('/')})`}</Text>
@@ -142,7 +140,8 @@ export default function UserCards({ cards }) {
                             </Stack>
                         </Link>
                     </GridItem>
-                ))}
+
+                )))}
             </Grid>
         </Stack>
     )

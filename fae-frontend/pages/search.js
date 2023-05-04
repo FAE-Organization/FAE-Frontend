@@ -9,6 +9,8 @@ import UserCards from "@/components/ui/user-cards"
 import { useRouter } from "next/router"
 import { getDirectory } from "@/lib/cms/getComponents/getDirectory";
 import { getCachedCategories } from "@/lib/functions/getCachedCategories"
+import { useViewportHeight } from "@/lib/hooks/useViewportHeight"
+import UserCardLoading from "@/components/ui/loading/user-card-loading"
 
 export default function Search({ tempCards, directory }) {
 
@@ -21,18 +23,31 @@ export default function Search({ tempCards, directory }) {
     let allCategories = directory.map((entry) => entry.title)
     const [types, setTypes] = useState([])
     const [currentCategory, setCurrentCategory] = useState('Broadcasting')
+    const [isUserCardLoading, setIsUserCardLoading] = useState(true)
+    const view = useViewportHeight()
 
     useEffect(() => {
         const { category } = router.query
-        const test = async () => {
+        const checkForCachedCategories = async () => {
             const data = await getCachedCategories(category ?? 'Broadcasting')
             setTypes(data)
             setIsLoading(false)
         }
         setCurrentCategory(category)
-        test()
+        checkForCachedCategories()
+
+        const fakeGetAsyncDataTimer = Math.floor(Math.random() * 3500) + 100
+
+        const timer = setTimeout(() => {
+            setIsUserCardLoading(false)
+        }, fakeGetAsyncDataTimer)
+
+        return () => clearTimeout(timer)
     }, [])
 
+    const data = Array.from(tempCards)
+
+    const [cardVals, setCardVals] = useState(data);
     return (
         <Stack width='100%' alignItems='center'>
             <Stack width='90%'>
@@ -58,7 +73,9 @@ export default function Search({ tempCards, directory }) {
                         subcategoryStates: [types, setTypes],
                         isLoading: isLoading,
                         isOpen: isOpen,
-                        onClose: onClose
+                        onClose: onClose,
+                        setCardVals: setCardVals,
+                        setIsUserCardLoading: setIsUserCardLoading
                     }} />
                     <Stack width='100%' gap='15px'>
                         <HStack>
@@ -73,7 +90,11 @@ export default function Search({ tempCards, directory }) {
                                 onClick={onOpen}
                             />
                         </HStack>
-                        <UserCards cards={tempCards} />
+                        {isUserCardLoading ? (
+                            <UserCardLoading />
+                        ) : (
+                            <UserCards cardVals={cardVals} />
+                        )}
                     </Stack>
                 </HStack>
             </Stack>
@@ -82,7 +103,11 @@ export default function Search({ tempCards, directory }) {
 }
 
 export async function getServerSideProps() {
-    const tempCards = [
+    // const tempCardsResponse = await fetch('http://localhost:3000/api/v1/users');
+    // const tempCardsData = await tempCardsResponse.json();
+    const directory = await getDirectory()
+
+    const tempCardsData = [
         {
             id: '1',
             username: 'asa',
@@ -196,10 +221,9 @@ export async function getServerSideProps() {
             }
         },
     ]
-    const directory = await getDirectory()
     return {
         props: {
-            tempCards: tempCards,
+            tempCards: tempCardsData,
             directory: directory
         }
     }

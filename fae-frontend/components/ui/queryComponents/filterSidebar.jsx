@@ -20,9 +20,10 @@ import {
 import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { useForm, FormProvider, Controller } from 'react-hook-form'
 import { getCachedCategories } from "@/lib/functions/getCachedCategories";
+import { URLSearchParams } from "next/dist/compiled/@edge-runtime/primitives/url";
 
 export default function FilterSidebar({ filterProps: {
-    states, categoryStates, allCategories, subcategoryStates, isLoading, isOpen, onClose
+    states, categoryStates, allCategories, subcategoryStates, isLoading, isOpen, onClose, setCardVals, setIsUserCardLoading
 } }) {
 
     const [currentCategory, setCurrentCategory] = categoryStates
@@ -78,26 +79,41 @@ export default function FilterSidebar({ filterProps: {
 
 
     const handleChange = useCallback(async (data) => {
+        setIsUserCardLoading(true)
 
-        if (data) {
-            toast({
-                position: 'top',
-                duration: 5000,
-                isClosable: true,
-                title: JSON.stringify({
-                    category: (currentCategory == null ? 'Broadcasting' : currentCategory),
-                    data
-                })
-            })
+        if (process.env.NODE_ENV === 'development') {
+
+            const url = new URL('http://localhost:3000/api/v1/users');
+            const params = {
+                category: currentCategory,
+                subcategories: data.subcategories,
+                game: data.game,
+                location: data.location,
+                siteType: data.siteType,
+                experience: data.experience,
+                salary: JSON.stringify(data.salary)
+            };
+
+            // Using fake timeouts because we expect to be fetching
+            // data asynchronously here
+            const fakeAsyncTimeout = setTimeout(async () => {
+                const response = await (await fetch(url, {
+                    method: 'POST',
+                    body: JSON.stringify(params)
+                })).json()
+                setCardVals(response)
+                setIsUserCardLoading(false)
+            }, 3000)
+            return () => clearTimeout(fakeAsyncTimeout)
         } else {
             toast({
-                position: 'top',
-                status: 'error',
+                title: 'success',
                 duration: 3000,
-                isClosable: true,
-                title: 'Error: something went wrong'
+                status: 'success'
             })
+            setIsUserCardLoading(false)
         }
+
     }, [currentCategory])
 
     // Delay user input for game input (aka debounce) so that
@@ -148,6 +164,7 @@ export default function FilterSidebar({ filterProps: {
                                 setGameValue={setGameValue}
                                 setLocationValue={setLocationValue}
                                 setMinMax={setMinMax}
+                                minMax={minMax}
                                 location={location}
                                 subcategories={subcategories}
                             />
@@ -185,6 +202,7 @@ export default function FilterSidebar({ filterProps: {
                         setGameValue={setGameValue}
                         setLocationValue={setLocationValue}
                         setMinMax={setMinMax}
+                        minMax={minMax}
                         location={location}
                         subcategories={subcategories}
                     />
@@ -212,6 +230,7 @@ function Form({
     setGameValue,
     setLocationValue,
     setMinMax,
+    minMax,
     location,
     subcategories
 }) {
