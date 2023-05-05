@@ -36,7 +36,7 @@ export default function NavBar({ logo, isLoading }) {
         <Box bg='#FFF' padding='10px' width='100%'>
             <HStack fontSize={{ base: '14px', md: '16px', lg: '18px' }}>
                 {isSmallScreen ? (
-                    <MobileNav isOpen={isOpen} onToggle={onToggle} />
+                    <MobileNav isOpen={isOpen} onToggle={onToggle} isSmallScreen={isSmallScreen} />
                 ) : (
                     <HStack width='100%' justify={{ base: 'center', md: 'start' }}>
                         <Flex flex={1}>
@@ -53,7 +53,7 @@ export default function NavBar({ logo, isLoading }) {
                             </Link>
                         </Flex>
                         <Flex flex={{ md: 6, lg: 10 }}>
-                            <DesktopNav />
+                            <DesktopNav isSmallScreen={isSmallScreen} />
                         </Flex>
                     </HStack>
                 )}
@@ -63,7 +63,7 @@ export default function NavBar({ logo, isLoading }) {
 };
 
 // Styling for Navbar links
-const DesktopNav = () => {
+const DesktopNav = ({ isSmallScreen }) => {
     const router = useRouter();
 
     return (
@@ -87,12 +87,12 @@ const DesktopNav = () => {
                     </Center>
                 ))}
             </HStack>
-            <UserActions />
+            <UserActions isSmallScreen={isSmallScreen} />
         </Stack >
     );
 };
 
-const MobileNav = ({ isOpen, onToggle }) => {
+const MobileNav = ({ onToggle, isSmallScreen }) => {
     return (
         <HStack
             width='100%'
@@ -103,23 +103,27 @@ const MobileNav = ({ isOpen, onToggle }) => {
         >
             <HStack alignItems='center'>
                 <Menu>
-                    <MenuButton
-                        as={IconButton}
-                        onClick={onToggle}
-                        icon={
-                            isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />
-                        }
-                        width='50px'
-                        variant={'ghost'}
-                        aria-label={'Toggle Navigation'}
-                    />
-                    <MenuList>
-                        {NAV_ITEMS.map((navItem) => (
-                            <MenuItem key={navItem.label}>
-                                <MobileNavItem {...navItem} />
-                            </MenuItem>
-                        ))}
-                    </MenuList>
+                    {({ isOpen }) => (
+                        <>
+                            <MenuButton
+                                as={IconButton}
+                                onClick={onToggle}
+                                icon={
+                                    isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />
+                                }
+                                width='50px'
+                                variant={'ghost'}
+                                aria-label={'Toggle Navigation'}
+                            />
+                            <MenuList>
+                                {NAV_ITEMS.map((navItem) => (
+                                    <MenuItem key={navItem.label}>
+                                        <MobileNavItem {...navItem} />
+                                    </MenuItem>
+                                ))}
+                            </MenuList>
+                        </>
+                    )}
                 </Menu>
                 <Link href="/">
                     <Image
@@ -129,7 +133,7 @@ const MobileNav = ({ isOpen, onToggle }) => {
                     />
                 </Link>
             </HStack>
-            <UserActions />
+            <UserActions isSmallScreen={isSmallScreen} />
         </HStack>
     );
 };
@@ -156,7 +160,7 @@ const MobileNavItem = ({ label, children, href }) => {
     );
 };
 
-function UserActions() {
+function UserActions({ isSmallScreen }) {
     const { user, error, isLoading } = useUser()
     const router = useRouter()
 
@@ -202,12 +206,14 @@ function UserActions() {
                     width={{ base: 'fit-content', md: '200px', lg: '250px' }}
                     justifyContent='space-between'
                 >
-                    <Text
-                        fontSize={{ base: '16px', md: '18px', lg: '20px' }}
-                        fontWeight={600}
-                    >
-                        {user.name}
-                    </Text>
+                    {!isSmallScreen && (
+                        <Text
+                            fontSize={{ base: '16px', md: '18px', lg: '20px' }}
+                            fontWeight={600}
+                        >
+                            {user.name}
+                        </Text>
+                    )}
                     <HStack>
                         <Link href='/profile'>
                             <Stack width={{ base: '30px', md: '40px', lg: '50px' }}>
@@ -283,9 +289,5 @@ const NAV_ITEMS = [
     {
         label: 'About',
         href: '#',
-    },
-    {
-        label: 'Profile',
-        href: '/profile',
     }
 ];
