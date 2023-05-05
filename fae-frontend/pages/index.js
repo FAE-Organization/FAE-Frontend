@@ -11,13 +11,14 @@ import {
 import { Inter } from '@next/font/google'
 import styles from '@/styles/Home.module.css'
 import { useRouter } from 'next/router'
+import { useUser } from '@auth0/nextjs-auth0/client'
 
 import Head from 'next/head'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
-    const router = useRouter()
+
     return (
         <Box>
             <Head>
@@ -38,6 +39,8 @@ export default function Home() {
 
 // Styling for Hero section of homepage
 export function HeroSection() {
+    const router = useRouter()
+    const { user } = useUser()
     return (
         <Container maxW={'7xl'} bgGradient="radial-gradient(#D9CFF4 6%, #F5F5F5 70%)">
             <Stack
@@ -69,29 +72,43 @@ export function HeroSection() {
                         spacing={{ base: 4, sm: 6 }}
                         direction={{ base: 'column', sm: 'row' }}
                         justify={'center'}
-                        align={'center'}>
+                        align={'center'}
+                        justifyContent={user ? 'flex-start' : ''}
+                    >
                         <Button
                             size={'lg'}
                             fontWeight={'normal'}
                             color={'white'}
                             bg={'purple.600'}
-                            _hover={{ bg: 'purple.500' }}>
+                            _hover={{ bg: 'purple.500' }}
+                            onClick={() => {
+                                router.push('/search')
+                            }}
+                        >
                             Search Now
                         </Button>
-                        <Text px={6} fontSize={'lg'}>
-                            or
-                        </Text>
-                        <Button
-                            pr={2}
-                            fontWeight={500}
-                            color={'black'}
-                            variant={'link'}
-                            size={'lg'}
-                            _hover={{ fontWeight: '600' }}>
-                            <Text as={'u'}>
-                                Create an account
-                            </Text>
-                        </Button>
+                        {!user && (
+                            <>
+                                <Text px={6} fontSize={'lg'}>
+                                    or
+                                </Text>
+                                <Button
+                                    pr={2}
+                                    fontWeight={500}
+                                    color={'black'}
+                                    variant={'link'}
+                                    size={'lg'}
+                                    _hover={{ fontWeight: '600' }}
+                                    onClick={() => {
+                                        router.push('/api/auth/login')
+                                    }}
+                                >
+                                    <Text as={'u'}>
+                                        Create an account
+                                    </Text>
+                                </Button>
+                            </>
+                        )}
                     </Stack>
                 </Stack>
                 <Flex
@@ -117,7 +134,7 @@ export function HeroSection() {
                     </Box>
                 </Flex>
             </Stack>
-        </Container>
+        </Container >
     );
 }
 
