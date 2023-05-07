@@ -15,7 +15,9 @@ export default function About() {
     return (
         <Box>
             <main className={styles.main}>
-
+                <Text>
+                    Test!
+                </Text>
             </main>
         </Box>
     )
