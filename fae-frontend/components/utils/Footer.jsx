@@ -1,7 +1,5 @@
-import { Stack, Text, HStack, Link, Image } from "@chakra-ui/react";
+import { Stack, Text, HStack, Image } from "@chakra-ui/react";
 import React from "react";
-
-import NextLink from 'next/link';
 
 export default function Footer() {
     return (
@@ -13,9 +11,9 @@ export default function Footer() {
                     alt="For Anything Esports logo"
                 />
                 <HStack spacing={6}>
-                    <FooterLink linkText='About' route='/about' />
-                    <FooterLink linkText='Privacy Policy' route='/privacy-policy' />
-                    <FooterLink linkText='FAQ' route='/FAQ' />
+                    <Text  as={'b'} align={'center'} fontSize={{ base: '16px', md: '20px', lg: '22px'}} color={'purple.800'}>
+                    Effective beginning June 2nd 2023, FAE will become an open-source capstone project.
+                    </Text>
                 </HStack>
                 <Text
                     pb={{ base: '15px', md: '20px', xl: '25px' }}
@@ -26,19 +24,5 @@ export default function Footer() {
                 </Text>
             </Stack>
         </React.Fragment>
-    );
-}
-
-function FooterLink({ linkText, route }) {
-    return (
-        <Link
-            fontSize={{ base: '0.88em', lg: '1.1em', xl: '1.18em' }}
-            fontWeight={425}
-            variant="ghost"
-            as={NextLink}
-            href={'/' + { route }}
-        >
-            {linkText}
-        </Link>
     );
 }
