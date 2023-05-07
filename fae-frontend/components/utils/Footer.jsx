@@ -10,31 +10,21 @@ export default function Footer() {
                 alt="For Anything Esports logo"
             />
             <HStack spacing={6}>
-                <FooterLink linkText='About' route='/about' />
-                <FooterLink linkText='Privacy Policy' route='/privacy-policy' />
-                <FooterLink linkText='FAQ' route='/FAQ' />
+                <Text
+                    as={'b'} 
+                    align={'center'} 
+                    color={'purple.700'}
+                    size={{base: '16px', md: '18px', lg: '20px', xl: '22px'}}>
+                    Beginning June 2nd 2023, FAE will become an open-source Capstone project
+                </Text>
             </HStack>
             <Text
                 pb={{ base: '15px', md: '20px', xl: '25px' }}
-                fontSize={{ base: '12px', lg: '18px' }}
+                size={{ base: '12px', lg: '18px' }}
                 fontWeight='light'
             >
                 Copyright © 2023 FAE - For Anything Esports
             </Text>
         </Stack>
-    );
-}
-
-function FooterLink({ linkText, route }) {
-    return (
-        <Link
-            fontSize={{ base: '0.88em', lg: '1.1em', xl: '1.18em' }}
-            fontWeight={425}
-            variant="ghost"
-            as={NextLink}
-            href={'/' + { route }}
-        >
-            {linkText}
-        </Link>
     );
 }
