@@ -28,22 +28,22 @@ function MemberCard(props) {
     return (
         <Center py={6}>
             <Box
-                w="xs"
+                w='xs'
                 rounded={'xl'}
                 my={2}
                 mx={[0, 3]}
                 overflow={'hidden'}
-                bg="white"
+                bg='white'
                 border={'1px'}
-                borderColor="black"
+                borderColor='black'
                 boxShadow={'6px 6px 0 #553C9A'}>
-                <Box h={{base: '250px', md: '300px'}} borderBottom={'1px'} borderColor="black">
+                <Box h={{base: '250px', md: '300px'}} borderBottom={'1px'} borderColor='black'>
                     <Img
                         src={image}
                         roundedTop={'xl'}
                         objectFit="cover"
-                        h="full"
-                        w="full"
+                        h='full'
+                        w='full'
                         alt={alt}
                     />
                 </Box>

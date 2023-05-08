@@ -1,18 +1,14 @@
 import {
     Stack,
     Text,
-    Button,
-    Image,
-    Flex,
     Container,
     Heading,
     Box,
-    Center
 } from '@chakra-ui/react'
 import styles from '@/styles/Home.module.css'
+import AboutHeader from '@/components/ui/about-page/about-hero';
 import MemberCards from '@/components/ui/about-page/member-cards.jsx'
-import { Inter } from '@next/font/google'
-
+import ProcessSection from '@/components/ui/about-page/process-section';
 
 let test_data = [
     {
@@ -33,22 +29,22 @@ let test_data = [
         name: 'Elora Hoberecht',
         tags: ['Frontend Developer'],
         email: 'hoberecht.elora@gmail.com',
-        image: '/about-test-imgs/elora-hoberecht.jpeg',
+        image: '/about-test-imgs/elorahob.jpeg',
         alt: 'Elora Hoberecht',
     },
     {
         name: 'Patrick Liu',
         tags: ['Frontend Developer'],
-        email: 'patrick@PleaseGiveMeUrEmail.com',
+        email: 'patrickliu022@gmail.com',
         image: '/about-test-imgs/patrick-liu.jpeg',
-        alt: 'Patrick',
+        alt: 'Patrick Liu',
     },
     {
         name: 'David Ngo',
         tags: ['Backend Developer'],
-        email: 'david@PleaseGiveMeUrEmail.com',
+        email: 'ngodavid215@gmail.com',
         image: '/about-test-imgs/david-ngo.jpeg',
-        alt: 'David',
+        alt: 'David Ngo',
     }
 ];
 
@@ -57,9 +53,9 @@ export default function About() {
     return (
         <Box className={styles.main}>
             <Box>
-                <AboutUsMain />
+                <AboutHeader />
                 <Stakeholders />
-                <StepsTaken />
+                {/* <ProcessSection /> */}
                 <MissionValues />
             </Box>
             <Box align={'center'}>
@@ -75,18 +71,15 @@ export default function About() {
 // Main header section of About page
 function AboutUsMain() {
     return (
-        <Box align={'center'}>
-            <Heading as={'h1'}>
-                About Us
-            </Heading>
-            <Text>
-                FAE (short for “For Anything Esports”) is an all-in-one hub to help anyone understand the different facets that make up the esports industry and most importantly, 
-                <Text as={'b'}>
-                    provide freelancers in esports a place to spotlight themselves and showcase their talent.  
-                </Text>
-                FAE’s main features include an esports industry directory, a search function to find freelancers, and an in-app editable portfolio.
-            </Text>
-        </Box>
+        <Stack spacing={4} as={Container} maxW={'3xl'} textAlign={'center'}>
+        <Heading fontSize={{ base: '2xl', sm: '4xl' }} fontWeight={'bold'}>
+          About FAE
+        </Heading>
+        <Text color={'gray.600'} fontSize={{ base: 'sm', sm: 'lg' }}>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis
+          obcaecati ut cupiditate pariatur, dignissimos, placeat amet officiis.
+        </Text>
+      </Stack>
     );
 };
 
