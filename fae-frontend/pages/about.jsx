@@ -55,7 +55,7 @@ export default function About() {
             <Box>
                 <AboutHeader />
                 <Stakeholders />
-                {/* <ProcessSection /> */}
+                <ProcessSection />
                 <MissionValues />
             </Box>
             <Box align={'center'}>
