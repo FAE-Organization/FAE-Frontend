@@ -1,6 +1,7 @@
 import {
     Heading,
     Box,
+    Divider,
 } from '@chakra-ui/react'
 import AboutHeader from '@/components/ui/about-page/about-header';
 import MemberCards from '@/components/ui/about-page/member-cards.jsx';
@@ -54,7 +55,7 @@ export default function About() {
                 <PurposeSection />
                 <ProcessSection />
             </Box>
-            <Box align={'center'}>
+            <Box align={'center'} pt={'20px'}>
                 <Heading as={'h1'}>
                     Meet Our Team
                 </Heading>
