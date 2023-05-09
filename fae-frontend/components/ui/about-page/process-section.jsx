@@ -155,7 +155,7 @@ export default function ProcessSection() {
           Our Process
         </Heading>
         <Text fontSize="xl" mb={8}>
-          Over the course of about 3 months, our team built this project from the group up. See our primary steps below, and check out our demo video to learn more.
+          Over the course of about 3 months, our team built this project from the ground up. See our primary steps below, and check out our demo video to learn more.
         </Text>
         <Flex direction={{ base: "column", md: "row" }} justifyContent={"space-between"}>
           <VStack flex={1} align="stretch" justify={'center'}>
