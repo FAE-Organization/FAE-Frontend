@@ -1,12 +1,9 @@
 import {
-    Stack,
     Text,
-    Container,
     Heading,
     Box,
 } from '@chakra-ui/react'
-import styles from '@/styles/Home.module.css'
-import AboutHeader from '@/components/ui/about-page/about-hero';
+import AboutHeader from '@/components/ui/about-page/about-header';
 import MemberCards from '@/components/ui/about-page/member-cards.jsx'
 import ProcessSection from '@/components/ui/about-page/process-section';
 
@@ -51,10 +48,10 @@ let test_data = [
 // Renders entire About page, using helper functions defined below
 export default function About() {
     return (
-        <Box className={styles.main}>
+        <Box>
             <Box>
                 <AboutHeader />
-                <Stakeholders />
+                {/* <Stakeholders /> */}
                 <ProcessSection />
                 <MissionValues />
             </Box>
@@ -68,37 +65,22 @@ export default function About() {
     )
 };
 
-// Main header section of About page
-function AboutUsMain() {
-    return (
-        <Stack spacing={4} as={Container} maxW={'3xl'} textAlign={'center'}>
-        <Heading fontSize={{ base: '2xl', sm: '4xl' }} fontWeight={'bold'}>
-          About FAE
-        </Heading>
-        <Text color={'gray.600'} fontSize={{ base: 'sm', sm: 'lg' }}>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis
-          obcaecati ut cupiditate pariatur, dignissimos, placeat amet officiis.
-        </Text>
-      </Stack>
-    );
-};
-
 // Stakeholder stuff
-function Stakeholders() {
-    return (
-        <Box align={'center'}>
-            <Box>
-                <Heading as={'h2'}>
-                    Stakeholders
-                </Heading>
-                <ul>
-                    <li> Freelancers in the esports industry looking for work </li>
-                    <li> Esports programs, companies, and organizations seeking talent for work </li>
-                </ul>
-            </Box>
-        </Box>
-    );
-};
+// function Stakeholders() {
+//     return (
+//         <Box align={'center'}>
+//             <Box>
+//                 <Heading as={'h2'}>
+//                     Stakeholders
+//                 </Heading>
+//                 <ul>
+//                     <li> Freelancers in the esports industry looking for work </li>
+//                     <li> Esports programs, companies, and organizations seeking talent for work </li>
+//                 </ul>
+//             </Box>
+//         </Box>
+//     );
+// };
 
 // Content for Mission and Values section
 function MissionValues() {
@@ -111,22 +93,6 @@ function MissionValues() {
                 <Text>
                 FAE was created to help minimize the challenges that freelancers face in the oversaturated and competitive esports industry. As this area is continuously growing and gaining exposure, the need for freelancers increases. However, our research insights reveal that most esports freelancers are not properly compensated for their work, only utilize social media such as Twitter to market themselves, and have to rely on an existing network in order to become aware of work opportunities. Thus, FAE seeks to assist esports freelancers by increasing their visibility and marketability by providing them with a dedicated platform to showcase their work.
                 </Text>
-            </Box>
-        </Box>
-    );
-};
-
-function StepsTaken() {
-    return (
-        <Box align={'center'}>
-            <Heading> Steps Taken </Heading>
-            <Box align={'left'}>
-                <ul>
-                    <li> Initial Research: Market research, competitive analysis, literature reviews, and user interviews were conducted to understand our problem space </li>
-                    <li> Wireframing & Prototyping: Brainstormed and designed FAE’s interface on Figma </li>
-                    <li> User Testing: Conducted numerous rounds with stakeholders to test functionality and appearance </li>
-                    <li> Developing: Front-end and back-end development to bring FAE to life </li>
-                </ul>
             </Box>
         </Box>
     );

@@ -1,7 +1,8 @@
 import {
   Container,
+  Box,
   SimpleGrid,
-  Image,
+  AspectRatio,
   Flex,
   Heading,
   Text,
@@ -13,59 +14,53 @@ import {
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
-  Spacer,
 } from '@chakra-ui/react';
 import {
   IoSearchSharp,
   IoReceiptSharp,
   IoPeopleSharp,
   IoConstructSharp,
-  IoChevronDownSharp,
 } from 'react-icons/io5';
-import React, { useState } from 'react';
+import React from 'react';
 
 // Render each Feature component within the Our Process section.
 const Feature = ({ text, expandText, icon, iconBg }) => {
-  const [show, setShow] = useState(false);
-  const handleToggle = () => setShow(!show);
 
   return (
-    // <Stack direction="row" align="center" justify="space-between">
-      <Accordion allowMultiple>
-        <AccordionItem border={0}>
-          <h2>
-            <AccordionButton _hover={{}}>
-              <Flex
-                w={8}
-                h={8}
-                align="center"
-                justify="center"
-                rounded="full"
-                bg={iconBg}
-                mr={4}>
-                {icon}
-              </Flex>
-              <Flex as="span" flex={1} textAlign='left' fontWeight={600}>
-                {text}
-              </Flex>
-              <Flex>
-                <AccordionIcon />
-              </Flex>
-            </AccordionButton>
-          </h2>
-          <AccordionPanel pb={4}>
-            {expandText}
-          </AccordionPanel>
-        </AccordionItem>
-      </Accordion>
-    // </Stack>
+    <Accordion allowMultiple>
+      <AccordionItem border={0}>
+        <h2>
+          <AccordionButton _hover={{}}>
+            <Flex
+              w={8}
+              h={8}
+              align="center"
+              justify="center"
+              rounded="full"
+              bg={iconBg}
+              mr={4}>
+              {icon}
+            </Flex>
+            <Box as="span" flex={1} textAlign='left' fontWeight={600}>
+              {text}
+            </Box>
+            <Flex>
+              <AccordionIcon />
+            </Flex>
+          </AccordionButton>
+        </h2>
+        <AccordionPanel pb={4}>
+          {expandText}
+        </AccordionPanel>
+      </AccordionItem>
+    </Accordion>
   );
 };
 
 // Render 'Our Process' section of About page
 export default function ProcessSection() {
   return (
-    <Container maxW={'5xl'} py={12}>
+    <Container maxW={'7xl'} py={12}>
       <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
         <Stack spacing={4}>
           <Heading>Our Process</Heading>
@@ -79,7 +74,7 @@ export default function ProcessSection() {
             <Feature
               icon={<Icon as={IoSearchSharp} color={'orange.500'} w={5} h={5} />}
               iconBg={'orange.100'}
-              text={'Market Analysis & Initial Research'}
+              text={'Research & Market Analysis'}
               expandText={'Market research, competitive analysis, literature reviews, and user interviews were conducted to understand our problem space'}
 
             />
@@ -104,15 +99,13 @@ export default function ProcessSection() {
           </Stack>
         </Stack>
         <Flex>
-          <Image
-            // TODO: convert feature image into youtube video of project demo
-            rounded={'md'}
-            alt={'feature image'}
-            src={
-              'https://images.unsplash.com/photo-1554200876-56c2f25224fa?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'
-            }
-            objectFit={'cover'}
-          />
+          <AspectRatio maxW='560px' ratio={1}>
+            <iframe
+              title='naruto'
+              src='https://www.youtube.com/embed/QhBnZ6NPOY0'
+              allowFullScreen
+            />
+          </AspectRatio>
         </Flex>
       </SimpleGrid>
     </Container>
