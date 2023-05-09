@@ -21,7 +21,6 @@ export default function Layout({ children }) {
     }, [])
 
     return (
-        // Styling in <Stack> impacts ENTIRE application !!!!!
         <>
             <Head>
                 <title>{title}</title>
@@ -39,12 +38,10 @@ export default function Layout({ children }) {
             <Stack
                 fontFamily={'Poppins'}
                 color="black"
-                backgroundColor='#F5F5F5'
-            >
+                backgroundColor='#F5F5F5'>
                 <Stack
                     color='black'
-                    bgColor='#F5F5F5'
-                >
+                    bgColor='#F5F5F5'>
                     <Navbar logo={logo} isLoading={isLoading} />
                     {children}
                     <Footer />
