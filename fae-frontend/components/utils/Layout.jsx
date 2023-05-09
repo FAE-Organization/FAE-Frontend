@@ -21,7 +21,6 @@ export default function Layout({ children }) {
     }, [])
 
     return (
-        // Styling in <Stack> impacts ENTIRE application !!!!!
         <>
             <Head>
                 <title>{title}</title>
