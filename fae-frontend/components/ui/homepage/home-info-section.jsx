@@ -12,16 +12,19 @@ const HOME_ITEMS = [
         headingText: 'Search for the perfect freelancer',
         content: 'FAE acts as a resource to help esports individuals, teams, organizations, and companies find the perfect freelancer for their needs.',
         imgSRC: './homepage-imgs/build.png',
+        alt: 'Cartoon woman popping out of video frame',
     },
     {
         headingText: 'Build your esports portfolio',
         content: 'FAE helps esports freelancers market themselves in the industry by allowing them to create their own in-app profile and portfolio.',
         imgSRC: './homepage-imgs/test.png',
+        alt: 'Man relaxed on beanbag chair with laptop',
     },
     {
         headingText: 'Learn about the esports industry',
         content: 'FAE bridges the gap between esports newcomers and veterans by providing resources to help them understand the sectors that make up the industry.',
         imgSRC: './homepage-imgs/feet-pics.png',
+        alt: 'man in beanbag chair playing videogame',
     }
 ];
 
@@ -65,7 +68,12 @@ const InfoContent = () => {
                         justifyContent={'space-between'}
                         gap={{base: 8, md: 20}}>
                         <Flex align={{base: 'center', sm: 'left'}}>
-                            <Image src={homeItem.imgSRC} __css={infoPadding} w={{base: '70vh', lg: '60vh'}} minW={'300px'} />
+                            <Image 
+                                src={homeItem.imgSRC} 
+                                alt={homeItem.alt}
+                                __css={infoPadding} 
+                                w={{base: '70vh', lg: '60vh'}} 
+                                minW={'300px'} />
                         </Flex>
                         <Flex direction={'column'} justify={'center'} >
                             <Flex direction={'column'} fontSize={{ base: '20px' }}>

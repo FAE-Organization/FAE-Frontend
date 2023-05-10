@@ -92,7 +92,7 @@ export function HeroSection() {
             width={'full'}
             overflow={'hidden'}>
             <Image
-              alt={'Hero Image'}
+              alt={'Two sportscasters overlooking an esports tournament'}
               fit={'cover'}
               align={'center'}
               w={'100%'}
