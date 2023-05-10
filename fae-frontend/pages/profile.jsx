@@ -7,9 +7,7 @@ import UserBanner from "@/components/ui/profile/UserBanner/user-banner";
 export default function Profile() {
     return (
         <React.Fragment>
-            <VStack
-                padding='50px'
-            >
+            <VStack padding='50px' >
                 <UserBanner
                     roles={['Observer', 'Tournament Admin', 'Producer', 'Social Media']}
                     tags={['FE/NB', 'Collegiate', 'Flexible Pay']}
@@ -19,7 +17,7 @@ export default function Profile() {
                     pronouns={'any/all'}
                     payrate='$35/hr'
                 />
-                <ProfileBody index={1} />
+                <ProfileBody />
             </VStack>
         </React.Fragment >
     )
