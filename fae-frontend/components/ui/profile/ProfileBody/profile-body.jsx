@@ -6,12 +6,12 @@ import Showcase from "../WorkShowcase/showcase";
 
 export default function ProfileBody({ index }) {
     return (
-        <HStack
-            maxWidth='85%'
-            gap='2'
-            align='top'
-        >
-            <Showcase index={index} />
+            <HStack
+                maxWidth='100%'
+                gap='2'
+                align='top'
+            >
+                <Showcase />
             <HStack>
                 <Spacer />
                 <ObserverReel index={index} />
