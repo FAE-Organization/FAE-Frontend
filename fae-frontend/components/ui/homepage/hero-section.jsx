@@ -19,7 +19,7 @@ export function HeroSection() {
   const { user } = useUser()
 
   return (
-    <Container maxW={'7xl'} bgGradient="radial-gradient(#D9CFF4 6%, #F5F5F5 70%)">
+    <Container maxW={'7xl'} bgGradient="radial-gradient(#D9CFF4 15%, #F5F5F5 70%)">
       <Flex
         align={'center'}
         spacing={{ base: 8, md: 20 }}
@@ -49,7 +49,7 @@ export function HeroSection() {
           </Text>
           <Flex
             spacing={{ base: 4, sm: 6 }}
-            direction={{ base: 'column', sm: 'row' }}
+            direction={{base: 'column', sm: 'row'}}
             justify={'center'}
             align={'center'}>
             <Button
@@ -64,8 +64,8 @@ export function HeroSection() {
               Search Now
             </Button>
             {!user && (
-              <Flex align={'center'} justify={'center'}>
-                <Text px={7} fontSize={'lg'}>or</Text>
+              <Flex align={'center'} direction={{base: 'column', sm: 'row'}}>
+                <Text pl={8} pr={6} pt={{base: 3, sm: 0 }} fontSize={'lg'}>or</Text>
                 <Button
                   pr={2}
                   fontWeight={500}

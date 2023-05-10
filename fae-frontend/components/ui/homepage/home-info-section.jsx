@@ -4,7 +4,6 @@ import {
     Image,
     Flex,
     Heading,
-    Box,
 } from '@chakra-ui/react'
 
 // Data to be displayed in InfoContent boxes within InfoSection of homepage
@@ -33,7 +32,8 @@ export function InfoSection() {
             <Heading
                 justify={'center'}
                 pb={'80px'}
-                fontSize={{ base: '30px', lg: '40px' }}>
+                fontSize={{ base: '28px', md: '35px', lg: '40px' }}
+                align={'center'}>
                 <Text as={'b'}>
                     The #1 hub for esports freelancers
                 </Text>
@@ -46,39 +46,40 @@ export function InfoSection() {
 // Styling for each content box within the info section
 const InfoContent = () => {
     return (
-        <Stack spacing={100} >
+        <Flex direction={'column'} gap={100}>
             {HOME_ITEMS.map((homeItem, i) => {
                 const infoPadding = {};
 
                 if (i % 2 == 0) {
                     // when even
-                    infoPadding.pr = '60px'
+                    infoPadding.pr = {base: 0, md: '40px'}
                 } else {
                     // when odd
-                    infoPadding.pl = '50px'
+                    infoPadding.pl = {base: 0, sm: '40px'}
                 } 
 
                 return (
                     <Flex 
                         key={i} 
                         direction={{ base: 'column', lg: (i % 2 == 0) ? 'row' : 'row-reverse' }} 
-                        gap={{ base: '80px', md: '60px', lg: '40px' }}>
-                        <Flex>
-                            <Image src={homeItem.imgSRC} __css={infoPadding} maxWidth={'450px'} />
+                        justifyContent={'space-between'}
+                        gap={{base: 8, md: 20}}>
+                        <Flex align={{base: 'center', sm: 'left'}}>
+                            <Image src={homeItem.imgSRC} __css={infoPadding} w={{base: '70vh', lg: '60vh'}} minW={'300px'} />
                         </Flex>
-                        <Flex direction={'column'} justify={'center'}>
-                            <Box fontSize={{ base: '20px' }}>
-                                <Text as={'b'} casing={'uppercase'} pb={1}>
+                        <Flex direction={'column'} justify={'center'} >
+                            <Flex direction={'column'} fontSize={{ base: '20px' }}>
+                                <Text as={'b'} casing={'uppercase'} pb={1} fontSize={'2.7vh'}>
                                     {homeItem.headingText}
                                 </Text>
                                 <Text maxW={'500px'}>
                                     {homeItem.content}
                                 </Text>
-                            </Box>
+                            </Flex>
                         </Flex>
                     </Flex>
                 )
             })}
-        </Stack>
+        </Flex>
     );
 };
