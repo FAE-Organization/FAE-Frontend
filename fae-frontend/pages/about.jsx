@@ -1,14 +1,10 @@
-import {
-    Heading,
-    Box,
-    Divider,
-} from '@chakra-ui/react'
+import { Heading, Box } from '@chakra-ui/react'
 import AboutHeader from '@/components/ui/about-page/about-header';
 import MemberCards from '@/components/ui/about-page/member-cards.jsx';
 import PurposeSection from '@/components/ui/about-page/purpose-section';
 import ProcessSection from '@/components/ui/about-page/process-section';
 
-let test_data = [
+let team_data = [
     {
         name: 'Claudine Dulay',
         tags: ['Product Manager', 'UX/UI Designer'],
@@ -46,7 +42,7 @@ let test_data = [
     }
 ];
 
-// Renders entire About page, using helper functions defined below
+// Renders entire About page
 export default function About() {
     return (
         <Box>
@@ -59,7 +55,7 @@ export default function About() {
                 <Heading as={'h1'}>
                     Meet Our Team
                 </Heading>
-                <MemberCards members={test_data} />
+                <MemberCards members={team_data} />
             </Box>
         </Box>
     )
