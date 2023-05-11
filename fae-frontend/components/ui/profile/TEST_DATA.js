@@ -1,0 +1,80 @@
+// TODO: Populate with fake data for testing
+
+// Structure of server-side for profile page
+export const TEST_PROFILE_RESPONSE_DATA = [{
+    username: 'Hemmys',
+    pronouns: ['she', 'her'],
+    bio: 'these are a lot of words. Max 300 chars?',
+    twitch: 'https://www.twitch.tv/hemmys',
+    youtube: 'https://www.youtube.com/hemmys',
+    discord: 'https://www.discord.com/user/hemmys',
+    twitter: 'https://www.twitter.com/hemmys',
+    profilePic: '/profile-test-images/hemmys.png',
+    email: 'hemmys@gmail.com',
+    roles: ['Caster', 'Observer', 'Host'],
+    tags: ['Collegiate', 'Flexible Pay'],
+    salary: 25,
+    events: [{ imageUrl: '/designMockimage_1.png', eventTitle: 'Astral Clash 2022', gameTitle: 'Valorant', userRole: 'Caster' }],
+}]
+
+
+// Data for profile pronoun popover component
+export const PRONOUN_DATA = {
+    pronouns: ['She', 'Her', 'Hers', 'He', 'Him', 'His', 'They', 'Them', 'Theirs', 'All', 'Any', 'Other']
+};
+
+
+// Data for profile roles popover component
+export const ROLES_DATA = {
+    title: 'roles',
+    content: [
+        {
+            heading: 'broadcast',
+            options: ['caster', 'host', 'observer', 'producer', 'replay operator', 'technical director'],
+        },
+        {
+            heading: 'business operations',
+            options: ['administrative', 'finance', 'information technology', 'operations', 'project management'],
+        },
+        {
+            heading: 'communications & marketing',
+            options: ['community management', 'marketing', 'partnerships', 'social media'],
+        },
+        {
+            heading: 'content creation',
+            options: ['editorial', 'graphic design', 'motion design', 'photography', 'videography', 'video editing'],
+        },
+        {
+            heading: 'performance',
+            options: ['coaching', 'health', 'psychology', 'team manager'],
+        },
+        {
+            heading: 'tournaments & events',
+            options: ['event organizer', 'facilities management', 'tournament admin', 'tournament organizer'],
+        },
+    ]
+};
+
+
+// FAKE EVENT DATA
+//
+// pastEvents = {
+//     [
+//     {
+//         title: 'Calling All Heroes 2022 Overwatch 2',
+//         position: 'Tournament Admin',
+//         image: {
+//             src: '',
+//             alt: ''
+//         }
+//     },
+//     {
+//         title: 'Calling All Heroes 2022 Overwatch 2',
+//         position: 'Tournament Admin',
+//         image: {
+//             src: '',
+//             alt: ''
+//         }
+//     }
+//     ]}
+// observerReel = {}

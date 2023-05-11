@@ -6,7 +6,7 @@ import {
     Flex,
     Center,
 } from '@chakra-ui/react';
-import UserTags from '../user-tags';
+import UserTags from '../profile/UserBanner/user-tags';
 
 // Render array of member cards
 export default function MemberCards(props) {

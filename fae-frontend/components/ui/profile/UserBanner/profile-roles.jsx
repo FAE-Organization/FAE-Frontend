@@ -1,25 +1,3 @@
-import { Tag, TagLabel } from "@chakra-ui/react";
-
-export default function Capsule({ color, capName }) {
-    return (
-        <Tag
-            variant='outline'
-            borderRadius='16px'
-            px='12px'
-            py='2px'
-            mx='2px'
-            my='3px'
-            colorScheme={ color }
-            bgColor= { color }
-            opacity={0.7}
-        >
-            <TagLabel color='black' fontSize='15px'>
-                {capName}
-            </TagLabel>
-        </Tag>
-    )
-}
-
 import React, { useState } from "react";
 import {
     Button,
@@ -31,10 +9,9 @@ import {
     Popover,
     PopoverTrigger,
     PopoverContent,
-    PopoverArrow,
-    PopoverCloseButton,
     PopoverHeader,
-    PopoverBody
+    PopoverBody,
+    GridItem
 } from "@chakra-ui/react";
 import { AddIcon } from '@chakra-ui/icons';
 import { Checkbox, CheckboxGroup, Heading } from "@chakra-ui/react";
@@ -47,7 +24,16 @@ export default function ProfileRoles({ roles, editable }) {
         setIsOpen(!isOpen);
     }
 
-    const handleRoleSelect = (role) => {
+    function handleDone() {
+        setIsOpen(false);
+        // Do something with the new pay and rate values, e.g. call an API or update a parent component
+    }
+
+    function handleCancel() {
+        setIsOpen(false);
+    }
+
+    function handleRoleSelect(role) {
         if (selectedRoles.includes(role)) {
             setSelectedRoles(selectedRoles.filter((r) => r !== role));
         } else {
@@ -89,12 +75,12 @@ export default function ProfileRoles({ roles, editable }) {
 
         return (
             <Grid templateColumns="repeat(2, 1fr)" gap={4}>
-                <Box>
+                <GridItem>
                     <RoleCheckboxGroup roles={leftColumn} handleRoleSelect={handleRoleSelect} />
-                </Box>
-                <Box>
+                </GridItem>
+                <GridItem>
                     <RoleCheckboxGroup roles={rightColumn} handleRoleSelect={handleRoleSelect} />
-                </Box>
+                </GridItem>
             </Grid>
         );
     }
@@ -106,7 +92,7 @@ export default function ProfileRoles({ roles, editable }) {
                 {selectedRoles.map((role) => (
                     <Tag
                         key={role}
-                        colorScheme={`blue`}
+                        colorScheme={'blue'}
                         borderRadius="full"
                         size="md"
                         variant="solid"
@@ -117,9 +103,7 @@ export default function ProfileRoles({ roles, editable }) {
                 {editable && (
                     <Popover
                         onOpen={() => setIsOpen(true)}
-                        onClose={() => setIsOpen(false)}
-                        placement="bottom-end"
-                        trigger="click" >
+                        onClose={() => setIsOpen(false)}>
                         <PopoverTrigger>
                             <Button
                                 leftIcon={<AddIcon />}
@@ -132,9 +116,7 @@ export default function ProfileRoles({ roles, editable }) {
                                 Add role
                             </Button>
                         </PopoverTrigger>
-                        <PopoverContent width="320px">
-                            <PopoverArrow />
-                            <PopoverCloseButton />
+                        <PopoverContent >
                             <PopoverHeader>
                                 <Stack direction='row' justify={'center'} align={'center'}>
                                     <Button

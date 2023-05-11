@@ -8,7 +8,6 @@ export default function UserHeader({ username, pronouns, payrate }) {
         >
             <HStack
                 color='black'
-
             >
                 <Subheader
                     as='b'
