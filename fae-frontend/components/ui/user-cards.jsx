@@ -29,11 +29,11 @@ export default function UserCards({ cardVals }) {
                         borderRadius='5px'
                     >
                         {/* <Link href={`/user/${card.id}`}> */}
-                        <Link href={`/user/profile?id='609030e4a4a51a001f9e440a'`}>
+                        <Link href={`/user/profile?id='${card.id}'`}>
                             <Stack>
                                 <Image
-                                    src='https://besthqwallpapers.com/Uploads/21-12-2019/116771/thumb-purple-neon-lights-black-background-purple-neon-light-neon-background.jpg'
-                                    alt={`Profile image for ${card.username}`}
+                                    src={card.profilePic}
+                                    alt={`Profile image for ${card.name}`}
                                     borderTopLeftRadius='5px'
                                     borderTopRightRadius='5px'
                                     height='150px'
@@ -52,8 +52,8 @@ export default function UserCards({ cardVals }) {
                                     flexWrap='wrap'
                                 // Maybe do this instead: JoannaC... (they/them) 
                                 >
-                                    <Text fontSize='20px' fontWeight={600}>{card.username}</Text>
-                                    <Text fontSize='12px' color='#8F8F8F'>{`(${card.pronouns.join('/')})`}</Text>
+                                    <Text fontSize='20px' fontWeight={600}>{card.name}</Text>
+                                    <Text fontSize='12px' color='#8F8F8F'>{`(${card.pronouns})`}</Text>
                                 </Stack>
                                 <Stack
                                     height={{
@@ -112,7 +112,7 @@ export default function UserCards({ cardVals }) {
                                 <Stack height='100px' padding='10px 0px'>
                                     <Text fontSize='12px' fontWeight={600}>NOTABLE EVENTS</Text>
                                     <Stack lineHeight='10px' fontSize='12px'>
-                                        {card.notableEvents.map((events, index) => (
+                                        {card.events.map((events, index) => (
                                             <Text key={index}>{events}</Text>
                                         ))}
                                     </Stack>
@@ -135,7 +135,20 @@ export default function UserCards({ cardVals }) {
                                 </Stack>
                                 <HStack fontWeight={700}>
                                     <Icon as={BiDollarCircle} color='#7BBB9C' />
-                                    <Text>${card.compensation.amount}/{card.compensation.type}</Text>
+                                    <Text>${card.salary.amount}/{
+                                        (() => {
+                                            switch (card.salary.compensationType) {
+                                                case 'hourly':
+                                                    return 'hr'
+                                                case 'salary':
+                                                    return 'yr'
+                                                case 'milestone':
+                                                    return 'mi'
+                                                default:
+                                                    'return hr'
+                                            }
+                                        })()
+                                    }</Text>
                                 </HStack>
                             </Stack>
                         </Link>

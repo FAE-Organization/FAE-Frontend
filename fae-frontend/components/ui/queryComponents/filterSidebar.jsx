@@ -23,7 +23,17 @@ import { getCachedCategories } from "@/lib/functions/getCachedCategories";
 import { URLSearchParams } from "next/dist/compiled/@edge-runtime/primitives/url";
 
 export default function FilterSidebar({ filterProps: {
-    states, categoryStates, allCategories, subcategoryStates, isLoading, isOpen, onClose, setCardVals, setIsUserCardLoading
+    states,
+    categoryStates,
+    allCategories,
+    subcategoryStates,
+    isLoading,
+    isOpen,
+    cardVals,
+    filteredVals,
+    onClose,
+    setFilteredVals,
+    setIsUserCardLoading
 } }) {
 
     const [currentCategory, setCurrentCategory] = categoryStates
@@ -64,7 +74,7 @@ export default function FilterSidebar({ filterProps: {
         }
     })
 
-    const { watch } = methods
+    const { watch, handleSubmit } = methods
 
     const subcategories = watch('subcategories')
     const game = watch('game')
@@ -91,20 +101,44 @@ export default function FilterSidebar({ filterProps: {
                 location: data.location,
                 siteType: data.siteType,
                 experience: data.experience,
-                salary: JSON.stringify(data.salary)
+                salary: data.salary
             };
+
+            console.log(params)
+            const min = parseFloat(params.salary.min);
+            const max = parseFloat(params.salary.max);
+
+            const filteredData = cardVals.filter((entry) => {
+                const amount = parseFloat(entry.salary.amount)
+                if (
+                    (params.subcategories.length === 0 || entry.roles.some((role) => params.subcategories.includes(role))) &&
+                    (params.game === null || params.game.length === 0 || entry.game === params.game) && // might need params.game === '' if null error
+                    (params.location === null || params.location.length === 0 || entry.location === params.location) && // same here
+                    (params.siteType === null || params.location.length === 0 || entry.siteType === params.siteType) &&
+                    (params.experience === null || params.experience.length === 0 || entry.experience === params.experience) &&
+                    (params.salary === null || (min === null || isNaN(min) || amount >= min) &&
+                        (max === null || isNaN(max) || amount <= max)) &&
+                    (params.salary.compensationType === null || params.salary.compensationType.length === 0 || entry.salary.compensationType === params.salary.compensationType) &&
+                    (params.salary.currency === null || params.salary.currency.length === 0 || entry.salary.currency.toLowerCase() === params.salary.currency.toLowerCase())
+                ) {
+                    return true
+                }
+                return false
+            })
+            setFilteredVals(filteredData)
+            setIsUserCardLoading(false)
 
             // Using fake timeouts because we expect to be fetching
             // data asynchronously here
-            const fakeAsyncTimeout = setTimeout(async () => {
-                const response = await (await fetch(url, {
-                    method: 'POST',
-                    body: JSON.stringify(params)
-                })).json()
-                setCardVals(response)
-                setIsUserCardLoading(false)
-            }, 3000)
-            return () => clearTimeout(fakeAsyncTimeout)
+            // const fakeAsyncTimeout = setTimeout(async () => {
+            //     const response = await (await fetch(url, {
+            //         method: 'POST',
+            //         body: JSON.stringify(params)
+            //     })).json()
+            //     setCardVals(response)
+            //     setIsUserCardLoading(false)
+            // }, 3000)
+            // return () => clearTimeout(fakeAsyncTimeout)
         } else {
             toast({
                 title: 'success',
@@ -116,8 +150,6 @@ export default function FilterSidebar({ filterProps: {
 
     }, [currentCategory])
 
-    // Delay user input for game input (aka debounce) so that
-    // the backend is not overloaded by requests
     useEffect(() => {
         const timer = setTimeout(async () => {
             await handleChange({
@@ -167,6 +199,8 @@ export default function FilterSidebar({ filterProps: {
                                 minMax={minMax}
                                 location={location}
                                 subcategories={subcategories}
+
+                                handleSubmit={handleSubmit}
                             />
                         </Stack>
                         <ModalFooter>
@@ -205,6 +239,8 @@ export default function FilterSidebar({ filterProps: {
                         minMax={minMax}
                         location={location}
                         subcategories={subcategories}
+
+                        handleSubmit={handleSubmit}
                     />
                 </Stack>
             )}
@@ -232,10 +268,15 @@ function Form({
     setMinMax,
     minMax,
     location,
-    subcategories
+    subcategories,
+    handleSubmit
 }) {
 
     const { control } = methods
+
+    const onChange = (data) => {
+        console.log(data)
+    }
 
     const tempSiteTypeData = [
         'On-Site',
@@ -253,7 +294,9 @@ function Form({
 
     return (
         <FormProvider {...methods}>
-            <form>
+            <form onChange={(event) => {
+                handleSubmit(onChange)(event)
+            }}>
                 <Stack gap='20px'>
                     <Text className='filter-title'>
                         Category
@@ -387,7 +430,7 @@ function Form({
                                         }}
                                     >
                                         {tempSiteTypeData.map((entry, index) => (
-                                            <Checkbox key={index} value={entry}>{entry}</Checkbox>
+                                            <Checkbox key={index} value={entry.toLowerCase()}>{entry}</Checkbox>
                                         ))}
                                     </CheckboxGroup>
                                 </>
@@ -485,7 +528,7 @@ function Form({
                                         }}
                                     >
                                         {tempExperienceData.map((entry, index) => (
-                                            <Checkbox key={index} value={entry}>{entry}</Checkbox>
+                                            <Checkbox key={index} value={`${index}`}>{entry}</Checkbox>
                                         ))}
                                     </CheckboxGroup>
                                 </>

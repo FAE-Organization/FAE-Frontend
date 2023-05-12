@@ -23,7 +23,7 @@ import {
     ChevronDownIcon
 } from '@chakra-ui/icons';
 import Link from "next/link"
-
+import { useState, useEffect } from 'react';
 import { useUser } from '@auth0/nextjs-auth0/client';
 import { useRouter } from 'next/router';
 
@@ -216,9 +216,12 @@ function UserActions({ isSmallScreen }) {
                     )}
                     <HStack>
                         <Link href='/profile'>
-                            <Stack width={{ base: '30px', md: '40px', lg: '50px' }}>
+                            <Stack
+                                width={{ base: '30px', md: '40px', lg: '50px' }}
+                                maxHeight={{ base: '30px', md: '40px', lg: '50px' }}
+                            >
                                 <Image
-                                    src={user.picture}
+                                    src={`${user.picture}`}
                                     alt='user profile picture'
                                     borderRadius='full'
                                     width='50px'
@@ -288,6 +291,6 @@ const NAV_ITEMS = [
     },
     {
         label: 'About',
-        href: '/about',
+        href: '#',
     }
 ];
