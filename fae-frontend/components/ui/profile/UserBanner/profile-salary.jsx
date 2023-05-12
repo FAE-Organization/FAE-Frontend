@@ -47,6 +47,7 @@ export default function Salary({ editable }) {
                     <PopoverTrigger>
                         <Button
                             fontWeight='normal'
+                            fontSize={'xl'}
                             _hover={{}}
                             onClick={togglePopover}
                             variant='outline'
@@ -94,6 +95,7 @@ export default function Salary({ editable }) {
             {!editable && (
                 <Button
                     fontWeight='normal'
+                    fontSize={'xl'}
                     _hover={{}}
                     variant='outline'
                     borderColor='transparent'

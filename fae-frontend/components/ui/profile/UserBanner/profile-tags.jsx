@@ -1,6 +1,7 @@
 import {
     Button,
     Box,
+    Flex,
     Text,
     Stack,
     Popover,
@@ -20,12 +21,13 @@ import { MinusIcon, AddIcon} from '@chakra-ui/icons'
 import { FiTag } from "react-icons/fi";
 import { useState } from 'react';
 import { TEST_PROFILE_RESPONSE_DATA } from '@/components/ui/profile/TEST_DATA';
-import { IconBase } from 'react-icons';
 
 const { tags: user_tags } = TEST_PROFILE_RESPONSE_DATA[0]; 
 
+// Styling for tags in popover view 
 const TagButt = ({ text, onClick }) => {
     return (
+    <Box p={'3px'}>
         <Tag
             size="md"
             bgColor={'gray.300'}
@@ -46,60 +48,76 @@ const TagButt = ({ text, onClick }) => {
                 right="-3"
                 top="-3" />
         </Tag>
+    </Box>
     );
 };
 
-export default function UserTags({ items, editable }) {
+// Renders profile tags section & editable popover
+export default function UserTags({ editable }) {
     const [tags, setTags] = useState(user_tags);
     const [tagInput, setTagInput] = useState('');
     const [tempTags, setTempTags] = useState(tags);
     const [isOpen, setIsOpen] = useState(false);
 
+    // Handle done button & updates tags
     function handleDone() {
         setTagInput('');
         setTags(tempTags);
         setIsOpen(false);
     }
 
+    // Handles cancel button & does NOT update tags
     function togglePopover() {
         setTagInput('');
         setTempTags(tags);
         setIsOpen(!isOpen);
     }
 
+    // Adding a tag
     function addTag(text) {
         setTagInput('');
         setTempTags([...tempTags, text]);
     };
 
+    // Deleting a tag
     function removeTag(i) {
             tempTags.splice(i, 1); 
     }
 
+    // Render tag buttons in popover
     function renderButts(tags) {
         return tags.map((tag, i) => {
             return (
-                <TagButt text={tag} onClick={() => removeTag(i)} />
+                <TagButt 
+                    text={tag} 
+                    onClick={() => removeTag(i)} />
             );
         });
     };
 
     return (
         <Box>
-            <Heading as="h2" fontSize="xl" mb={4}>Tags</Heading>
+        <Heading as="h2" fontSize="lg" textTransform={'uppercase'} mb={4}>Tags</Heading>
+        <Flex wrap={'wrap'}>
             {tags.map((tag, i) => (
+                <Box p={'3px'}>
                     <Tag
                         key={i}
-                        colorScheme={'gray'}
+                        color={'black'}
                         borderRadius="full"
+                        bgColor={'blue.100'}
+                        border={'3px solid'}
+                        borderColor={'blue.300'}
                         size="lg"
                         variant="solid">
                         {tag}
                     </Tag>
+                </Box>
                 ))}
             {editable && (
                 <Popover isOpen={isOpen} onClose={() => setIsOpen(false)} onOpen={() => setIsOpen(true)} >
                     <PopoverTrigger>
+                        <Box p={'3px'}>
                         <Button
                             leftIcon={<AddIcon />}
                             size='sm'
@@ -110,6 +128,7 @@ export default function UserTags({ items, editable }) {
                             borderRadius="2xl">
                             Add Tag
                         </Button>
+                        </Box>
                     </PopoverTrigger>
                     <PopoverContent align={'center'}>
                         <PopoverHeader>
@@ -154,7 +173,7 @@ export default function UserTags({ items, editable }) {
                                         Current Tags
                                     </Text>
                                     <Box>
-                                        { renderButts(tempTags)}                                    
+                                        { renderButts(tempTags) }                                    
                                     </Box>
                                 </Box>
                             </Stack>
@@ -162,6 +181,7 @@ export default function UserTags({ items, editable }) {
                     </PopoverContent>
                 </Popover>
             )}
+        </Flex>
         </Box>
     );
 }

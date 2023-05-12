@@ -81,7 +81,8 @@ export default function PronounSelection({ editable }) {
                 <Popover isOpen={isOpen} onClose={togglePopover}>
                     <PopoverTrigger>
                         <Button
-                            fontWeight='normal'
+                            fontWeight='bold'
+                            fontSize={'lg'}
                             _hover={{}}
                             onClick={togglePopover}
                             variant='outline'
@@ -117,8 +118,9 @@ export default function PronounSelection({ editable }) {
             )}
             {!editable && (
                 <Button
-                    fontWeight='normal'
                     _hover={{}}
+                    fontSize={'xl'}
+                    fontWeight={'bold'}
                     variant='outline'
                     borderColor='transparent'
                     colorScheme='none'

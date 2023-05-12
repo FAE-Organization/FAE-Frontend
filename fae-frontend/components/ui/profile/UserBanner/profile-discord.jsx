@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { Textarea, Box, Heading } from "@chakra-ui/react";
+import { Input, Box, Text, Heading } from "@chakra-ui/react";
 
 export default function UserDiscord({ value, editable }) {
     const [discord, setDiscord] = useState(value);
     const [isFocused, setIsFocused] = useState(false);
 
     const handleChange = (event) => {
-        setBio(event.target.value);
+        setDiscord(event.target.value);
     };
 
     const handleFocus = () => {
@@ -18,9 +18,9 @@ export default function UserDiscord({ value, editable }) {
     };
 
     return (
-        <Box px={3}>
-            <Heading as={'h2'} textTransform={'uppercase'}>Discord</Heading>
-            <Textarea
+        <Box >
+            <Heading fontSize="lg" mb={4} as={'h2'} textTransform={'uppercase'}>Discord</Heading>
+            <Input
                 value={discord}
                 isReadOnly={!editable}
                 variant={editable ? 'outline' : 'unstyled'}
@@ -28,7 +28,8 @@ export default function UserDiscord({ value, editable }) {
                 borderColor={editable ? 'black' : 'transparent'}
                 focusBorderColor={editable ? 'black' : 'transparent'}
                 resize='none'
-                size={'lg'}
+                borderRadius={'lg'}
+                size={'sm'}
                 onChange={handleChange}
                 onFocus={handleFocus}
                 onBlur={handleBlur}

@@ -2,7 +2,7 @@ import { Box, Stack } from "@chakra-ui/react";
 import EventDetail from "./event-detail"
 import Subheader from "../ProfileBody/subheader";
 
-export default function Showcase({ index }) {
+export default function ShowcaseTWO({ index }) {
     console.log(index)
     return (
         <Stack

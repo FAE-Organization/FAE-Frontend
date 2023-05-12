@@ -9,7 +9,7 @@ export default function ObserverReel({ index }) {
             />
 
             <Image // This may be changed later
-                src={index === 1 ? '/reelMockImage.png' : '/reelMockImage3.png'}
+                src={index === 1 ? 'profile-test-images/reelMockImage.png' : 'profile-test-images/reelMockImage3.png'}
             />
         </ Stack>
     )

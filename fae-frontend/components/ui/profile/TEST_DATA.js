@@ -9,7 +9,7 @@ export const TEST_PROFILE_RESPONSE_DATA = [{
     youtube: 'https://www.youtube.com/hemmys',
     discord: 'https://www.discord.com/user/hemmys',
     twitter: 'https://www.twitter.com/hemmys',
-    profilePic: '/profile-test-images/hemmys.png',
+    profilePic: '/profile-test-images/userMockIcon_1.png',
     email: 'hemmys@gmail.com',
     roles: ['Caster', 'Observer', 'Host'],
     tags: ['Collegiate', 'Flexible Pay'],

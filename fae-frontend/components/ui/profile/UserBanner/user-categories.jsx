@@ -64,15 +64,7 @@ export default function UserCategories({ roles, tags, region }) {
                 align='left'
             >
                 {/* REGION */}
-                <Subheader
-                    category='Region'
-                />
-
-                <Flex spacing='4px' flexWrap='wrap' flexDirection='row'>
-                    <Capsule
-                        color='#8F9AD2'
-                        capName={region}
-                    />
+                
                 </Flex>
             </VStack>
         </HStack>

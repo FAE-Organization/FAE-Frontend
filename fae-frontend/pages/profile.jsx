@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Box } from '@chakra-ui/react';
+import { Button, Flex, Text, TagLabel, Stack, Box, Grid, GridItem, } from '@chakra-ui/react';
 import ProfilePicture from '@/components/ui/profile/UserBanner/profile-picture';
 import ProfileUsername from '@/components/ui/profile/UserBanner/profile-username';
 import PronounSelection from '@/components/ui/profile/UserBanner/profile-pronouns';
@@ -8,6 +8,9 @@ import UserBio from '@/components/ui/profile/UserBanner/profile-bio';
 import UserDiscord from '@/components/ui/profile/UserBanner/profile-discord';
 import ProfileRoles from '@/components/ui/profile/UserBanner/profile-roles';
 import UserTags from '@/components/ui/profile/UserBanner/profile-tags';
+import ProfileBody from '@/components/ui/profile/ProfileBody/profile-body';
+import Subheader from '@/components/ui/profile/ProfileBody/subheader';
+import Capsule from '@/components/ui/profile/UserBanner/capsule';
 
 export default function Profile() {
     const [editable, setEditable] = useState(false);
@@ -34,77 +37,78 @@ export default function Profile() {
     };
 
     return (
-        <Box>
-            {/* Edit mode button */}
-            <Button
-                onClick={handleEditProfile}
-                variant={editable ? 'solid' : 'outline'}
-                colorScheme={'purple'}>
-                {editable ? 'Save Profile' : 'Edit Profile'}
-            </Button>
+        <Box px={'3rem'} py={'4rem'}>
+            <Grid
+                templateRows='repeat(3, 1fr)'
+                columnGap={5}
+                templateColumns='repeat(5, 1fr)'>
+                <ProfilePicture
+                    editable={editable}
+                    onChange={handleProfilePictureChange}
+                />
 
-            {/* TODO: Modify/clean components to reduce repetitve code */}
-            <ProfilePicture
-                editable={editable}
-                value={profilePicture}
-                onChange={handleProfilePictureChange} />
-            <ProfileUsername editable={editable} />
-            <PronounSelection editable={editable} />
-            <Salary editable={editable} />
-            <UserTags editable={editable} />
-            <ProfileRoles editable={editable} />
-            <UserBio
-                editable={editable}
-                initialValue={bio}
-                onSave={handleSaveBio} />
-            <UserDiscord
-                editable={editable}
-                initialValue={discord}
-                onSave={handleSaveDiscord} />
+                <GridItem colSpan={4} pt={3} px={3}>
+                    <Flex justify={'space-between'}>
+                        <Stack direction='row' spacing={3} justify={'center'} align='center'>
+                            <ProfileUsername editable={editable} />
+                            <PronounSelection editable={editable} />
+                            <Salary editable={editable} />
+                        </Stack>
+
+
+                        {/* Edit mode button -- PUSH TO THE RIGHT */}
+                        <Flex>
+                            <Button
+                                onClick={handleEditProfile}
+                                variant={editable ? 'solid' : 'outline'}
+                                colorScheme={'purple'}>
+                                {editable ? 'Save Profile' : 'Edit Profile'}
+                            </Button>
+                        </Flex>
+                    </Flex>
+
+
+                    <Box >
+                        {/* Second box */}
+                        <Grid templateColumns='repeat(6, 1fr)' pt={5}>
+                            <GridItem colSpan={2}>
+                                <ProfileRoles editable={editable} />
+                            </GridItem>
+
+                            <GridItem colSpan={2}>
+                                <UserTags editable={editable} />
+                            </GridItem>
+                            <GridItem colSpan={1}>
+                            <Stack direction={'column'}>
+                                <Subheader category='Region'/>
+                                <Capsule
+                                        color='#8F9AD2'
+                                        capName={'NA'}
+                                />
+                            </Stack>
+                            </GridItem>
+                            <GridItem colSpan={1}>
+                                <UserDiscord
+                                    editable={editable}
+                                    initialValue={discord}
+                                    onSave={handleSaveDiscord} />
+                            </GridItem>
+                        </Grid>
+
+                    </Box>
+
+                    {/* Third box */}
+                    <Box pt={10}>
+                        <UserBio
+                            editable={editable}
+                            initialValue={bio}
+                            onSave={handleSaveBio} />
+                    </Box>
+                </GridItem>
+                <GridItem rowSpan={2} colSpan={5} >
+                    <ProfileBody />
+                </GridItem>
+            </Grid>
         </Box>
     );
 }
-
-// Structure of server-side for profile page
-const TEST_PROFILE_RESPONSE_DATA = [{
-    username: 'Hemmys',
-    pronouns: ['she', 'her'],
-    bio: 'these are a lot of words. Max 300 chars?',
-    twitch: 'https://www.twitch.tv/hemmys',
-    youtube: 'https://www.youtube.com/hemmys',
-    discord: 'https://www.discord.com/user/hemmys',
-    twitter: 'https://www.twitter.com/hemmys',
-    profilePic: '/profile-test-images/hemmys.png',
-    email: 'hemmys@gmail.com',
-    roles: ['Caster', 'Observer', 'Host'],
-    tags: ['Collegiate', 'Flexible Pay'],
-    salary: '25',
-    events: [{ imageUrl: '/designMockimage_1.png', eventTitle: 'Astral Clash 2022', gameTitle: 'Valorant', userRole: 'Caster' }],
-}];
-
-const ROLES_DATA = [
-    {
-        heading: 'broadcast',
-        options: ['caster', 'host', 'observer', 'producer', 'replay operator', 'technical director'],
-    },
-    {
-        heading: 'business operations',
-        options: ['administrative', 'finance', 'information technology', 'operations', 'project management'],
-    },
-    {
-        heading: 'communications & marketing',
-        options: ['community management', 'marketing', 'partnerships', 'social media'],
-    },
-    {
-        heading: 'content creation',
-        options: ['editorial', 'graphic design', 'motion design', 'photography', 'videography', 'video editing'],
-    },
-    {
-        heading: 'performance',
-        options: ['coaching', 'health', 'psychology', 'team manager'],
-    },
-    {
-        heading: 'tournaments & events',
-        options: ['event organizer', 'facilities management', 'tournament admin', 'tournament organizer'],
-    },
-];

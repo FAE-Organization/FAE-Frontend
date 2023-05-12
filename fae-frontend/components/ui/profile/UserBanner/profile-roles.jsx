@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import {
     Button,
+    Flex,
     Grid,
     Tag,
     Box,
@@ -12,13 +13,13 @@ import {
     PopoverHeader,
     PopoverBody,
     GridItem,
-    Checkbox, 
+    Checkbox,
     Heading
 } from "@chakra-ui/react";
 import { AddIcon } from '@chakra-ui/icons';
 import { TEST_PROFILE_RESPONSE_DATA, ROLES_DATA } from '@/components/ui/profile/TEST_DATA';
 
-const { roles: test_roles } = TEST_PROFILE_RESPONSE_DATA[0]; 
+const { roles: test_roles } = TEST_PROFILE_RESPONSE_DATA[0];
 const roles = ROLES_DATA;
 
 // Render user-selected Role tags & popover toggle
@@ -39,7 +40,7 @@ export default function ProfileRoles({ editable }) {
         setSelectedRoles(tempSelectedRoles);
         setIsOpen(false);
     }
-    
+
     // Renders checkbox items based on input array
     // If checkbox item value matches selected role(s), renders checked box.
     function RoleCheckboxes({ items }) {
@@ -100,8 +101,8 @@ export default function ProfileRoles({ editable }) {
         );
     }
 
-      // Updated selected roles array with user selection
-      function handleRoleSelect(event) {
+    // Updated selected roles array with user selection
+    function handleRoleSelect(event) {
         const { value } = event.target;
         if (tempSelectedRoles.includes(value)) {
             setTempSelectedRoles(tempSelectedRoles.filter(item => item !== value));
@@ -112,35 +113,42 @@ export default function ProfileRoles({ editable }) {
 
     return (
         <Box>
-            <Heading as="h2" fontSize="xl" mb={4}>Roles</Heading>
-            <Stack direction={'row'} spacing={2} mb={4}>
+            <Heading as="h2" fontSize="lg" mb={4} textTransform={'uppercase'}>Roles</Heading>
+            <Flex direction={'row'} wrap={'wrap'} mb={4}>
+
                 {selectedRoles.map((role) => (
-                    <Tag
-                        key={role}
-                        colorScheme={'blue'}
-                        borderRadius="full"
-                        size="lg"
-                        variant="solid"
-                        checked>
-                        {role}
-                    </Tag>
+                    <Flex p={'3px'}>
+                        <Tag
+                            key={role}
+                            borderRadius="full"
+                            size="lg"
+                            color={'black'}
+                            bgColor={'purple.100'}
+                            border={'3px solid'}
+                            borderColor={'purple.300'}
+                            checked>
+                            {role}
+                        </Tag>
+                    </Flex>
                 ))}
                 {editable && (
                     <Popover
                         isOpen={isOpen}
                         onClose={togglePopover}>
                         <PopoverTrigger>
-                            <Button
-                                onClick={togglePopover}
-                                leftIcon={<AddIcon />}
-                                size='sm'
-                                borderColor="gray.300"
-                                borderWidth="2px"
-                                borderStyle="dashed"
-                                padding="0.5rem 1rem"
-                                borderRadius="2xl">
-                                Add role
-                            </Button>
+                            <Box p={'3px'}>
+                                <Button
+                                    onClick={togglePopover}
+                                    leftIcon={<AddIcon />}
+                                    size='sm'
+                                    borderColor="gray.300"
+                                    borderWidth={2}
+                                    borderStyle="dashed"
+                                    padding="0.5rem 1rem"
+                                    borderRadius="2xl">
+                                    Add role
+                                </Button>
+                            </Box>
                         </PopoverTrigger>
                         <PopoverContent minW={700}>
                             <PopoverHeader>
@@ -168,7 +176,7 @@ export default function ProfileRoles({ editable }) {
                         </PopoverContent>
                     </Popover>
                 )}
-            </Stack>
+            </Flex>
         </Box>
     );
 }

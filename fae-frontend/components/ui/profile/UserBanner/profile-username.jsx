@@ -1,45 +1,28 @@
+import { Input, InputGroup, } from '@chakra-ui/react'
 import { useState } from 'react';
-import { Input, Box, Button } from '@chakra-ui/react';
+import { TEST_PROFILE_RESPONSE_DATA } from '@/components/ui/profile/TEST_DATA';
 
-export default function ProfileUsername({ editable, value, onChange, onBlur }) {
-  const [isEditing, setIsEditing] = useState(false);
-  const [username, setUsername] = useState(value);
+const { username: name } = TEST_PROFILE_RESPONSE_DATA[0];
+
+export default function ProfileUsername({ editable }) {
+  const [profileUsername, setProfileUsername] = useState(name);
   const realPurple = '#6B46C1';
 
-  const handleChange = (event) => {
-    const newUsername = event.target.value;
-    setUsername(newUsername);
-    onChange(newUsername);
-  };
-
-  function handleUsernameClick() {
-    if (editable) {
-      setIsEditing(true);
-    }
-  }
-
   return (
-    <Button w={'fit-content'} m={3}>
-      {isEditing ? (
+      <InputGroup maxW='300px' m>
         <Input
-          value={value}
-          onChange={handleChange}
-          focusBorderColor={realPurple}
-          onBlur={() => {
-            setIsEditing(false);
-          }}
-          autoFocus
-        />
-      ) : (
-        <Button
-          onClick={handleUsernameClick}
+          value={profileUsername}
+          fontWeight={'bold'}
+          fontSize={'6xl'}
+          borderRadius={'xl'}
+          isReadOnly={!editable}
+          variant={editable ? 'outline' : 'unstyled'}
+          cursor={editable ? 'text' : 'default'}
           border={editable ? '2px solid ' + realPurple : 'none'}
-          borderRadius={'lg'}
-          p={'8px'}
-          cursor={editable ? 'pointer' : 'default'}>
-          {value}
-        </Button>
-      )}
-    </Button >
+          onChange={(e) => (setProfileUsername(e.target.value))}
+          focusBorderColor={editable ? 'black' : 'transparent'}
+          size={'xl'}
+        />
+      </InputGroup>
   );
 }
