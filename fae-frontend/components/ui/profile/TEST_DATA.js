@@ -23,35 +23,32 @@ export const PRONOUN_DATA = ['She', 'Her', 'Hers', 'He', 'Him', 'His', 'They', '
 
 
 // Data for profile roles popover component
-export const ROLES_DATA = {
-    title: 'roles',
-    content: [
+export const ROLES_DATA = [
         {
             heading: 'broadcast',
-            options: ['caster', 'host', 'observer', 'producer', 'replay operator', 'technical director'],
+            options: ['Caster', 'Host', 'Observer', 'Producer', 'Replay Operator', 'Technical Director'],
         },
         {
             heading: 'business operations',
-            options: ['administrative', 'finance', 'information technology', 'operations', 'project management'],
+            options: ['Administrative', 'Finance', 'Information Technology', 'Operations', 'Project Management'],
         },
         {
             heading: 'communications & marketing',
-            options: ['community management', 'marketing', 'partnerships', 'social media'],
+            options: ['Community Management', 'Marketing', 'Partnerships', 'Social Media'],
         },
         {
             heading: 'content creation',
-            options: ['editorial', 'graphic design', 'motion design', 'photography', 'videography', 'video editing'],
+            options: ['Editorial', 'Graphic Design', 'Motion Design', 'Photography', 'Videography', 'Video Editing'],
         },
         {
             heading: 'performance',
-            options: ['coaching', 'health', 'psychology', 'team manager'],
+            options: ['Coaching', 'Health', 'Psychology', 'Team Manager'],
         },
         {
             heading: 'tournaments & events',
-            options: ['event organizer', 'facilities management', 'tournament admin', 'tournament organizer'],
+            options: ['Event Organizer', 'Facilities Management', 'Tournament Admin', 'Tournament Organizer'],
         },
-    ]
-};
+    ];
 
 
 // FAKE EVENT DATA

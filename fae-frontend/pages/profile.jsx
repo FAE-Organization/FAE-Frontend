@@ -8,17 +8,12 @@ import UserBio from '@/components/ui/profile/UserBanner/profile-bio';
 import UserDiscord from '@/components/ui/profile/UserBanner/profile-discord';
 import ProfileRoles from '@/components/ui/profile/UserBanner/profile-roles';
 import UserTags from '@/components/ui/profile/UserBanner/profile-tags';
-// import { ROLES_DATA } from '@/components/ui/profile/TEST_DATA'
 
 export default function Profile() {
     const [editable, setEditable] = useState(false);
     const [profilePicture, setProfilePicture] = useState('https://via.placeholder.com/150');
-    const [username, setUsername] = useState('Hemmys');
     const [bio, setBio] = useState('this is a test!');
     const [discord, setDiscord] = useState('user#0000');
-    const [roles, setRoles] = useState(ROLES_DATA);
-    const PRONOUN_DATA = ['She', 'Her', 'Hers', 'He', 'Him', 'His', 'They', 'Them', 'Theirs', 'All', 'Any', 'Other'];
-
 
     // TODO: Clean this up later!!
 
@@ -26,13 +21,13 @@ export default function Profile() {
         setEditable(!editable);
     }
 
-    function handleUsernameChange(value) {
-        setUsername(value);
-    }
+    // function handleUsernameChange(value) {
+    //     setUsername(value);
+    // }
 
-    function handlePronounChange(value) {
-        setPronouns(value);
-    }
+    // function handlePronounChange(value) {
+    //     setPronouns(value);
+    // }
 
     function handleProfilePictureChange(value) {
         setProfilePicture(value);
@@ -74,25 +69,11 @@ export default function Profile() {
                 editable={editable}
                 value={profilePicture}
                 onChange={handleProfilePictureChange} />
-            <ProfileUsername
-                editable={editable}
-                value={username}
-                onChange={handleUsernameChange} />
-            <PronounSelection
-                editable={editable}
-                onChange={handlePronounChange} />
-            <Salary
-                editable={editable}
-                // 
-           />
-            <UserTags
-                editable={editable}
-                onChange={handlePronounChange}
-            />
-            <ProfileRoles
-                editable={editable}
-                roles={ROLES_DATA}
-                selectedRoles={[]} />
+            <ProfileUsername editable={editable} />
+            <PronounSelection editable={editable} />
+            <Salary editable={editable} />
+            <UserTags editable={editable} />
+            <ProfileRoles editable={editable} />
             <UserBio
                 editable={editable}
                 initialValue={bio}
