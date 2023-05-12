@@ -91,7 +91,7 @@ export default function FilterSidebar({ filterProps: {
     const handleChange = useCallback(async (data) => {
         setIsUserCardLoading(true)
 
-        if (process.env.NODE_ENV === 'development') {
+        if (true) { //process.env.BACKEND_BASE_URI
 
             const url = new URL('http://localhost:3000/api/v1/users');
             const params = {
