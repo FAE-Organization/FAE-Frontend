@@ -64,9 +64,10 @@ export default function UserCategories({ roles, tags, region }) {
                 align='left'
             >
                 {/* REGION */}
-                
-                </Flex>
+
+
             </VStack>
         </HStack>
+
     )
 }
