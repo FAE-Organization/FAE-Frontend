@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Textarea, Box, Heading } from "@chakra-ui/react";
+import { Textarea, Box, Text } from "@chakra-ui/react";
 
 export default function UserBio({ value, editable }) {
     const [bio, setBio] = useState(value);
@@ -18,8 +18,14 @@ export default function UserBio({ value, editable }) {
     };
 
     return (
-        <Box px={3}>
-            <Heading as={'h2'} textTransform={'uppercase'}>Bio</Heading>
+        <Box >
+            <Text
+                textTransform={'Uppercase'}
+                as='b'
+                fontSize={'20px'}
+                width={'auto'}>
+                Bio
+            </Text>
             <Textarea
                 value={bio}
                 isReadOnly={!editable}
@@ -32,7 +38,7 @@ export default function UserBio({ value, editable }) {
                 onChange={handleChange}
                 onFocus={handleFocus}
                 onBlur={handleBlur}
-                placeholder='Nothing here yet!'/>
+                placeholder='Nothing here yet!' />
         </Box>
     );
 };

@@ -106,7 +106,7 @@ export default function Profile() {
                     </Box>
                 </GridItem>
                 <GridItem rowSpan={2} colSpan={5} >
-                    <ProfileBody />
+                    <ProfileBody editable={editable} />
                 </GridItem>
             </Grid>
         </Box>

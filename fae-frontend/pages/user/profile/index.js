@@ -1,7 +1,7 @@
 import ProfileBody from "@/components/ui/profile/ProfileBody/profile-body";
-import Showcase from "@/components/ui/profile/WorkShowcase/showcase";
+import Showcase from "@/components/ui/profile/WorkShowcase/DO_NOT_USE";
 import React from "react";
-import { VStack, HStack, Center } from "@chakra-ui/react";
+import { VStack } from "@chakra-ui/react";
 import UserBanner from "@/components/ui/profile/UserBanner/user-banner";
 
 export default function test() {

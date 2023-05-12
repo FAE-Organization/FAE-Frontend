@@ -5,7 +5,7 @@ import Showcase from "../profile-showcase";
 
 
 
-export default function ProfileBody({ index }) {
+export default function ProfileBody({ index, editable }) {
     return (
             <HStack
                 maxWidth='100%'
@@ -13,12 +13,12 @@ export default function ProfileBody({ index }) {
                 align='top'
                 px={3}
             >
-                <Showcase />
+                <Showcase editable={editable} />
             <HStack>
                 <Spacer px={3}/>
-                <ObserverReel index={index} />
+                <ObserverReel index={index} editable={editable} />
                 <Spacer px={5}/>
-                <DesignPortfolio />
+                <DesignPortfolio editable={editable} />
             </HStack>
         </HStack>
     )
