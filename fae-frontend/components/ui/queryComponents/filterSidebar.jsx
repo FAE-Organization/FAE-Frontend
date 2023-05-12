@@ -93,18 +93,19 @@ export default function FilterSidebar({ filterProps: {
                 experience: data.experience,
                 salary: JSON.stringify(data.salary)
             };
+            setIsUserCardLoading(false)
 
             // Using fake timeouts because we expect to be fetching
             // data asynchronously here
-            const fakeAsyncTimeout = setTimeout(async () => {
-                const response = await (await fetch(url, {
-                    method: 'POST',
-                    body: JSON.stringify(params)
-                })).json()
-                setCardVals(response)
-                setIsUserCardLoading(false)
-            }, 3000)
-            return () => clearTimeout(fakeAsyncTimeout)
+            // const fakeAsyncTimeout = setTimeout(async () => {
+            //     const response = await (await fetch(url, {
+            //         method: 'POST',
+            //         body: JSON.stringify(params)
+            //     })).json()
+            //     setCardVals(response)
+            //     setIsUserCardLoading(false)
+            // }, 3000)
+            // return () => clearTimeout(fakeAsyncTimeout)
         } else {
             toast({
                 title: 'success',
