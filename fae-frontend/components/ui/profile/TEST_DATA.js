@@ -3,7 +3,7 @@
 // Structure of server-side for profile page
 export const TEST_PROFILE_RESPONSE_DATA = [{
     username: 'Hemmys',
-    pronouns: ['she', 'her'],
+    pronouns: ['She', 'Her'],
     bio: 'these are a lot of words. Max 300 chars?',
     twitch: 'https://www.twitch.tv/hemmys',
     youtube: 'https://www.youtube.com/hemmys',
@@ -19,9 +19,7 @@ export const TEST_PROFILE_RESPONSE_DATA = [{
 
 
 // Data for profile pronoun popover component
-export const PRONOUN_DATA = {
-    pronouns: ['She', 'Her', 'Hers', 'He', 'Him', 'His', 'They', 'Them', 'Theirs', 'All', 'Any', 'Other']
-};
+export const PRONOUN_DATA = ['She', 'Her', 'Hers', 'He', 'Him', 'His', 'They', 'Them', 'Theirs', 'All', 'Any', 'Other'];
 
 
 // Data for profile roles popover component

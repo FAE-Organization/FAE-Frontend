@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Button, Box } from '@chakra-ui/react';
 import ProfilePicture from '@/components/ui/profile/UserBanner/profile-picture';
 import ProfileUsername from '@/components/ui/profile/UserBanner/profile-username';
-import PopoverButton from '@/components/ui/profile/UserBanner/profile-pronouns';
+import PronounSelection from '@/components/ui/profile/UserBanner/profile-pronouns';
 import Salary from '@/components/ui/profile/UserBanner/profile-salary';
 import UserBio from '@/components/ui/profile/UserBanner/profile-bio';
 import UserDiscord from '@/components/ui/profile/UserBanner/profile-discord';
@@ -78,13 +78,13 @@ export default function Profile() {
                 editable={editable}
                 value={username}
                 onChange={handleUsernameChange} />
-            <PopoverButton
+            <PronounSelection
                 editable={editable}
-                items={PRONOUN_DATA}
                 onChange={handlePronounChange} />
             <Salary
                 editable={editable}
-                onChange={handlePronounChange} />
+                // 
+           />
             <UserTags
                 editable={editable}
                 onChange={handlePronounChange}
