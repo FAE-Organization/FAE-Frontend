@@ -135,8 +135,20 @@ export default function UserCards({ cardVals }) {
                                 </Stack>
                                 <HStack fontWeight={700}>
                                     <Icon as={BiDollarCircle} color='#7BBB9C' />
-                                    {/* <Text>${card.compensation.amount}/{card.compensation.type}</Text> */}
-                                    <Text>${card.salary}/hr</Text>
+                                    <Text>${card.salary.amount}/{
+                                        (() => {
+                                            switch (card.salary.compensationType) {
+                                                case 'hourly':
+                                                    return 'hr'
+                                                case 'salary':
+                                                    return 'yr'
+                                                case 'milestone':
+                                                    return 'mi'
+                                                default:
+                                                    'return hr'
+                                            }
+                                        })()
+                                    }</Text>
                                 </HStack>
                             </Stack>
                         </Link>

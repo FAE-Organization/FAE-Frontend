@@ -18,6 +18,7 @@ export default function Search({ tempCards, directory, userData }) {
     const [currentSelection, setCurrentSelection] = useState([])
     const [isLoading, setIsLoading] = useState(true)
     const [cardVals, setCardVals] = useState(userData)
+    const [filteredVals, setFilteredVals] = useState(cardVals)
 
     const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -41,6 +42,7 @@ export default function Search({ tempCards, directory, userData }) {
         checkForCachedCategories()
 
         setCardVals(Array.from(userData))
+        setFilteredVals(Array.from(userData))
         // const fakeGetAsyncDataTimer = Math.floor(Math.random() * 3500) + 100
 
         // const timer = setTimeout(() => {
@@ -79,8 +81,10 @@ export default function Search({ tempCards, directory, userData }) {
                         subcategoryStates: [types, setTypes],
                         isLoading: isLoading,
                         isOpen: isOpen,
+                        cardVals: cardVals,
+                        filteredVals: filteredVals,
                         onClose: onClose,
-                        setCardVals: setCardVals,
+                        setFilteredVals: setFilteredVals,
                         setIsUserCardLoading: setIsUserCardLoading
                     }} />
                     <Stack width='100%' gap='15px'>
@@ -99,7 +103,7 @@ export default function Search({ tempCards, directory, userData }) {
                         {isUserCardLoading ? (
                             <UserCardLoading />
                         ) : (
-                            <UserCards cardVals={cardVals} />
+                            <UserCards cardVals={filteredVals} />
                         )}
                     </Stack>
                 </HStack>
