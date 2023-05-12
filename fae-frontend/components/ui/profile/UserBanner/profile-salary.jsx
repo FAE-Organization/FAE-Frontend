@@ -16,18 +16,21 @@ import { TEST_PROFILE_RESPONSE_DATA } from '@/components/ui/profile/TEST_DATA';
 
 const { salary } = TEST_PROFILE_RESPONSE_DATA[0]; 
 
+// Renders adjustible pay rate with popover toggle
 export default function Salary({ editable }) {
     const [pay, setPay] = useState( salary ?? 0);
     const [tempPaySelection, setTempPaySelection] = useState('');
     const [isOpen, setIsOpen] = useState(false);
     const realPurple = '#6B46C1';
 
+    // Handle done button function
     function handleDone() {
         setPay(Number(tempPaySelection));
         setTempPaySelection('');
         setIsOpen(false);
     }
 
+    // Handle cancel button function
     function togglePopover() {
         setTempPaySelection('');
         setIsOpen(!isOpen);
@@ -76,7 +79,6 @@ export default function Salary({ editable }) {
                             </Stack>
                         </PopoverHeader>
                         <PopoverBody px={20} py={4}>
-                                {/* Unique to Salary */}
                                 <NumberInput
                                     defaultValue=''
                                     value={tempPaySelection}

@@ -13,12 +13,16 @@ import {
     InputLeftElement,
     Heading,
     Tag,
-    TagRightIcon
+    TagRightIcon,
+    IconButton,
 } from '@chakra-ui/react'
-import { MinusIcon} from '@chakra-ui/icons'
+import { MinusIcon, AddIcon} from '@chakra-ui/icons'
 import { FiTag } from "react-icons/fi";
-import { AddIcon } from '@chakra-ui/icons';
 import { useState } from 'react';
+import { TEST_PROFILE_RESPONSE_DATA } from '@/components/ui/profile/TEST_DATA';
+import { IconBase } from 'react-icons';
+
+const { tags: user_tags } = TEST_PROFILE_RESPONSE_DATA[0]; 
 
 const TagButt = ({ text, onClick }) => {
     return (
@@ -30,8 +34,7 @@ const TagButt = ({ text, onClick }) => {
             borderRadius={'xl'}
             border={'3px'}
             color={'black'}
-            textAlign={'center'}
-        >
+            textAlign={'center'} >
             {text}
             <TagRightIcon
                 as={MinusIcon}
@@ -41,33 +44,59 @@ const TagButt = ({ text, onClick }) => {
                 border={'1px'}
                 position="relative"
                 right="-3"
-                top="-3"
-            />
+                top="-3" />
         </Tag>
     );
 };
 
 export default function UserTags({ items, editable }) {
-    const [selectedItems, setSelectedItems] = useState([]);
+    const [tags, setTags] = useState(user_tags);
+    const [tagInput, setTagInput] = useState('');
+    const [tempTags, setTempTags] = useState(tags);
     const [isOpen, setIsOpen] = useState(false);
 
-    function handleCancel() {
-        setIsOpen(false);
-    }
-
     function handleDone() {
+        setTagInput('');
+        setTags(tempTags);
         setIsOpen(false);
-        // Do something with the new pay and rate values, e.g. call an API or update a parent component
     }
 
     function togglePopover() {
+        setTagInput('');
+        setTempTags(tags);
         setIsOpen(!isOpen);
     }
 
+    function addTag(text) {
+        setTagInput('');
+        setTempTags([...tempTags, text]);
+    };
+
+    function removeTag(i) {
+            tempTags.splice(i, 1); 
+    }
+
+    function renderButts(tags) {
+        return tags.map((tag, i) => {
+            return (
+                <TagButt text={tag} onClick={() => removeTag(i)} />
+            );
+        });
+    };
+
     return (
         <Box>
-            {/* Heading text is unique to tags */}
             <Heading as="h2" fontSize="xl" mb={4}>Tags</Heading>
+            {tags.map((tag, i) => (
+                    <Tag
+                        key={i}
+                        colorScheme={'gray'}
+                        borderRadius="full"
+                        size="lg"
+                        variant="solid">
+                        {tag}
+                    </Tag>
+                ))}
             {editable && (
                 <Popover isOpen={isOpen} onClose={() => setIsOpen(false)} onOpen={() => setIsOpen(true)} >
                     <PopoverTrigger>
@@ -79,7 +108,6 @@ export default function UserTags({ items, editable }) {
                             borderStyle="dashed"
                             padding="0.5rem 1rem"
                             borderRadius="2xl">
-                            {/* Button text is unique to tags */}
                             Add Tag
                         </Button>
                     </PopoverTrigger>
@@ -90,9 +118,10 @@ export default function UserTags({ items, editable }) {
                                     size='sm'
                                     colorScheme={'purple'}
                                     variant={'outline'}
-                                    onClick={handleCancel}>Cancel</Button>
+                                    onClick={togglePopover}>
+                                    Cancel
+                                </Button>
 
-                                {/* Text is unique to Tags */}
                                 <Text as={'h2'} px={5} fontWeight={'bold'}>Edit tags</Text>
 
                                 <Button
@@ -106,23 +135,26 @@ export default function UserTags({ items, editable }) {
                         </PopoverHeader>
                         <PopoverBody >
                             <Stack>
-                                {/* Popover body is unique to Tags */}
                                 <InputGroup>
                                     <InputLeftElement
                                         children={<FiTag color="gray" size='2.5vh' />}
                                     />
                                     <Input
+                                        value={tagInput}
                                         placeholder='Add a tag (e.g. Collegiate, Flexible Pay, etc.)'
                                         focusBorderColor='purple.700'
                                         borderRadius={'2xl'}
+                                        onChange={(e) => (setTagInput(e.target.value))}
                                     />
+                                     <IconButton icon={<AddIcon />} onClick={() => addTag(tagInput)} />
                                 </InputGroup>
+                               
                                 <Box align='left'>
                                     <Text fontWeight={'bold'} py={2}>
                                         Current Tags
                                     </Text>
                                     <Box>
-                                        This is where tags go!
+                                        { renderButts(tempTags)}                                    
                                     </Box>
                                 </Box>
                             </Stack>

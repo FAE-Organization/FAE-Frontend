@@ -119,7 +119,7 @@ export default function ProfileRoles({ editable }) {
                         key={role}
                         colorScheme={'blue'}
                         borderRadius="full"
-                        size="md"
+                        size="lg"
                         variant="solid"
                         checked>
                         {role}

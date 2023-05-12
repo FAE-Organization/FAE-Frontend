@@ -21,14 +21,6 @@ export default function Profile() {
         setEditable(!editable);
     }
 
-    // function handleUsernameChange(value) {
-    //     setUsername(value);
-    // }
-
-    // function handlePronounChange(value) {
-    //     setPronouns(value);
-    // }
-
     function handleProfilePictureChange(value) {
         setProfilePicture(value);
     }
@@ -40,19 +32,6 @@ export default function Profile() {
     function handleSaveDiscord(newDiscord) {
         setDiscord(newDiscord);
     };
-
-    function handleRoleSelect(heading, option) {
-        const existingIndex = selectedRoles.findIndex(role => role.heading === heading);
-        if (existingIndex !== -1) {
-            // Remove role if it was already selected
-            const newSelectedRoles = [...selectedRoles];
-            newSelectedRoles[existingIndex].options = newSelectedRoles[existingIndex].options.filter(selectedOption => selectedOption !== option);
-            setSelectedRoles(newSelectedRoles);
-        } else {
-            // Add new role
-            setSelectedRoles([...selectedRoles, { heading, options: [option] }]);
-        }
-    }
 
     return (
         <Box>
