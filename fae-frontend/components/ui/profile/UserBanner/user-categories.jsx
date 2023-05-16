@@ -4,18 +4,9 @@ import Capsule from "./capsule";
 
 export default function UserCategories({ roles, tags, region }) {
     return (
-        <HStack
-            align='top'
-        >
-            <VStack
-                width='400px'
-                align='left'
-            >
-                {/* ROLES */}
-                <Subheader
-                    category='Roles'
-                />
-
+        <HStack align='top'>
+            <VStack width='400px' align='left'>
+                <Subheader category='Roles' />
                 <Flex spacing='4px' flexWrap='wrap' flexDirection='row'>
                     {roles.map((entry, index) => (
                         <Capsule
@@ -31,42 +22,24 @@ export default function UserCategories({ roles, tags, region }) {
                                     case 3:
                                         return 'green'
                                 }
-                            })()}
+                            })}
                             capName={entry}
                         />
                     ))}
                 </Flex>
             </VStack>
 
-            <VStack
-                width='325px'
-                align='left'
-            >
-
-                {/* TAGS */}
-                <Subheader
-                    category='Tags'
-                />
+            <VStack width='325px' align='left' >
+                <Subheader category='Tags' />
                 <Flex spacing='4px' flexWrap='wrap' flexDirection='row'>
                     {tags.map((entry, index) => (
                         <Capsule
                             key={index}
                             color='lightgrey'
-                            capName={entry}
-                        />
+                            capName={entry} />
                     ))}
                 </Flex>
             </VStack>
-
-
-            <VStack
-                width='100px'
-                align='left'
-            >
-                {/* REGION */}
-                
-                </Flex>
-            </VStack>
-        </HStack>
+        </HStack >
     )
 }
