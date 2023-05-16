@@ -11,23 +11,28 @@ import { getDirectory } from "@/lib/cms/getComponents/getDirectory";
 import { getCachedCategories } from "@/lib/functions/getCachedCategories"
 import { useViewportHeight } from "@/lib/hooks/useViewportHeight"
 import UserCardLoading from "@/components/ui/loading/user-card-loading"
+import { useSearchParams } from 'next/navigation'
 
-export default function Search({ tempCards, directory }) {
+export default function Search({ tempCards, directory, userData }) {
 
     const [currentSelection, setCurrentSelection] = useState([])
     const [isLoading, setIsLoading] = useState(true)
+    const [cardVals, setCardVals] = useState(userData)
+    const [filteredVals, setFilteredVals] = useState(cardVals)
 
-    const router = useRouter()
     const { isOpen, onOpen, onClose } = useDisclosure()
 
     let allCategories = directory.map((entry) => entry.title)
     const [types, setTypes] = useState([])
     const [currentCategory, setCurrentCategory] = useState('Broadcasting')
-    const [isUserCardLoading, setIsUserCardLoading] = useState(true)
+    const [isUserCardLoading, setIsUserCardLoading] = useState(false)
     const view = useViewportHeight()
+    const searchParams = useSearchParams()
+
 
     useEffect(() => {
-        const { category } = router.query
+        // const { category } = router.query
+        const category = searchParams.get('category')
         const checkForCachedCategories = async () => {
             const data = await getCachedCategories(category ?? 'Broadcasting')
             setTypes(data)
@@ -36,18 +41,21 @@ export default function Search({ tempCards, directory }) {
         setCurrentCategory(category)
         checkForCachedCategories()
 
-        const fakeGetAsyncDataTimer = Math.floor(Math.random() * 3500) + 100
+        setCardVals(Array.from(userData))
+        setFilteredVals(Array.from(userData))
+        // const fakeGetAsyncDataTimer = Math.floor(Math.random() * 3500) + 100
 
-        const timer = setTimeout(() => {
-            setIsUserCardLoading(false)
-        }, fakeGetAsyncDataTimer)
+        // const timer = setTimeout(() => {
+        //     setIsUserCardLoading(false)
+        // }, fakeGetAsyncDataTimer)
 
-        return () => clearTimeout(timer)
+        // return () => clearTimeout(timer)
+
     }, [])
 
-    const data = Array.from(tempCards)
+    // const data = Array.from(tempCards)
 
-    const [cardVals, setCardVals] = useState(data);
+    // const [cardVals, setCardVals] = useState(data);
     return (
         <Stack width='100%' alignItems='center'>
             <Stack width='90%'>
@@ -73,8 +81,10 @@ export default function Search({ tempCards, directory }) {
                         subcategoryStates: [types, setTypes],
                         isLoading: isLoading,
                         isOpen: isOpen,
+                        cardVals: cardVals,
+                        filteredVals: filteredVals,
                         onClose: onClose,
-                        setCardVals: setCardVals,
+                        setFilteredVals: setFilteredVals,
                         setIsUserCardLoading: setIsUserCardLoading
                     }} />
                     <Stack width='100%' gap='15px'>
@@ -93,7 +103,7 @@ export default function Search({ tempCards, directory }) {
                         {isUserCardLoading ? (
                             <UserCardLoading />
                         ) : (
-                            <UserCards cardVals={cardVals} />
+                            <UserCards cardVals={filteredVals} />
                         )}
                     </Stack>
                 </HStack>
@@ -103,8 +113,6 @@ export default function Search({ tempCards, directory }) {
 }
 
 export async function getServerSideProps() {
-    // const tempCardsResponse = await fetch('http://localhost:3000/api/v1/users');
-    // const tempCardsData = await tempCardsResponse.json();
     const directory = await getDirectory()
 
     const tempCardsData = [
@@ -221,10 +229,14 @@ export async function getServerSideProps() {
             }
         },
     ]
+
+    const userData = await (await fetch(`${process.env.BACKEND_BASE_URI}/api/profile`)).json()
+    console.log(userData)
     return {
         props: {
             tempCards: tempCardsData,
-            directory: directory
+            directory: directory,
+            userData: userData
         }
     }
 }

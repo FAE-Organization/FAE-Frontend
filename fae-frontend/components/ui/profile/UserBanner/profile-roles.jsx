@@ -117,9 +117,8 @@ export default function ProfileRoles({ editable }) {
             <Flex direction={'row'} wrap={'wrap'} mb={4}>
 
                 {selectedRoles.map((role) => (
-                    <Flex p={'3px'}>
+                    <Flex p={'3px'} key={role}>
                         <Tag
-                            key={role}
                             borderRadius="full"
                             size="lg"
                             color={'black'}
