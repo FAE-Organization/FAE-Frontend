@@ -12,19 +12,27 @@ import {
   Heading,
   Text,
 } from "@chakra-ui/react";
-import { IoSearchSharp } from 'react-icons/io5';
+import { FaSearch } from 'react-icons/fa'
+import {
+  IoBrush,
+  IoPeople,
+  IoHammer,
+  IoChevronForward
+} from 'react-icons/io5';
 
 // Renders 'Our Process' section of about page
 export default function ProcessSection() {
   return (
     <Flex justify={'center'} align={'center'}>
       <Box px={8} py={16}>
+        <Box px={'8vh'}>
           <Heading as="h2" fontSize="4xl" mb={4}>
             Our Process
           </Heading>
           <Text fontSize="xl" mb={8}>
             Over the course of about 3 months, our team built this project from the ground up. See our primary steps below, and check out our demo video to learn more.
           </Text>
+        </Box>
         <Flex direction={{ base: "column", md: "row" }} justifyContent={"space-between"}>
           <VStack flex={1} align="stretch" justify={'center'}>
             < AccordionSection />
@@ -45,7 +53,7 @@ export default function ProcessSection() {
   );
 };
 
-// Renders accordion section
+// Renders accordion section 
 const AccordionSection = () => {
   return (
     <Accordion
@@ -58,12 +66,14 @@ const AccordionSection = () => {
             <Flex
               w={10}
               h={10}
+              color='white'
+              fontSize={'2xl'}
               align="center"
               justify="center"
               rounded="full"
               bg={item.iconBg}
               mr={4}>
-              {item.icon}
+              {<item.icon />}
             </Flex>
             <Box flex="1" textAlign="left" px={2} py={3} fontSize={{ base: 'lg', lg: 'xl' }}>
               {item.title}
@@ -73,7 +83,11 @@ const AccordionSection = () => {
           <AccordionPanel pb={4} px={20}>
             <Text>{item.content}</Text>
             <Link href={item.link} isExternal>
-              <Button bg={item.iconBg} color='white' mt={4}>
+              <Button
+                bg={item.iconBg}
+                color='white'
+                mt={4}
+                rightIcon={<IoChevronForward />}>
                 {item.route}
               </Button>
             </Link>
@@ -88,9 +102,8 @@ const AccordionSection = () => {
 const accordionItems = [
   {
     id: 1,
-    icon: IoSearchSharp,
+    icon: FaSearch,
     iconBg: 'pink.500',
-    iconColor: 'white',
     title: 'Research & Market Analysis',
     content: 'Market research, competitive analysis, literature reviews, and user interviews were conducted to understand our problem space.',
     link: 'https://www.google.com/',
@@ -98,9 +111,8 @@ const accordionItems = [
   },
   {
     id: 2,
-    icon: IoSearchSharp,
+    icon: IoBrush,
     iconBg: 'yellow.500',
-    iconColor: 'white',
     title: 'Wireframing & Prototyping',
     content: 'Brainstormed and designed FAE’s interface on Figma.',
     link: 'https://www.google.com/',
@@ -108,9 +120,8 @@ const accordionItems = [
   },
   {
     id: 3,
-    icon: IoSearchSharp,
+    icon: IoPeople,
     iconBg: 'purple.500',
-    iconColor: 'white',
     title: 'Usability Testing',
     content: 'Conducted numerous rounds with stakeholders to test functionality and appearance.',
     link: 'https://www.google.com/',
@@ -118,9 +129,8 @@ const accordionItems = [
   },
   {
     id: 4,
-    icon: IoSearchSharp,
+    icon: IoHammer,
     iconBg: 'blue.500',
-    iconColor: 'white',
     title: 'Development & Implementation',
     content: 'Front-end and back-end development to bring FAE to life!',
     link: 'https://www.google.com/',

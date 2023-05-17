@@ -11,7 +11,7 @@ export default function PurposeSection() {
                 <Heading as="h2" size="xl" mb="4">
                     Our Mission
                 </Heading>
-                <Text fontSize="lg">
+                <Text fontSize="lg" pb={3}>
                     FAE was created to help minimize the challenges that freelancers face in the
                     oversaturated and competitive esports industry. As this area is continuously
                     growing and gaining exposure, the need for freelancers increases. However,
