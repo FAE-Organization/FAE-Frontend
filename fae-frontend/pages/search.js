@@ -13,7 +13,7 @@ import { useViewportHeight } from "@/lib/hooks/useViewportHeight"
 import UserCardLoading from "@/components/ui/loading/user-card-loading"
 import { useSearchParams } from 'next/navigation'
 
-export default function Search({ tempCards, directory, userData }) {
+export default function Search({ directory, userData }) {
 
     const [currentSelection, setCurrentSelection] = useState([])
     const [isLoading, setIsLoading] = useState(true)
@@ -115,128 +115,127 @@ export default function Search({ tempCards, directory, userData }) {
 export async function getServerSideProps() {
     const directory = await getDirectory()
 
-    const tempCardsData = [
-        {
-            id: '1',
-            username: 'asa',
-            pronouns: ['any', 'all'],
-            roles: ['observer', 'graphic designer'],
-            region: 'SA',
-            notableEvents: ['VCT Masters 2022', 'VCT Challengers 2023'],
-            tags: ['English', 'Portugese', 'Flexible Pay'],
-            compensation: {
-                type: 'hr',
-                amount: 40,
-                currency: 'usd'
-            }
-        },
-        {
-            id: '2',
-            username: 'belle',
-            pronouns: ['she', 'they'],
-            roles: ['observer', 'graphic designer'],
-            region: 'SA',
-            notableEvents: ['VCT Masters 2022', 'VCT Challengers 2023'],
-            tags: ['AAPI', 'Collegiate', 'FPS', 'FE/NB'],
-            compensation: {
-                type: 'hr',
-                amount: 40,
-                currency: 'usd'
-            }
-        },
-        {
-            id: '3',
-            username: 'Brian S.',
-            pronouns: ['he', 'him'],
-            roles: ['observer', 'tournament admin', 'producer'],
-            region: 'AS',
-            notableEvents: ['VCT LOCK//IN', 'Naraka 2022 Morus Cup'],
-            tags: ['Flexible Schedule'],
-            compensation: {
-                type: 'hr',
-                amount: 35,
-                currency: 'usd'
-            }
-        },
-        {
-            id: '4',
-            username: 'hemmys',
-            pronouns: ['any', 'all'],
-            roles: ['observer', 'tournament admin', 'producer'],
-            region: 'NA',
-            notableEvents: ['VCT Game Changers Academy', 'Astral Clash', 'Calling All Heroes'],
-            tags: ['FE/NB', 'Collegiate', 'Flexible Pay'],
-            compensation: {
-                type: 'hr',
-                amount: 30,
-                currency: 'usd'
-            }
-        },
-        {
-            id: '5',
-            username: 'Jaay',
-            pronouns: ['he', 'him'],
-            roles: ['observer', 'tournament admin', 'producer'],
-            region: 'NA',
-            notableEvents: ['VCT Game Changers Academy', 'Astral Clash', 'Calling All Heroes'],
-            tags: ['FE/NB', 'Collegiate', 'Flexible Pay'],
-            compensation: {
-                type: 'hr',
-                amount: 30,
-                currency: 'usd'
-            }
-        },
-        {
-            id: '6',
-            username: 'JoannaCasts',
-            pronouns: ['they', 'them'],
-            roles: ['observer', 'tournament admin', 'producer'],
-            region: 'NA',
-            notableEvents: ['VCT Game Changers Academy', 'Astral Clash', 'Calling All Heroes'],
-            tags: ['FE/NB', 'Collegiate', 'Flexible Pay'],
-            compensation: {
-                type: 'hr',
-                amount: 30,
-                currency: 'usd'
-            }
-        },
-        {
-            id: '7',
-            username: 'Nixy',
-            pronouns: ['he', 'they'],
-            roles: ['observer', 'tournament admin', 'producer'],
-            region: 'NA',
-            notableEvents: ['VCT Game Changers Academy', 'Astral Clash', 'Calling All Heroes'],
-            tags: ['FE/NB', 'Collegiate', 'Flexible Pay'],
-            compensation: {
-                type: 'hr',
-                amount: 30,
-                currency: 'usd'
-            }
-        },
-        {
-            id: '8',
-            username: 'powy',
-            pronouns: ['she', 'her'],
-            roles: ['observer', 'tournament admin', 'producer'],
-            region: 'NA',
-            notableEvents: ['VCT Game Changers Academy', 'Astral Clash', 'Calling All Heroes'],
-            tags: ['FE/NB', 'Collegiate', 'Flexible Pay'],
-            compensation: {
-                type: 'hr',
-                amount: 30,
-                currency: 'usd'
-            }
-        },
-    ]
-
     const userData = await (await fetch(`${process.env.BACKEND_BASE_URI}/api/profile`)).json()
     console.log(userData)
     return {
         props: {
-            tempCards: tempCardsData,
             directory: directory,
             userData: userData
         }
     }
 }
+
+// const tempCardsData = [
+//     {
+//         id: '1',
+//         username: 'asa',
+//         pronouns: ['any', 'all'],
+//         roles: ['observer', 'graphic designer'],
+//         region: 'SA',
+//         notableEvents: ['VCT Masters 2022', 'VCT Challengers 2023'],
+//         tags: ['English', 'Portugese', 'Flexible Pay'],
+//         compensation: {
+//             type: 'hr',
+//             amount: 40,
+//             currency: 'usd'
+//         }
+//     },
+//     {
+//         id: '2',
+//         username: 'belle',
+//         pronouns: ['she', 'they'],
+//         roles: ['observer', 'graphic designer'],
+//         region: 'SA',
+//         notableEvents: ['VCT Masters 2022', 'VCT Challengers 2023'],
+//         tags: ['AAPI', 'Collegiate', 'FPS', 'FE/NB'],
+//         compensation: {
+//             type: 'hr',
+//             amount: 40,
+//             currency: 'usd'
+//         }
+//     },
+//     {
+//         id: '3',
+//         username: 'Brian S.',
+//         pronouns: ['he', 'him'],
+//         roles: ['observer', 'tournament admin', 'producer'],
+//         region: 'AS',
+//         notableEvents: ['VCT LOCK//IN', 'Naraka 2022 Morus Cup'],
+//         tags: ['Flexible Schedule'],
+//         compensation: {
+//             type: 'hr',
+//             amount: 35,
+//             currency: 'usd'
+//         }
+//     },
+//     {
+//         id: '4',
+//         username: 'hemmys',
+//         pronouns: ['any', 'all'],
+//         roles: ['observer', 'tournament admin', 'producer'],
+//         region: 'NA',
+//         notableEvents: ['VCT Game Changers Academy', 'Astral Clash', 'Calling All Heroes'],
+//         tags: ['FE/NB', 'Collegiate', 'Flexible Pay'],
+//         compensation: {
+//             type: 'hr',
+//             amount: 30,
+//             currency: 'usd'
+//         }
+//     },
+//     {
+//         id: '5',
+//         username: 'Jaay',
+//         pronouns: ['he', 'him'],
+//         roles: ['observer', 'tournament admin', 'producer'],
+//         region: 'NA',
+//         notableEvents: ['VCT Game Changers Academy', 'Astral Clash', 'Calling All Heroes'],
+//         tags: ['FE/NB', 'Collegiate', 'Flexible Pay'],
+//         compensation: {
+//             type: 'hr',
+//             amount: 30,
+//             currency: 'usd'
+//         }
+//     },
+//     {
+//         id: '6',
+//         username: 'JoannaCasts',
+//         pronouns: ['they', 'them'],
+//         roles: ['observer', 'tournament admin', 'producer'],
+//         region: 'NA',
+//         notableEvents: ['VCT Game Changers Academy', 'Astral Clash', 'Calling All Heroes'],
+//         tags: ['FE/NB', 'Collegiate', 'Flexible Pay'],
+//         compensation: {
+//             type: 'hr',
+//             amount: 30,
+//             currency: 'usd'
+//         }
+//     },
+//     {
+//         id: '7',
+//         username: 'Nixy',
+//         pronouns: ['he', 'they'],
+//         roles: ['observer', 'tournament admin', 'producer'],
+//         region: 'NA',
+//         notableEvents: ['VCT Game Changers Academy', 'Astral Clash', 'Calling All Heroes'],
+//         tags: ['FE/NB', 'Collegiate', 'Flexible Pay'],
+//         compensation: {
+//             type: 'hr',
+//             amount: 30,
+//             currency: 'usd'
+//         }
+//     },
+//     {
+//         id: '8',
+//         username: 'powy',
+//         pronouns: ['she', 'her'],
+//         roles: ['observer', 'tournament admin', 'producer'],
+//         region: 'NA',
+//         notableEvents: ['VCT Game Changers Academy', 'Astral Clash', 'Calling All Heroes'],
+//         tags: ['FE/NB', 'Collegiate', 'Flexible Pay'],
+//         compensation: {
+//             type: 'hr',
+//             amount: 30,
+//             currency: 'usd'
+//         }
+//     },
+// ]

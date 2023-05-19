@@ -20,7 +20,8 @@ import {
 import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { useForm, FormProvider, Controller } from 'react-hook-form'
 import { getCachedCategories } from "@/lib/functions/getCachedCategories";
-import { URLSearchParams } from "next/dist/compiled/@edge-runtime/primitives/url";
+import { useRouter } from "next/router";
+import { useSearchParams } from "next/navigation";
 
 export default function FilterSidebar({ filterProps: {
     states,
@@ -39,15 +40,6 @@ export default function FilterSidebar({ filterProps: {
     const [currentCategory, setCurrentCategory] = categoryStates
     const [types, setTypes] = subcategoryStates
 
-    useEffect(() => {
-        const handleBeforeUnload = () => {
-            localStorage.setItem('beforeAll', JSON.stringify([]));
-        };
-        window.addEventListener('beforeunload', handleBeforeUnload);
-        return () => {
-            window.removeEventListener('beforeunload', handleBeforeUnload);
-        };
-    }, []);
 
     const values = useMemo(() => ({
         subcategories: '',
@@ -93,38 +85,43 @@ export default function FilterSidebar({ filterProps: {
 
         if (true) { //process.env.BACKEND_BASE_URI
 
-            const url = new URL('http://localhost:3000/api/v1/users');
+            const url = 'http://localhost:3001/api/filter'
             const params = {
-                category: currentCategory,
-                subcategories: data.subcategories,
-                game: data.game,
-                location: data.location,
-                siteType: data.siteType,
-                experience: data.experience,
-                salary: data.salary
+                category: currentCategory ? currentCategory : '',
+                subcategories: data.subcategories ? data.subcategories : '',
+                game: data.game ? data.game : '',
+                location: data.location ? data.location : '',
+                siteType: data.siteType ? data.siteType : '',
+                experience: data.experience ? data.experience : '',
+                salary: data.salary ? data.salary : ''
             };
 
-            console.log(params)
-            const min = parseFloat(params.salary.min);
-            const max = parseFloat(params.salary.max);
+            const filteredData = await (await fetch(url, {
+                method: 'POST',
+                body: JSON.stringify({ ...params })
+            })).json()
 
-            const filteredData = cardVals.filter((entry) => {
-                const amount = parseFloat(entry.salary.amount)
-                if (
-                    (params.subcategories.length === 0 || entry.roles.some((role) => params.subcategories.includes(role))) &&
-                    (params.game === null || params.game.length === 0 || entry.game === params.game) && // might need params.game === '' if null error
-                    (params.location === null || params.location.length === 0 || entry.location === params.location) && // same here
-                    (params.siteType === null || params.location.length === 0 || entry.siteType === params.siteType) &&
-                    (params.experience === null || params.experience.length === 0 || entry.experience === params.experience) &&
-                    (params.salary === null || (min === null || isNaN(min) || amount >= min) &&
-                        (max === null || isNaN(max) || amount <= max)) &&
-                    (params.salary.compensationType === null || params.salary.compensationType.length === 0 || entry.salary.compensationType === params.salary.compensationType) &&
-                    (params.salary.currency === null || params.salary.currency.length === 0 || entry.salary.currency.toLowerCase() === params.salary.currency.toLowerCase())
-                ) {
-                    return true
-                }
-                return false
-            })
+            // console.log(params)
+            // const min = parseFloat(params.salary.min);
+            // const max = parseFloat(params.salary.max);
+
+            // const filteredData = cardVals.filter((entry) => {
+            //     const amount = parseFloat(entry.salary.amount)
+            //     if (
+            //         (params.subcategories.length === 0 || entry.roles.some((role) => params.subcategories.includes(role))) &&
+            //         (params.game === null || params.game.length === 0 || entry.game === params.game) && // might need params.game === '' if null error
+            //         (params.location === null || params.location.length === 0 || entry.location === params.location) && // same here
+            //         (params.siteType === null || params.location.length === 0 || entry.siteType === params.siteType) &&
+            //         (params.experience === null || params.experience.length === 0 || entry.experience === params.experience) &&
+            //         (params.salary === null || (min === null || isNaN(min) || amount >= min) &&
+            //             (max === null || isNaN(max) || amount <= max)) &&
+            //         (params.salary.compensationType === null || params.salary.compensationType.length === 0 || entry.salary.compensationType === params.salary.compensationType) &&
+            //         (params.salary.currency === null || params.salary.currency.length === 0 || entry.salary.currency.toLowerCase() === params.salary.currency.toLowerCase())
+            //     ) {
+            //         return true
+            //     }
+            //     return false
+            // })
             setFilteredVals(filteredData)
             setIsUserCardLoading(false)
 
@@ -292,6 +289,9 @@ function Form({
         'Senior (5+ years)'
     ]
 
+    const searchParams = useSearchParams()
+    const router = useRouter()
+
     return (
         <FormProvider {...methods}>
             <form onChange={(event) => {
@@ -310,6 +310,11 @@ function Form({
                                 setCurrentSelection([])
                             }
                             getSubCategoryOnChange(event)
+                            router.push({
+                                query: {
+                                    category: encodeURIComponent(event.target.value)
+                                }
+                            })
                         }}
                         value={currentCategory}
                     >
