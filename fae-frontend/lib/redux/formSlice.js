@@ -23,19 +23,7 @@ export const formSlice = createSlice({
             state.category = action.payload
         },
         updateSubcategory: (state, action) => {
-            const updatedLocation = action.payload
-
-            const currentLength = state.subcategories.length
-            const updatedLength = updatedLocation.length
-
-            if (currentLength < updatedLength) {
-                const newSubcategories = updatedLocation.filter(entry => !state.subcategories.includes(entry))
-                state.subcategories.push(...newSubcategories)
-                state.subcategories.sort()
-            } else if (currentLength > updatedLength) {
-                const newSubcategories = state.subcategories.filter(entry => !updatedLocation.includes(entry));
-                state.subcategories = newSubcategories.sort();
-            }
+            state.subcategories = action.payload
         },
         updateGame: (state, action) => {
             state.game = action.payload

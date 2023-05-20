@@ -10,36 +10,36 @@ import { getDirectory } from "@/lib/cms/getComponents/getDirectory";
 import { getCachedCategories } from "@/lib/functions/getCachedCategories"
 import UserCardLoading from "@/components/ui/loading/user-card-loading"
 import { useSearchParams } from 'next/navigation'
+import { useDispatch } from "react-redux"
+import { updateCategory, updateSubcategory } from "@/lib/redux/formSlice"
 
 export default function Search({ directory, userData }) {
 
     const [currentSelection, setCurrentSelection] = useState([])
     const [isLoading, setIsLoading] = useState(true)                        // Is the data currently being filtered
-    const [cardVals, setCardVals] = useState(userData)                      // User card vals
-    const [filteredVals, setFilteredVals] = useState(cardVals)              // Reference to user cards to filter from
 
     const { isOpen, onOpen, onClose } = useDisclosure()
 
+    const dispatch = useDispatch()
+
     let allCategories = directory.map((entry) => entry.title)
-    const [types, setTypes] = useState([])                                  // subcategory states
     const [currentCategory, setCurrentCategory] = useState('Broadcasting')  // category states
     const [isUserCardLoading, setIsUserCardLoading] = useState(false)       // Are the user cards loading
+
     const searchParams = useSearchParams()
 
 
     useEffect(() => {
         const category = searchParams.get('category')
         const checkForCachedCategories = async () => {
-            const data = await getCachedCategories(category ?? 'Broadcasting')
-            setTypes(data)
+            const data = await getCachedCategories(category)
+
+            dispatch(updateCategory(decodeURIComponent(category)))
+            dispatch(updateSubcategory(data))
             setIsLoading(false)
         }
         setCurrentCategory(category)
         checkForCachedCategories()
-
-        setCardVals(Array.from(userData))
-        setFilteredVals(Array.from(userData))
-
     }, [])
 
     return (
@@ -64,14 +64,9 @@ export default function Search({ directory, userData }) {
                         states: [currentSelection, setCurrentSelection],
                         categoryStates: [currentCategory, setCurrentCategory],
                         allCategories: allCategories,
-                        subcategoryStates: [types, setTypes],
                         isLoading: isLoading,
                         isOpen: isOpen,
-                        cardVals: cardVals,
-                        filteredVals: filteredVals,
                         onClose: onClose,
-                        setFilteredVals: setFilteredVals,
-                        setIsUserCardLoading: setIsUserCardLoading
                     }} />
                     <Stack width='100%' gap='15px'>
                         <HStack>
@@ -89,7 +84,7 @@ export default function Search({ directory, userData }) {
                         {isUserCardLoading ? (
                             <UserCardLoading />
                         ) : (
-                            <UserCards cardVals={filteredVals} />
+                            <UserCards setIsLoading={setIsUserCardLoading} />
                         )}
                     </Stack>
                 </HStack>
@@ -102,7 +97,6 @@ export async function getServerSideProps() {
     const directory = await getDirectory()
 
     const userData = await (await fetch(`${process.env.BACKEND_BASE_URI}/api/profile`)).json()
-    console.log(userData)
     return {
         props: {
             directory: directory,

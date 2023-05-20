@@ -1,8 +1,17 @@
 import { Stack, Grid, GridItem, Image, HStack, Text, Badge, Icon } from "@chakra-ui/react"
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import Link from "next/link";
 import { BiDollarCircle } from 'react-icons/bi'
 
-export default function UserCards({ cardVals }) {
+export default function UserCards({ setIsLoading }) {
+    const [cardVals, setCardVals] = useState()
+
+    const currentUserData = useSelector((state) => state.user)
+    useEffect(() => {
+        setCardVals(currentUserData)
+        setIsLoading(false)
+    }, [currentUserData])
 
     return (
         <Stack width='100%'>
@@ -16,9 +25,9 @@ export default function UserCards({ cardVals }) {
                 gap='20px'
                 placeItems='center'
             >
-                {cardVals && (Array.from(cardVals).map(card => (
+                {cardVals && (Array.from(cardVals.users).map((card, index) => (
                     <GridItem
-                        key={card.id}
+                        key={index}
                         height='560px'
                         width={{ base: '75%', sm: '100%' }}
                         boxShadow='1px 1px 15px #888'
@@ -28,7 +37,6 @@ export default function UserCards({ cardVals }) {
                         }}
                         borderRadius='5px'
                     >
-                        {/* <Link href={`/user/${card.id}`}> */}
                         <Link href={`/user/profile?id='${card.id}'`}>
                             <Stack>
                                 <Image
