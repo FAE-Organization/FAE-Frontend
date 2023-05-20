@@ -6,32 +6,28 @@ import { HiOutlineAdjustmentsHorizontal } from 'react-icons/hi2'
 import Link from "next/link"
 import SearchBar from "@/components/ui/queryComponents/searchBar"
 import UserCards from "@/components/ui/user-cards"
-import { useRouter } from "next/router"
 import { getDirectory } from "@/lib/cms/getComponents/getDirectory";
 import { getCachedCategories } from "@/lib/functions/getCachedCategories"
-import { useViewportHeight } from "@/lib/hooks/useViewportHeight"
 import UserCardLoading from "@/components/ui/loading/user-card-loading"
 import { useSearchParams } from 'next/navigation'
 
 export default function Search({ directory, userData }) {
 
     const [currentSelection, setCurrentSelection] = useState([])
-    const [isLoading, setIsLoading] = useState(true)
-    const [cardVals, setCardVals] = useState(userData)
-    const [filteredVals, setFilteredVals] = useState(cardVals)
+    const [isLoading, setIsLoading] = useState(true)                        // Is the data currently being filtered
+    const [cardVals, setCardVals] = useState(userData)                      // User card vals
+    const [filteredVals, setFilteredVals] = useState(cardVals)              // Reference to user cards to filter from
 
     const { isOpen, onOpen, onClose } = useDisclosure()
 
     let allCategories = directory.map((entry) => entry.title)
-    const [types, setTypes] = useState([])
-    const [currentCategory, setCurrentCategory] = useState('Broadcasting')
-    const [isUserCardLoading, setIsUserCardLoading] = useState(false)
-    const view = useViewportHeight()
+    const [types, setTypes] = useState([])                                  // subcategory states
+    const [currentCategory, setCurrentCategory] = useState('Broadcasting')  // category states
+    const [isUserCardLoading, setIsUserCardLoading] = useState(false)       // Are the user cards loading
     const searchParams = useSearchParams()
 
 
     useEffect(() => {
-        // const { category } = router.query
         const category = searchParams.get('category')
         const checkForCachedCategories = async () => {
             const data = await getCachedCategories(category ?? 'Broadcasting')
@@ -43,19 +39,9 @@ export default function Search({ directory, userData }) {
 
         setCardVals(Array.from(userData))
         setFilteredVals(Array.from(userData))
-        // const fakeGetAsyncDataTimer = Math.floor(Math.random() * 3500) + 100
-
-        // const timer = setTimeout(() => {
-        //     setIsUserCardLoading(false)
-        // }, fakeGetAsyncDataTimer)
-
-        // return () => clearTimeout(timer)
 
     }, [])
 
-    // const data = Array.from(tempCards)
-
-    // const [cardVals, setCardVals] = useState(data);
     return (
         <Stack width='100%' alignItems='center'>
             <Stack width='90%'>

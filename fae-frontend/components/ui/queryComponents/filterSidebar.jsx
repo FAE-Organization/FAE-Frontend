@@ -22,6 +22,16 @@ import { useForm, FormProvider, Controller } from 'react-hook-form'
 import { getCachedCategories } from "@/lib/functions/getCachedCategories";
 import { useRouter } from "next/router";
 import { useSearchParams } from "next/navigation";
+import {
+    updateCategory,
+    updateSubcategory,
+    updateGame,
+    updateLocation,
+    updateSiteType,
+    updateSalary,
+    updateExperience,
+} from "@/lib/redux/formSlice";
+import { useSelector, useDispatch } from "react-redux";
 
 export default function FilterSidebar({ filterProps: {
     states,
@@ -96,46 +106,9 @@ export default function FilterSidebar({ filterProps: {
                 salary: data.salary ? data.salary : ''
             };
 
-            const filteredData = await (await fetch(url, {
-                method: 'POST',
-                body: JSON.stringify({ ...params })
-            })).json()
-
-            // console.log(params)
-            // const min = parseFloat(params.salary.min);
-            // const max = parseFloat(params.salary.max);
-
-            // const filteredData = cardVals.filter((entry) => {
-            //     const amount = parseFloat(entry.salary.amount)
-            //     if (
-            //         (params.subcategories.length === 0 || entry.roles.some((role) => params.subcategories.includes(role))) &&
-            //         (params.game === null || params.game.length === 0 || entry.game === params.game) && // might need params.game === '' if null error
-            //         (params.location === null || params.location.length === 0 || entry.location === params.location) && // same here
-            //         (params.siteType === null || params.location.length === 0 || entry.siteType === params.siteType) &&
-            //         (params.experience === null || params.experience.length === 0 || entry.experience === params.experience) &&
-            //         (params.salary === null || (min === null || isNaN(min) || amount >= min) &&
-            //             (max === null || isNaN(max) || amount <= max)) &&
-            //         (params.salary.compensationType === null || params.salary.compensationType.length === 0 || entry.salary.compensationType === params.salary.compensationType) &&
-            //         (params.salary.currency === null || params.salary.currency.length === 0 || entry.salary.currency.toLowerCase() === params.salary.currency.toLowerCase())
-            //     ) {
-            //         return true
-            //     }
-            //     return false
-            // })
+            const filteredData = params
             setFilteredVals(filteredData)
             setIsUserCardLoading(false)
-
-            // Using fake timeouts because we expect to be fetching
-            // data asynchronously here
-            // const fakeAsyncTimeout = setTimeout(async () => {
-            //     const response = await (await fetch(url, {
-            //         method: 'POST',
-            //         body: JSON.stringify(params)
-            //     })).json()
-            //     setCardVals(response)
-            //     setIsUserCardLoading(false)
-            // }, 3000)
-            // return () => clearTimeout(fakeAsyncTimeout)
         } else {
             toast({
                 title: 'success',
@@ -172,7 +145,7 @@ export default function FilterSidebar({ filterProps: {
                 <Modal isOpen={isOpen} onClose={onClose}>
                     <ModalOverlay />
                     <ModalContent>
-                        <ModalHeader>Freelancers in {currentCategory ? currentCategory : 'Broadcasting'}</ModalHeader>
+                        <ModalHeader>Freelancers in {currentCategory ? decodeURIComponent(currentCategory) : 'Broadcasting'}</ModalHeader>
                         <ModalCloseButton />
                         <Stack padding='25px' maxHeight='65vh' overflow='scroll'>
                             <Form
@@ -269,12 +242,6 @@ function Form({
     handleSubmit
 }) {
 
-    const { control } = methods
-
-    const onChange = (data) => {
-        console.log(data)
-    }
-
     const tempSiteTypeData = [
         'On-Site',
         'Remote',
@@ -289,259 +256,217 @@ function Form({
         'Senior (5+ years)'
     ]
 
+    const dispatch = useDispatch()
+
     const searchParams = useSearchParams()
     const router = useRouter()
+    const fields = useSelector((state) => {
+        return state.form
+    })
+
+    useEffect(() => {
+        const getUserCards = async () => {
+            const data = await fetch('http://localhost:3001/api/filter', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(fields)
+            })
+            console.log(await data.json())
+        }
+        getUserCards()
+    }, [fields, dispatch])
 
     return (
-        <FormProvider {...methods}>
-            <form onChange={(event) => {
-                handleSubmit(onChange)(event)
-            }}>
-                <Stack gap='20px'>
-                    <Text className='filter-title'>
-                        Category
-                    </Text>
-                    <Select
-                        onChange={(event) => {
-                            setCurrentCategory(event.target.value)
-                            const getSubCategoryOnChange = async (event) => {
-                                const data = await getCachedCategories(encodeURIComponent(event.target.value))
-                                setTypes(data)
-                                setCurrentSelection([])
+        <form
+        >
+            <Stack gap='20px'>
+                <Text className='filter-title'>
+                    Category
+                </Text>
+                <Select
+                    onChange={(event) => {
+                        setCurrentCategory(event.target.value)
+                        const getSubCategoryOnChange = async (event) => {
+                            const data = await getCachedCategories(encodeURIComponent(event.target.value))
+                            setTypes(data)
+                            setCurrentSelection([])
+                        }
+                        getSubCategoryOnChange(event)
+                        dispatch(updateCategory(event.target.value))
+                        router.push({
+                            query: {
+                                category: encodeURIComponent(event.target.value)
                             }
-                            getSubCategoryOnChange(event)
-                            router.push({
-                                query: {
-                                    category: encodeURIComponent(event.target.value)
-                                }
+                        })
+                    }}
+                    value={currentCategory}
+                >
+                    {allCategories.map((entry, index) => (
+                        <option
+                            key={index}
+                            value={entry}
+                        >
+                            {entry}
+                        </option>
+                    ))}
+                </Select>
+                <Stack>
+                    <Text className='filter-title'>Subcategories</Text>
+                    <CheckboxGroup
+                        value={currentSelection}
+                    >
+                        {isLoading ? (
+                            <div>Loading...</div>
+                        ) : (
+                            <>
+                                {types.map((entry, index) => (
+                                    <Checkbox
+                                        key={index}
+                                        value={entry}
+                                        onChange={(event) => {
+                                            if (event.currentTarget.checked) {
+                                                setCurrentSelection([...currentSelection, event.currentTarget.value].sort())
+                                            } else {
+                                                setCurrentSelection([...currentSelection.filter(item => {
+                                                    return item !== event.currentTarget.value
+                                                })].sort())
+                                            }
+                                        }}
+                                    >
+                                        {capitalizeFirstWord(entry)}
+                                    </Checkbox>
+                                ))}
+                            </>
+                        )}
+                    </CheckboxGroup>
+                </Stack>
+                <Stack>
+                    <Text className='filter-title'>Game</Text>
+                    <Input
+                        placeholder='e.g. VALORANT'
+                        type='text'
+                        // value={value} 
+                        onChange={(event) => {
+                            // onChange(event.currentTarget.value)
+                            setGameValue(event.currentTarget.value)
+                        }}
+                    />
+                </Stack>
+                <Stack>
+                    <Text className='filter-title'>Location</Text>
+                    <Input
+                        placeholder='e.g. USA'
+                        type='text'
+                        // value={value}
+                        onChange={(event) => {
+                            // onChange(event.currentTarget.value)
+                            // setLocationValue(event.currentTarget.value)
+                        }}
+                    />
+                </Stack>
+                <Stack>
+                    <Text className='filter-title'>Subcategories</Text>
+                    <CheckboxGroup
+                        onChange={(values) => {
+                            handleChange({
+                                subcategories: subcategories,
+                                game: game,
+                                location: location,
+                                siteType: values,
+                                salary: salary,
+                                experience: experience
                             })
                         }}
-                        value={currentCategory}
                     >
-                        {allCategories.map((entry, index) => (
-                            <option
-                                key={index}
-                                value={entry}
-                            >
-                                {entry}
-                            </option>
+                        {tempSiteTypeData.map((entry, index) => (
+                            <Checkbox key={index} value={entry.toLowerCase()}>{entry}</Checkbox>
                         ))}
-                    </Select>
-                    <Stack>
-                        <Controller
-                            control={control}
-                            name='subcategories'
-                            render={() => (
-                                <>
-                                    <Text className='filter-title'>Subcategories</Text>
-                                    <CheckboxGroup
-                                        value={currentSelection}
-                                        onChange={(values) => {
-                                            handleChange({
-                                                subcategories: values,
-                                                game: game,
-                                                location: location,
-                                                siteType: siteType,
-                                                salary: salary,
-                                                experience: experience
-                                            })
-                                        }}
-                                    >
-                                        {isLoading ? (
-                                            <div>Loading...</div>
-                                        ) : (
-                                            <>
-                                                {types.map((entry, index) => (
-                                                    <Checkbox
-                                                        key={index}
-                                                        value={entry}
-                                                        onChange={(event) => {
-                                                            if (event.currentTarget.checked) {
-                                                                setCurrentSelection([...currentSelection, event.currentTarget.value].sort())
-                                                            } else {
-                                                                setCurrentSelection([...currentSelection.filter(item => {
-                                                                    return item !== event.currentTarget.value
-                                                                })].sort())
-                                                            }
-                                                        }}
-                                                    >
-                                                        {capitalizeFirstWord(entry)}
-                                                    </Checkbox>
-                                                ))}
-                                            </>
-                                        )}
-                                    </CheckboxGroup>
-                                </>
-                            )}
-                        />
-                    </Stack>
-                    <Stack>
-                        <Controller
-                            control={control}
-                            name='game'
-                            render={({ field: { onChange, value } }) => (
-                                <>
-                                    <Text className='filter-title'>Game</Text>
-                                    <Input
-                                        placeholder='e.g. VALORANT'
-                                        type='text'
-                                        value={value}
-                                        onChange={(event) => {
-                                            onChange(event.currentTarget.value)
-                                            setGameValue(event.currentTarget.value)
-                                        }}
-                                    />
-                                </>
-                            )}
-                        />
-                    </Stack>
-                    <Stack>
-                        <Controller
-                            control={control}
-                            name='location'
-                            render={({ field: { onChange, value } }) => (
-                                <>
-                                    <Text className='filter-title'>Location</Text>
-                                    <Input
-                                        placeholder='e.g. USA'
-                                        type='text'
-                                        value={value}
-                                        onChange={(event) => {
-                                            onChange(event.currentTarget.value)
-                                            setLocationValue(event.currentTarget.value)
-                                        }}
-                                    />
-                                </>
-                            )}
-                        />
-                    </Stack>
-                    <Stack>
-                        <Controller
-                            control={control}
-                            name='siteType'
-                            render={() => (
-                                <>
-                                    <Text className='filter-title'>Subcategories</Text>
-                                    <CheckboxGroup
-                                        onChange={(values) => {
-                                            handleChange({
-                                                subcategories: subcategories,
-                                                game: game,
-                                                location: location,
-                                                siteType: values,
-                                                salary: salary,
-                                                experience: experience
-                                            })
-                                        }}
-                                    >
-                                        {tempSiteTypeData.map((entry, index) => (
-                                            <Checkbox key={index} value={entry.toLowerCase()}>{entry}</Checkbox>
-                                        ))}
-                                    </CheckboxGroup>
-                                </>
-                            )}
-                        />
-                    </Stack>
-                    <Stack>
-                        <Controller
-                            control={control}
-                            name='salary'
-                            render={({ field: { onChange, value } }) => (
-                                <>
-                                    <Text className='filter-title'>Salary Expectation</Text>
-                                    <HStack>
-                                        <Select
-                                            defaultChecked='usd'
-                                            value={value.currency}
-                                            onChange={(event) => {
-                                                onChange({ ...value, currency: event.currentTarget.value })
-                                                handleChange({
-                                                    subcategories: subcategories,
-                                                    game: game,
-                                                    location: location,
-                                                    siteType: siteType,
-                                                    salary: { ...value, currency: event.currentTarget.value },
-                                                    experience: experience
-                                                })
-                                            }}
-                                        >
-                                            <option value="usd">USD</option>
-                                            <option value="cad">CAD</option>
-                                            <option value="gbp">GBP</option>
-                                        </Select>
-                                        <Select
-                                            defaultChecked='hourly'
-                                            value={value.compensationType}
-                                            onChange={(event) => {
-                                                onChange({ ...value, compensationType: event.currentTarget.value })
-                                                handleChange({
-                                                    subcategories: subcategories,
-                                                    game: game,
-                                                    location: location,
-                                                    siteType: siteType,
-                                                    salary: { ...value, compensationType: event.currentTarget.value },
-                                                    experience: experience
-                                                })
-                                            }}
-                                        >
-                                            <option value="hourly">Hourly</option>
-                                            <option value="salary">Salary</option>
-                                            <option value="milestone">Milestone</option>
-                                        </Select>
-                                    </HStack>
-                                    <HStack>
-                                        <Input
-                                            placeholder="Min."
-                                            value={value.min}
-                                            onChange={(event) => {
-                                                onChange({ ...value, min: event.currentTarget.value })
-                                                setMinMax({ min: event.target.value, max: minMax.max })
-
-                                            }}
-                                        />
-                                        <Input
-                                            placeholder="Max."
-                                            value={value.max}
-                                            onChange={(event) => {
-                                                onChange({ ...value, max: event.currentTarget.value })
-                                                setMinMax({ min: minMax.min, max: event.currentTarget.value })
-                                            }}
-                                        />
-                                    </HStack>
-                                </>
-
-                            )}
-                        />
-                    </Stack>
-                    <Stack>
-                        <Controller
-                            control={control}
-                            name='experience'
-                            render={() => (
-                                <>
-                                    <Text className='filter-title'>Experience Level</Text>
-                                    <CheckboxGroup
-                                        onChange={(values) => {
-                                            handleChange({
-                                                subcategories: subcategories,
-                                                game: game,
-                                                location: location,
-                                                siteType: siteType,
-                                                salary: salary,
-                                                experience: values
-                                            })
-                                        }}
-                                    >
-                                        {tempExperienceData.map((entry, index) => (
-                                            <Checkbox key={index} value={`${index}`}>{entry}</Checkbox>
-                                        ))}
-                                    </CheckboxGroup>
-                                </>
-                            )}
-                        />
-                    </Stack>
+                    </CheckboxGroup>
                 </Stack>
-            </form>
-        </FormProvider>
+                <Stack>
+                    <Text className='filter-title'>Salary Expectation</Text>
+                    <HStack>
+                        <Select
+                            defaultChecked='usd'
+                            // value={value.currency}
+                            onChange={(event) => {
+                                // onChange({ ...value, currency: event.currentTarget.value })
+                                handleChange({
+                                    subcategories: subcategories,
+                                    game: game,
+                                    location: location,
+                                    siteType: siteType,
+                                    salary: { ...value, currency: event.currentTarget.value },
+                                    experience: experience
+                                })
+                            }}
+                        >
+                            <option value="usd">USD</option>
+                            <option value="cad">CAD</option>
+                            <option value="gbp">GBP</option>
+                        </Select>
+                        <Select
+                            defaultChecked='hourly'
+                            // value={value.compensationType}
+                            onChange={(event) => {
+                                // onChange({ ...value, compensationType: event.currentTarget.value })
+                                handleChange({
+                                    subcategories: subcategories,
+                                    game: game,
+                                    location: location,
+                                    siteType: siteType,
+                                    salary: { ...value, compensationType: event.currentTarget.value },
+                                    experience: experience
+                                })
+                            }}
+                        >
+                            <option value="hourly">Hourly</option>
+                            <option value="salary">Salary</option>
+                            <option value="milestone">Milestone</option>
+                        </Select>
+                    </HStack>
+                    <HStack>
+                        <Input
+                            placeholder="Min."
+                            // value={value.min}
+                            onChange={(event) => {
+                                // onChange({ ...value, min: event.currentTarget.value })
+                                // setMinMax({ min: event.target.value, max: minMax.max })
+
+                            }}
+                        />
+                        <Input
+                            placeholder="Max."
+                            // value={value.max}
+                            onChange={(event) => {
+                                // onChange({ ...value, max: event.currentTarget.value })
+                                // setMinMax({ min: minMax.min, max: event.currentTarget.value })
+                            }}
+                        />
+                    </HStack>
+                </Stack>
+                <Stack>
+                    <Text className='filter-title'>Experience Level</Text>
+                    <CheckboxGroup
+                        onChange={(values) => {
+                            handleChange({
+                                subcategories: subcategories,
+                                game: game,
+                                location: location,
+                                siteType: siteType,
+                                salary: salary,
+                                experience: values
+                            })
+                        }}
+                    >
+                        {tempExperienceData.map((entry, index) => (
+                            <Checkbox key={index} value={`${index}`}>{entry}</Checkbox>
+                        ))}
+                    </CheckboxGroup>
+                </Stack>
+            </Stack>
+        </form>
     )
 }
