@@ -12,6 +12,7 @@ import UserCardLoading from "@/components/ui/loading/user-card-loading"
 import { useSearchParams } from 'next/navigation'
 import { useDispatch } from "react-redux"
 import { updateCategory, updateSubcategory } from "@/lib/redux/formSlice"
+import { setSubcategories } from "@/lib/redux/filterSubcategorySlice"
 
 export default function Search({ directory, userData }) {
 
@@ -36,9 +37,10 @@ export default function Search({ directory, userData }) {
 
             dispatch(updateCategory(decodeURIComponent(category)))
             dispatch(updateSubcategory(data))
+            dispatch(setSubcategories(data))
             setIsLoading(false)
         }
-        setCurrentCategory(category)
+        setCurrentCategory(decodeURIComponent(category))
         checkForCachedCategories()
     }, [])
 

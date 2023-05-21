@@ -33,12 +33,12 @@ import {
 } from "@/lib/redux/formSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { setUser } from "@/lib/redux/userSlice";
+import { setSubcategories } from "@/lib/redux/filterSubcategorySlice";
 
 export default function FilterSidebar({ filterProps: {
     states,
     categoryStates,
     allCategories,
-    isLoading,
     isOpen,
     onClose,
 } }) {
@@ -63,7 +63,6 @@ export default function FilterSidebar({ filterProps: {
                                 currentCategory={currentCategory}
                                 allCategories={allCategories}
                                 currentSelection={currentSelection}
-                                isLoading={isLoading}
                                 setCurrentCategory={setCurrentCategory}
                                 setCurrentSelection={setCurrentSelection}
                             />
@@ -87,7 +86,6 @@ export default function FilterSidebar({ filterProps: {
                         currentCategory={currentCategory}
                         allCategories={allCategories}
                         currentSelection={currentSelection}
-                        isLoading={isLoading}
                         setCurrentCategory={setCurrentCategory}
                         setCurrentSelection={setCurrentSelection}
                     />
@@ -101,7 +99,6 @@ function Form({
     currentCategory,
     allCategories,
     currentSelection,
-    isLoading,
     setCurrentCategory,
     setCurrentSelection,
 }) {
@@ -127,11 +124,16 @@ function Form({
     const fields = useSelector((state) => {
         return state.form
     })
+
     const userData = useSelector((state) => state.user)
+    const staticSubcategory = useSelector((state) => state.filterSubcategoryDoNotChange.subcategories)
+    const subcategory = useSelector((state) => state.form.subcategories)
+
     useEffect(() => {
 
         const getUserCards = async () => {
-            const data = await (await fetch('http://localhost:3001/api/filter', {
+            const data = await (await fetch(process.env.NODE_ENV == 'development' ?
+                'http://localhost:3001/api/filter' : `${process.env.NEXT_PUBLIC_BACKEND_BASE_URI}/api/filter`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -141,11 +143,11 @@ function Form({
             dispatch(setUser(JSON.parse(data.payload)))
         }
         getUserCards()
-        console.log('userData: ', userData)
+        // console.log('userData: ', userData)
 
     }, [fields, dispatch])
 
-    const subcategory = useSelector((state) => state.form.subcategories)
+    console.log(subcategory)
 
     return (
         <form
@@ -162,6 +164,7 @@ function Form({
                             setCurrentSelection([])
                             dispatch(updateCategory(event.target.value))
                             dispatch(updateSubcategory(data))
+                            dispatch(setSubcategories(data))
                         }
                         getSubCategoryOnChange(event)
                         router.push({
@@ -183,30 +186,23 @@ function Form({
                 </Select>
                 <Stack>
                     <Text className='filter-title'>Subcategories</Text>
-                    <CheckboxGroup
-                        value={currentSelection}
-                    >
-                        {!subcategory ? (
+                    <CheckboxGroup onChange={(values) => {
+                        if (values.length === 0) {
+                            dispatch(updateSubcategory([...staticSubcategory].sort()))
+                            setCurrentSelection([...staticSubcategory].sort())
+                        } else {
+                            dispatch(updateSubcategory([...values.sort()]))
+                            setCurrentSelection([...values.sort()])
+                        }
+                    }}>
+                        {!staticSubcategory ? (
                             <div>Loading...</div>
                         ) : (
                             <>
-                                {subcategory.map((entry, index) => (
+                                {staticSubcategory.map((entry, index) => (
                                     <Checkbox
                                         key={index}
                                         value={entry}
-                                        onChange={(event) => {
-                                            if (event.currentTarget.checked) {
-                                                const result = [...currentSelection, event.currentTarget.value].sort()
-                                                setCurrentSelection(result)
-                                                dispatch(updateSubcategory(result))
-                                            } else {
-                                                const result = [...currentSelection.filter(item => {
-                                                    return item !== event.currentTarget.value
-                                                })].sort()
-                                                setCurrentSelection(result)
-                                                dispatch(updateSubcategory(result))
-                                            }
-                                        }}
                                     >
                                         {capitalizeFirstWord(entry)}
                                     </Checkbox>
