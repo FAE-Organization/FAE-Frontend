@@ -18,7 +18,6 @@ import {
     Button
 } from "@chakra-ui/react";
 import React, { useState, useEffect, useMemo, useCallback } from "react";
-import { useForm, FormProvider, Controller } from 'react-hook-form'
 import { getCachedCategories } from "@/lib/functions/getCachedCategories";
 import { useRouter } from "next/router";
 import { useSearchParams } from "next/navigation";
@@ -34,9 +33,9 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { setUser } from "@/lib/redux/userSlice";
 import { setSubcategories } from "@/lib/redux/filterSubcategorySlice";
+import debounce from "@/lib/functions/debounce";
 
 export default function FilterSidebar({ filterProps: {
-    states,
     categoryStates,
     allCategories,
     isOpen,
@@ -45,8 +44,6 @@ export default function FilterSidebar({ filterProps: {
 
     const [currentCategory, setCurrentCategory] = categoryStates
 
-
-    const [currentSelection, setCurrentSelection] = states
 
     const isSmallScreen = useBreakpointValue({ base: true, md: false })
 
@@ -62,9 +59,7 @@ export default function FilterSidebar({ filterProps: {
                             <Form
                                 currentCategory={currentCategory}
                                 allCategories={allCategories}
-                                currentSelection={currentSelection}
                                 setCurrentCategory={setCurrentCategory}
-                                setCurrentSelection={setCurrentSelection}
                             />
                         </Stack>
                         <ModalFooter>
@@ -85,9 +80,7 @@ export default function FilterSidebar({ filterProps: {
                     <Form
                         currentCategory={currentCategory}
                         allCategories={allCategories}
-                        currentSelection={currentSelection}
                         setCurrentCategory={setCurrentCategory}
-                        setCurrentSelection={setCurrentSelection}
                     />
                 </Stack>
             )}
@@ -98,9 +91,7 @@ export default function FilterSidebar({ filterProps: {
 function Form({
     currentCategory,
     allCategories,
-    currentSelection,
     setCurrentCategory,
-    setCurrentSelection,
 }) {
 
     const tempSiteTypeData = [
@@ -125,9 +116,8 @@ function Form({
         return state.form
     })
 
-    const userData = useSelector((state) => state.user)
     const staticSubcategory = useSelector((state) => state.filterSubcategoryDoNotChange.subcategories)
-    const subcategory = useSelector((state) => state.form.subcategories)
+    const salaryExpectations = useSelector((state) => state.form.salary)
 
     useEffect(() => {
 
@@ -143,15 +133,44 @@ function Form({
             dispatch(setUser(JSON.parse(data.payload)))
         }
         getUserCards()
-        // console.log('userData: ', userData)
 
     }, [fields, dispatch])
 
-    console.log(subcategory)
+    // useGameFilter
+
+    const handleGameChange = (event) => {
+        const value = event.target.value;
+        updateGameChange(value.toLowerCase())
+    }
+
+    const updateGameChange = debounce((value) => {
+        dispatch(updateGame(value))
+    }, 850)
+
+    // useLocationFilter
+
+    const handleLocationChange = (event) => {
+        const value = event.target.value
+        updateLocationChange(value.toLowerCase())
+    }
+
+    const updateLocationChange = debounce((value) => {
+        dispatch(updateLocation(value))
+    }, 850)
+
+    // useSalaryFilter
+
+    const handleSalaryChange = (data) => {
+        const value = {
+            ...salaryExpectations,
+            ...data
+        }
+        dispatch(updateSalary(value))
+    }
+
 
     return (
-        <form
-        >
+        <form>
             <Stack gap='20px'>
                 <Text className='filter-title'>
                     Category
@@ -161,7 +180,6 @@ function Form({
                         setCurrentCategory(event.target.value)
                         const getSubCategoryOnChange = async (event) => {
                             const data = await getCachedCategories(encodeURIComponent(event.target.value))
-                            setCurrentSelection([])
                             dispatch(updateCategory(event.target.value))
                             dispatch(updateSubcategory(data))
                             dispatch(setSubcategories(data))
@@ -189,10 +207,8 @@ function Form({
                     <CheckboxGroup onChange={(values) => {
                         if (values.length === 0) {
                             dispatch(updateSubcategory([...staticSubcategory].sort()))
-                            setCurrentSelection([...staticSubcategory].sort())
                         } else {
                             dispatch(updateSubcategory([...values.sort()]))
-                            setCurrentSelection([...values.sort()])
                         }
                     }}>
                         {!staticSubcategory ? (
@@ -216,8 +232,7 @@ function Form({
                     <Input
                         placeholder='e.g. VALORANT'
                         type='text'
-                        onChange={(event) => {
-                        }}
+                        onChange={handleGameChange}
                     />
                 </Stack>
                 <Stack>
@@ -225,14 +240,18 @@ function Form({
                     <Input
                         placeholder='e.g. USA'
                         type='text'
-                        onChange={(event) => {
-                        }}
+                        onChange={handleLocationChange}
                     />
                 </Stack>
                 <Stack>
                     <Text className='filter-title'>Subcategories</Text>
                     <CheckboxGroup
                         onChange={(values) => {
+                            if (values.length === 0) {
+                                dispatch(updateSiteType([...tempSiteTypeData.map(entry => entry.toLowerCase()).sort()]))
+                            } else {
+                                dispatch(updateSiteType([...values.map(entry => entry.toLowerCase()).sort()]))
+                            }
                         }}
                     >
                         {tempSiteTypeData.map((entry, index) => (
@@ -246,6 +265,9 @@ function Form({
                         <Select
                             defaultChecked='usd'
                             onChange={(event) => {
+                                handleSalaryChange({
+                                    currency: event.currentTarget.value
+                                })
                             }}
                         >
                             <option value="usd">USD</option>
@@ -255,6 +277,9 @@ function Form({
                         <Select
                             defaultChecked='hourly'
                             onChange={(event) => {
+                                handleSalaryChange({
+                                    compensationType: event.currentTarget.value
+                                })
                             }}
                         >
                             <option value="hourly">Hourly</option>
@@ -266,11 +291,17 @@ function Form({
                         <Input
                             placeholder="Min."
                             onChange={(event) => {
+                                handleSalaryChange({
+                                    min: event.target.value === "" ? -1 : +event.target.value
+                                })
                             }}
                         />
                         <Input
                             placeholder="Max."
                             onChange={(event) => {
+                                handleSalaryChange({
+                                    max: event.target.value === "" ? -1 : +event.target.value
+                                })
                             }}
                         />
                     </HStack>
@@ -278,9 +309,30 @@ function Form({
                 <Stack>
                     <Text className='filter-title'>Experience Level</Text>
                     <CheckboxGroup
+                        onChange={(values) => {
+                            if (values.length === 0) {
+                                dispatch(updateExperience(['1', '2', '3', '4']))
+                            } else {
+                                dispatch(updateExperience(((values) => {
+                                    return values.map((entry) => {
+                                        switch (entry) {
+                                            case 'Entry (0-1 years)':
+                                                return '1'
+                                            case 'Junior (1-2 years)':
+                                                return '2'
+                                            case 'Intermediate (2-5 years)':
+                                                return '3'
+                                            case 'Senior (5+ years)':
+                                                return '4'
+                                            default: '1'
+                                        }
+                                    })
+                                })(values)))
+                            }
+                        }}
                     >
                         {tempExperienceData.map((entry, index) => (
-                            <Checkbox key={index} value={`${index}`}>{entry}</Checkbox>
+                            <Checkbox key={index} value={entry}>{entry}</Checkbox>
                         ))}
                     </CheckboxGroup>
                 </Stack>

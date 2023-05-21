@@ -1,15 +1,19 @@
+import { setUser } from '@/lib/redux/userSlice'
 import { Stack, HStack, Input, Select, Button, FormControl, FormErrorMessage, useToast, Text } from '@chakra-ui/react'
 import { useState } from 'react'
 import { useForm, FormProvider, Controller } from 'react-hook-form'
+import { useDispatch, useSelector } from 'react-redux'
 
 export default function SearchBar() {
 
     const [trigger, setTrigger] = useState(false)
+    const dispatch = useDispatch()
+    const userData = useSelector((state) => state.user.users)
 
     const tempData = [
         'Role',
         'Name',
-        'Game'
+        'Tags'
     ]
 
     const methods = useForm({
@@ -20,15 +24,25 @@ export default function SearchBar() {
         }
     })
 
-    const onSubmit = (data) => {
+    const onSubmit = async (data) => {
         setTrigger(false)
         if (data) {
-            toast({
-                title: JSON.stringify(data),
-                status: 'info',
-                duration: 3000,
-                position: 'top'
-            })
+            const result = await (await fetch(process.env.NODE_ENV == 'development' ? (
+                `http://localhost:3001/api/filter/search?category=${data.category.toLowerCase()}&value=${data.input}`
+            ) : (
+                `${process.env.NEXT_PUBLIC_BACKEND_BASE_URI}/api/filtersearch?category=${data.category.toLowerCase()}&value=${data.input}`
+            ))).json()
+            // WIP
+            // Also add a badge below the search so users can manage search filters
+            // dispatch(setUser(userData.filter(entry => {
+            //     if (data.category === 'role') {
+            //         return entry.roles.some(result.payload)
+            //     } else if (data.category === 'name') {
+            //         return entry.name.includes(result.payload)
+            //     } else {
+            //         return entry.tags.some(result.payload)
+            //     }
+            // })))
         } else {
             toast({
                 title: 'Something went wrong',

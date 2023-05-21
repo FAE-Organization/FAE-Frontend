@@ -11,19 +11,16 @@ import { getCachedCategories } from "@/lib/functions/getCachedCategories"
 import UserCardLoading from "@/components/ui/loading/user-card-loading"
 import { useSearchParams } from 'next/navigation'
 import { useDispatch } from "react-redux"
-import { updateCategory, updateSubcategory } from "@/lib/redux/formSlice"
+import { updateCategory, updateExperience, updateSiteType, updateSubcategory } from "@/lib/redux/formSlice"
 import { setSubcategories } from "@/lib/redux/filterSubcategorySlice"
 
-export default function Search({ directory, userData }) {
-
-    const [currentSelection, setCurrentSelection] = useState([])
-    const [isLoading, setIsLoading] = useState(true)                        // Is the data currently being filtered
+export default function Search({ directory }) {
 
     const { isOpen, onOpen, onClose } = useDisclosure()
-
     const dispatch = useDispatch()
 
     let allCategories = directory.map((entry) => entry.title)
+    const [isLoading, setIsLoading] = useState(true)                        // Is the data currently being filtered
     const [currentCategory, setCurrentCategory] = useState('Broadcasting')  // category states
     const [isUserCardLoading, setIsUserCardLoading] = useState(false)       // Are the user cards loading
 
@@ -38,6 +35,18 @@ export default function Search({ directory, userData }) {
             dispatch(updateCategory(decodeURIComponent(category)))
             dispatch(updateSubcategory(data))
             dispatch(setSubcategories(data))
+            dispatch(updateSiteType([
+                'on-site',
+                'remote',
+                'hybrid',
+                'open to relocation'
+            ]))
+            dispatch(updateExperience([
+                '1',
+                '2',
+                '3',
+                '4'
+            ]))
             setIsLoading(false)
         }
         setCurrentCategory(decodeURIComponent(category))
@@ -63,7 +72,6 @@ export default function Search({ directory, userData }) {
                 <Text fontSize='28px' fontWeight={700}>Freelancers in {currentCategory ? currentCategory : 'Broadcasting'}</Text>
                 <HStack alignItems='flex-start' gap='15px'>
                     <FilterSidebar filterProps={{
-                        states: [currentSelection, setCurrentSelection],
                         categoryStates: [currentCategory, setCurrentCategory],
                         allCategories: allCategories,
                         isLoading: isLoading,
