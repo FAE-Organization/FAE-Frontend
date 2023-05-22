@@ -26,10 +26,10 @@ function MemberCard(props) {
     const { name, tags, email, image, alt } = props;
 
     return (
-        <Center py={6}>
+        <Center py={6} px={3}>
             <Box
-                w='xs'
-                rounded={'xl'}
+                w={'xs'}
+                rounded={'2xl'}
                 my={2}
                 mx={[0, 3]}
                 overflow={'hidden'}
@@ -48,7 +48,9 @@ function MemberCard(props) {
                     />
                 </Box>
                 <Box p={4}>
+                    <Flex align={'center'} justify={'center'}>
                     <UserTags tags={tags} />
+                    </Flex>
                     <Heading color={'black'} fontSize={'2xl'} noOfLines={1} pt={3}>
                         {name}
                     </Heading>
