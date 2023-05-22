@@ -1,20 +1,46 @@
 import { Stack, Grid, GridItem, Image, HStack, Text, Badge, Icon } from "@chakra-ui/react"
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
 import { BiDollarCircle } from 'react-icons/bi'
+import { setIsUserCardLoading } from "@/lib/redux/loadingSlice";
+import Paginator from "../utils/Paginator";
+import { updatePageNumber } from "@/lib/redux/formSlice";
 
-export default function UserCards({ setIsLoading }) {
+export default function UserCards() {
     const [cardVals, setCardVals] = useState()
+    const [cardValsLength, setCardValsLength] = useState(cardVals ? cardVals.length : 0)
 
-    const currentUserData = useSelector((state) => state.user)
+    const currentUserDataByFilter = useSelector((state) => state.user.usersByFilter)
+    const currentUserDataBySearch = useSelector((state) => state.user.usersBySearch)
+    const userLength = useSelector((state) => state.user.users)
+
+    const dispatch = useDispatch()
+
     useEffect(() => {
+        const searchMap = new Map()
+        currentUserDataBySearch.data.forEach((entry => {
+            searchMap.set(entry._id, entry)
+        }))
+
+        const currentUserData = currentUserDataByFilter.filter((entry) => {
+            if (currentUserDataBySearch.initialLoad) {
+                return true
+            } else {
+                return searchMap.has(entry._id)
+            }
+        })
+
         setCardVals(currentUserData)
-        setIsLoading(false)
-    }, [currentUserData])
+        setCardValsLength(currentUserData ? currentUserData.length : 0)
+        dispatch(setIsUserCardLoading(false))
+    }, [currentUserDataByFilter, currentUserDataBySearch])
 
     return (
         <Stack width='100%'>
+            {cardValsLength > 0 && (
+                <Paginator totalItems={userLength} itemsPerPage={8} />
+            )}
             <Grid
                 templateColumns={{
                     base: '1fr',
@@ -25,7 +51,7 @@ export default function UserCards({ setIsLoading }) {
                 gap='20px'
                 placeItems='center'
             >
-                {cardVals && (Array.from(cardVals.users).map((card, index) => (
+                {cardVals && (Array.from(cardVals).map((card, index) => (
                     <GridItem
                         key={index}
                         height='560px'
@@ -41,7 +67,7 @@ export default function UserCards({ setIsLoading }) {
                             <Stack>
                                 <Image
                                     src={card.profilePic}
-                                    alt={`Profile image for ${card.name}`}
+                                    alt={`Profile image for ${card.username}`}
                                     borderTopLeftRadius='5px'
                                     borderTopRightRadius='5px'
                                     height='150px'
@@ -58,9 +84,8 @@ export default function UserCards({ setIsLoading }) {
                                         md: 'row'
                                     }}
                                     flexWrap='wrap'
-                                // Maybe do this instead: JoannaC... (they/them) 
                                 >
-                                    <Text fontSize='20px' fontWeight={600}>{card.name}</Text>
+                                    <Text fontSize='20px' fontWeight={600}>{card.username}</Text>
                                     <Text fontSize='12px' color='#8F8F8F'>{`(${card.pronouns})`}</Text>
                                 </Stack>
                                 <Stack
@@ -164,6 +189,9 @@ export default function UserCards({ setIsLoading }) {
 
                 )))}
             </Grid>
+            {cardValsLength > 0 && (
+                <Paginator totalItems={userLength} itemsPerPage={8} />
+            )}
         </Stack>
     )
 }

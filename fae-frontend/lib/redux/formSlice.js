@@ -5,14 +5,25 @@ const initialState = {
     subcategories: [],
     game: '',
     location: '',
-    siteType: [],
+    siteType: [
+        'on-site',
+        'remote',
+        'hybrid',
+        'open to relocation'
+    ],
     salary: {
         currency: 'usd',
         compensationType: 'hourly',
-        min: 0,
-        max: Infinity
+        min: -1,
+        max: -1
     },
-    experience: [],
+    experience: ['1',
+        '2',
+        '3',
+        '4'
+    ],
+    pageNumber: 1,
+    itemsPerPage: 8
 }
 
 export const formSlice = createSlice({
@@ -32,19 +43,7 @@ export const formSlice = createSlice({
             state.location = action.payload
         },
         updateSiteType: (state, action) => {
-            const updatedSiteType = action.payload
-
-            const currentLength = state.siteType.length
-            const updatedLength = updatedSiteType.length
-
-            if (currentLength < updatedLength) {
-                const newSiteType = updatedSiteType.filter(entry => !state.siteType.includes(entry))
-                state.siteType.push(...newSiteType)
-                state.siteType.sort()
-            } else if (currentLength > updatedLength) {
-                const newSiteType = state.siteType.filter(entry => !updatedSiteType.includes(entry))
-                state.siteType = newSiteType.sort()
-            }
+            state.siteType = action.payload
         },
         updateSalary: (state, action) => {
             const { currency, compensationType, min, max } = action.payload;
@@ -54,19 +53,13 @@ export const formSlice = createSlice({
             state.salary.max = max
         },
         updateExperience: (state, action) => {
-            const updatedExperience = action.payload
-
-            const currentLength = state.experience.length
-            const updatedLength = updatedExperience.length
-
-            if (currentLength < updatedLength) {
-                const newExperience = updatedExperience.filter(entry => !state.experience.includes(entry))
-                state.experience.push(...newExperience)
-                state.experience.sort()
-            } else if (currentLength > updatedLength) {
-                const newExperience = state.experience.filter(entry => !updatedExperience.includes(entry))
-                state.experience = newExperience.sort()
-            }
+            state.experience = action.payload
+        },
+        updatePageNumber: (state, action) => {
+            state.pageNumber = action.payload
+        },
+        updateItemsPerPage: (state, action) => {
+            state.itemsPerPage = action.payload
         }
     }
 })
@@ -78,7 +71,9 @@ export const {
     updateLocation,
     updateSiteType,
     updateSalary,
-    updateExperience
+    updateExperience,
+    updatePageNumber,
+    updateItemsPerPage
 } = formSlice.actions
 
 export default formSlice.reducer

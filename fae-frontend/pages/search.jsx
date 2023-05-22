@@ -10,35 +10,31 @@ import { getDirectory } from "@/lib/cms/getComponents/getDirectory";
 import { getCachedCategories } from "@/lib/functions/getCachedCategories"
 import UserCardLoading from "@/components/ui/loading/user-card-loading"
 import { useSearchParams } from 'next/navigation'
-import { useDispatch } from "react-redux"
-import { updateCategory, updateSubcategory } from "@/lib/redux/formSlice"
+import { useDispatch, useSelector } from "react-redux"
+import { updateCategory, updateExperience, updateSiteType, updateSubcategory } from "@/lib/redux/formSlice"
+import { setCategories, setSubcategories } from "@/lib/redux/filterSubcategorySlice"
 
-export default function Search({ directory, userData }) {
-
-    const [currentSelection, setCurrentSelection] = useState([])
-    const [isLoading, setIsLoading] = useState(true)                        // Is the data currently being filtered
+export default function Search({ directory }) {
 
     const { isOpen, onOpen, onClose } = useDisclosure()
-
     const dispatch = useDispatch()
 
-    let allCategories = directory.map((entry) => entry.title)
     const [currentCategory, setCurrentCategory] = useState('Broadcasting')  // category states
-    const [isUserCardLoading, setIsUserCardLoading] = useState(false)       // Are the user cards loading
 
     const searchParams = useSearchParams()
 
+    const isUserCardLoading = useSelector((state) => state.loading.isUserCardLoading)
 
     useEffect(() => {
         const category = searchParams.get('category')
         const checkForCachedCategories = async () => {
             const data = await getCachedCategories(category)
-
+            dispatch(setCategories(directory.map((entry) => entry.title)))
             dispatch(updateCategory(decodeURIComponent(category)))
             dispatch(updateSubcategory(data))
-            setIsLoading(false)
+            dispatch(setSubcategories(data))
+            setCurrentCategory(decodeURIComponent(category))
         }
-        setCurrentCategory(category)
         checkForCachedCategories()
     }, [])
 
@@ -61,30 +57,30 @@ export default function Search({ directory, userData }) {
                 <Text fontSize='28px' fontWeight={700}>Freelancers in {currentCategory ? currentCategory : 'Broadcasting'}</Text>
                 <HStack alignItems='flex-start' gap='15px'>
                     <FilterSidebar filterProps={{
-                        states: [currentSelection, setCurrentSelection],
                         categoryStates: [currentCategory, setCurrentCategory],
-                        allCategories: allCategories,
-                        isLoading: isLoading,
                         isOpen: isOpen,
                         onClose: onClose,
                     }} />
-                    <Stack width='100%' gap='15px'>
-                        <HStack>
+                    <Stack width='100%' gap='0px'>
+                        <HStack alignItems='flex-start'>
                             <SearchBar />
-                            <IconButton
-                                icon={<HiOutlineAdjustmentsHorizontal />}
-                                aria-label='open filter'
-                                display={{
-                                    base: 'flex',
-                                    md: 'none'
-                                }}
-                                onClick={onOpen}
-                            />
+                            <Stack>
+                                <IconButton
+                                    icon={<HiOutlineAdjustmentsHorizontal color='#FFF' />}
+                                    aria-label='open filter'
+                                    display={{
+                                        base: 'flex',
+                                        md: 'none'
+                                    }}
+                                    backgroundColor='#6742CE'
+                                    onClick={onOpen}
+                                />
+                            </Stack>
                         </HStack>
                         {isUserCardLoading ? (
                             <UserCardLoading />
                         ) : (
-                            <UserCards setIsLoading={setIsUserCardLoading} />
+                            <UserCards />
                         )}
                     </Stack>
                 </HStack>
