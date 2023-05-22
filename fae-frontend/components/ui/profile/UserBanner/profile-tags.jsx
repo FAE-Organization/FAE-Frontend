@@ -89,10 +89,9 @@ export default function UserTags({ editable }) {
         return tags.map((tag, i) => {
             return (
                 <TagButt
-                    key={i}
-                    text={tag}
-                    onClick={() => removeTag(i)}
-                />
+                    key={i} 
+                    text={tag} 
+                    onClick={() => removeTag(i)} />
             );
         });
     };

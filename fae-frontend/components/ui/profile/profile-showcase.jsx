@@ -1,23 +1,41 @@
-import { Box, Stack } from "@chakra-ui/react";
+import { Box, Stack, IconButton, Text } from "@chakra-ui/react";
 import EventDetail from "./WorkShowcase/event-detail";
-import Subheader from "./ProfileBody/subheader";
+import { BiAddToQueue } from "react-icons/bi";
 
-export default function Showcase({ index }) {
+export default function Showcase({ index, editable }) {
     const directory = '/profile-test-images';
     return (
         <Stack
             align='left'
             mr='20px'
         >
-            <Subheader
-                category='Work Showcase'
-                fontSize='24px'
-            />
+            <Box>
+                <Text
+                    textTransform={'Uppercase'}
+                    as='b'
+                    fontSize={'24px'}
+                    width={'auto'}
+                    pr={3}>
+                    Work Showcase
+                </Text>
+                {editable && (
+                    <IconButton
+                        fontSize={'2xl'}
+                        variant={'unstyled'}
+                        icon={<BiAddToQueue />}
+                        color={'purple.800'} />
+                )}
+            </Box>
 
             <Box>
-                <Subheader
-                    category='Past Events'
-                />
+                <Text
+                    textTransform={'Uppercase'}
+                    as='b'
+                    fontSize={'20px'}
+                    width={'auto'}
+                    pr={3}>
+                    Past Events
+                </Text>
                 <EventDetail
                     imageUrl={index === 1 ? directory + '/eventMockImage_1.png' : directory + '/eventMockImage_3.png'}
                     eventTitle={index === 1 ? 'Calling All Heroes 2022' : 'Global Series Championship'}
