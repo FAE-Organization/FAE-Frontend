@@ -1,6 +1,6 @@
 import { Image, Stack, Box, Text } from "@chakra-ui/react";
 import { IconButton } from '@chakra-ui/react'
-import { MdOutlineUpload } from "react-icons/bi";
+import { MdOutlineUpload } from "react-icons/md";
 
 export default function ObserverReel( index, { editable }) {
     return (
