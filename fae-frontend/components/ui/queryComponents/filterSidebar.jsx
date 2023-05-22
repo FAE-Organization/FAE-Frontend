@@ -7,7 +7,6 @@ import {
     CheckboxGroup,
     Checkbox,
     Input,
-    useToast,
     useBreakpointValue,
     Modal,
     ModalOverlay,
@@ -17,10 +16,9 @@ import {
     ModalFooter,
     Button
 } from "@chakra-ui/react";
-import React, { useState, useEffect, useMemo, useCallback } from "react";
+import React, { useEffect } from "react";
 import { getCachedCategories } from "@/lib/functions/getCachedCategories";
 import { useRouter } from "next/router";
-import { useSearchParams } from "next/navigation";
 import {
     updateCategory,
     updateSubcategory,
@@ -33,18 +31,16 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { setUser } from "@/lib/redux/userSlice";
 import { setSubcategories } from "@/lib/redux/filterSubcategorySlice";
-import debounce from "@/lib/functions/debounce";
+import { handleChangeWithDebounce } from "@/lib/functions/handleChangeWithDebounce";
+import { setIsUserCardLoading } from "@/lib/redux/loadingSlice";
 
 export default function FilterSidebar({ filterProps: {
     categoryStates,
-    allCategories,
     isOpen,
     onClose,
 } }) {
 
     const [currentCategory, setCurrentCategory] = categoryStates
-
-
     const isSmallScreen = useBreakpointValue({ base: true, md: false })
 
     return (
@@ -58,7 +54,6 @@ export default function FilterSidebar({ filterProps: {
                         <Stack padding='25px' maxHeight='65vh' overflow='scroll'>
                             <Form
                                 currentCategory={currentCategory}
-                                allCategories={allCategories}
                                 setCurrentCategory={setCurrentCategory}
                             />
                         </Stack>
@@ -79,7 +74,6 @@ export default function FilterSidebar({ filterProps: {
                 >
                     <Form
                         currentCategory={currentCategory}
-                        allCategories={allCategories}
                         setCurrentCategory={setCurrentCategory}
                     />
                 </Stack>
@@ -90,7 +84,6 @@ export default function FilterSidebar({ filterProps: {
 
 function Form({
     currentCategory,
-    allCategories,
     setCurrentCategory,
 }) {
 
@@ -120,7 +113,6 @@ function Form({
     const salaryExpectations = useSelector((state) => state.form.salary)
 
     useEffect(() => {
-
         const getUserCards = async () => {
             const data = await (await fetch(process.env.NODE_ENV == 'development' ?
                 'http://localhost:3001/api/filter' : `${process.env.NEXT_PUBLIC_BACKEND_BASE_URI}/api/filter`, {
@@ -133,34 +125,15 @@ function Form({
             dispatch(setUser(JSON.parse(data.payload)))
         }
         getUserCards()
+        dispatch(setIsUserCardLoading(false))
 
     }, [fields, dispatch])
 
-    // useGameFilter
-
-    const handleGameChange = (event) => {
-        const value = event.target.value;
-        updateGameChange(value.toLowerCase())
-    }
-
-    const updateGameChange = debounce((value) => {
-        dispatch(updateGame(value))
-    }, 850)
-
-    // useLocationFilter
-
-    const handleLocationChange = (event) => {
-        const value = event.target.value
-        updateLocationChange(value.toLowerCase())
-    }
-
-    const updateLocationChange = debounce((value) => {
-        dispatch(updateLocation(value))
-    }, 850)
-
-    // useSalaryFilter
+    const handleGameChange = handleChangeWithDebounce(updateGame, 850, setIsUserCardLoading)
+    const handleLocationChange = handleChangeWithDebounce(updateLocation, 850, setIsUserCardLoading)
 
     const handleSalaryChange = (data) => {
+        dispatch(setIsUserCardLoading(true))
         const value = {
             ...salaryExpectations,
             ...data
@@ -168,6 +141,7 @@ function Form({
         dispatch(updateSalary(value))
     }
 
+    const allCategories = useSelector((state) => state.filterSubcategoryDoNotChange.categories)
 
     return (
         <form>
@@ -183,6 +157,7 @@ function Form({
                             dispatch(updateCategory(event.target.value))
                             dispatch(updateSubcategory(data))
                             dispatch(setSubcategories(data))
+                            dispatch(setIsUserCardLoading(true))
                         }
                         getSubCategoryOnChange(event)
                         router.push({
@@ -205,6 +180,7 @@ function Form({
                 <Stack>
                     <Text className='filter-title'>Subcategories</Text>
                     <CheckboxGroup onChange={(values) => {
+                        dispatch(setIsUserCardLoading(true))
                         if (values.length === 0) {
                             dispatch(updateSubcategory([...staticSubcategory].sort()))
                         } else {
@@ -232,7 +208,7 @@ function Form({
                     <Input
                         placeholder='e.g. VALORANT'
                         type='text'
-                        onChange={handleGameChange}
+                        onChange={handleGameChange.handleChange}
                     />
                 </Stack>
                 <Stack>
@@ -240,13 +216,14 @@ function Form({
                     <Input
                         placeholder='e.g. USA'
                         type='text'
-                        onChange={handleLocationChange}
+                        onChange={handleLocationChange.handleChange}
                     />
                 </Stack>
                 <Stack>
                     <Text className='filter-title'>Subcategories</Text>
                     <CheckboxGroup
                         onChange={(values) => {
+                            dispatch(setIsUserCardLoading(true))
                             if (values.length === 0) {
                                 dispatch(updateSiteType([...tempSiteTypeData.map(entry => entry.toLowerCase()).sort()]))
                             } else {
@@ -265,6 +242,7 @@ function Form({
                         <Select
                             defaultChecked='usd'
                             onChange={(event) => {
+                                dispatch(setIsUserCardLoading(true))
                                 handleSalaryChange({
                                     currency: event.currentTarget.value
                                 })
@@ -277,6 +255,7 @@ function Form({
                         <Select
                             defaultChecked='hourly'
                             onChange={(event) => {
+                                dispatch(setIsUserCardLoading(true))
                                 handleSalaryChange({
                                     compensationType: event.currentTarget.value
                                 })
@@ -291,6 +270,7 @@ function Form({
                         <Input
                             placeholder="Min."
                             onChange={(event) => {
+                                dispatch(setIsUserCardLoading(true))
                                 handleSalaryChange({
                                     min: event.target.value === "" ? -1 : +event.target.value
                                 })
@@ -299,6 +279,7 @@ function Form({
                         <Input
                             placeholder="Max."
                             onChange={(event) => {
+                                dispatch(setIsUserCardLoading(true))
                                 handleSalaryChange({
                                     max: event.target.value === "" ? -1 : +event.target.value
                                 })
@@ -310,6 +291,7 @@ function Form({
                     <Text className='filter-title'>Experience Level</Text>
                     <CheckboxGroup
                         onChange={(values) => {
+                            dispatch(setIsUserCardLoading(true))
                             if (values.length === 0) {
                                 dispatch(updateExperience(['1', '2', '3', '4']))
                             } else {

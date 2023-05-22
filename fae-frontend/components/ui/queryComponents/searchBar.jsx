@@ -32,6 +32,7 @@ export default function SearchBar() {
             ) : (
                 `${process.env.NEXT_PUBLIC_BACKEND_BASE_URI}/api/filtersearch?category=${data.category.toLowerCase()}&value=${data.input}`
             ))).json()
+            console.log(result)
             // WIP
             // Also add a badge below the search so users can manage search filters
             // dispatch(setUser(userData.filter(entry => {

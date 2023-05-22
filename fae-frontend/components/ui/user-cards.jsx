@@ -1,16 +1,19 @@
 import { Stack, Grid, GridItem, Image, HStack, Text, Badge, Icon } from "@chakra-ui/react"
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
 import { BiDollarCircle } from 'react-icons/bi'
+import { setIsUserCardLoading } from "@/lib/redux/loadingSlice";
 
-export default function UserCards({ setIsLoading }) {
+export default function UserCards() {
     const [cardVals, setCardVals] = useState()
 
     const currentUserData = useSelector((state) => state.user)
+    const dispatch = useDispatch()
+
     useEffect(() => {
         setCardVals(currentUserData)
-        setIsLoading(false)
+        dispatch(setIsUserCardLoading(false))
     }, [currentUserData])
 
     return (

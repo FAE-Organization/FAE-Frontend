@@ -10,21 +10,20 @@ import { getDirectory } from "@/lib/cms/getComponents/getDirectory";
 import { getCachedCategories } from "@/lib/functions/getCachedCategories"
 import UserCardLoading from "@/components/ui/loading/user-card-loading"
 import { useSearchParams } from 'next/navigation'
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { updateCategory, updateExperience, updateSiteType, updateSubcategory } from "@/lib/redux/formSlice"
-import { setSubcategories } from "@/lib/redux/filterSubcategorySlice"
+import { setCategories, setSubcategories } from "@/lib/redux/filterSubcategorySlice"
 
 export default function Search({ directory }) {
 
     const { isOpen, onOpen, onClose } = useDisclosure()
     const dispatch = useDispatch()
 
-    let allCategories = directory.map((entry) => entry.title)
-    const [isLoading, setIsLoading] = useState(true)                        // Is the data currently being filtered
     const [currentCategory, setCurrentCategory] = useState('Broadcasting')  // category states
-    const [isUserCardLoading, setIsUserCardLoading] = useState(false)       // Are the user cards loading
 
     const searchParams = useSearchParams()
+    dispatch(setCategories(directory.map((entry) => entry.title)))
+    const isUserCardLoading = useSelector((state) => state.loading.isUserCardLoading)
 
 
     useEffect(() => {
@@ -47,7 +46,6 @@ export default function Search({ directory }) {
                 '3',
                 '4'
             ]))
-            setIsLoading(false)
         }
         setCurrentCategory(decodeURIComponent(category))
         checkForCachedCategories()
@@ -73,8 +71,6 @@ export default function Search({ directory }) {
                 <HStack alignItems='flex-start' gap='15px'>
                     <FilterSidebar filterProps={{
                         categoryStates: [currentCategory, setCurrentCategory],
-                        allCategories: allCategories,
-                        isLoading: isLoading,
                         isOpen: isOpen,
                         onClose: onClose,
                     }} />
@@ -94,7 +90,7 @@ export default function Search({ directory }) {
                         {isUserCardLoading ? (
                             <UserCardLoading />
                         ) : (
-                            <UserCards setIsLoading={setIsUserCardLoading} />
+                            <UserCards />
                         )}
                     </Stack>
                 </HStack>
