@@ -1,15 +1,15 @@
 import { useDispatch } from "react-redux"
 import debounce from "./debounce"
 
-export function handleChangeWithDebounce(dispatchAction, debounceTime, dispatchLoadingAction) {
+export function handleChangeWithDebounce(dispatchAction, debounceTime) {
     const dispatch = useDispatch()
+
     const handleChange = (event) => {
-        dispatch(dispatchLoadingAction(false))
         const value = event.target.value
-        updateWithDebounce(value)
+        updateChange(value)
     }
 
-    const updateWithDebounce = debounce((value) => {
+    const updateChange = debounce((value) => {
         dispatch(dispatchAction(value))
     }, debounceTime)
 

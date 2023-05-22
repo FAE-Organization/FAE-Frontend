@@ -22,32 +22,19 @@ export default function Search({ directory }) {
     const [currentCategory, setCurrentCategory] = useState('Broadcasting')  // category states
 
     const searchParams = useSearchParams()
-    dispatch(setCategories(directory.map((entry) => entry.title)))
-    const isUserCardLoading = useSelector((state) => state.loading.isUserCardLoading)
 
+    const isUserCardLoading = useSelector((state) => state.loading.isUserCardLoading)
 
     useEffect(() => {
         const category = searchParams.get('category')
         const checkForCachedCategories = async () => {
             const data = await getCachedCategories(category)
-
+            dispatch(setCategories(directory.map((entry) => entry.title)))
             dispatch(updateCategory(decodeURIComponent(category)))
             dispatch(updateSubcategory(data))
             dispatch(setSubcategories(data))
-            dispatch(updateSiteType([
-                'on-site',
-                'remote',
-                'hybrid',
-                'open to relocation'
-            ]))
-            dispatch(updateExperience([
-                '1',
-                '2',
-                '3',
-                '4'
-            ]))
+            setCurrentCategory(decodeURIComponent(category))
         }
-        setCurrentCategory(decodeURIComponent(category))
         checkForCachedCategories()
     }, [])
 
@@ -74,18 +61,21 @@ export default function Search({ directory }) {
                         isOpen: isOpen,
                         onClose: onClose,
                     }} />
-                    <Stack width='100%' gap='15px'>
-                        <HStack>
+                    <Stack width='100%' gap='0px'>
+                        <HStack alignItems='flex-start'>
                             <SearchBar />
-                            <IconButton
-                                icon={<HiOutlineAdjustmentsHorizontal />}
-                                aria-label='open filter'
-                                display={{
-                                    base: 'flex',
-                                    md: 'none'
-                                }}
-                                onClick={onOpen}
-                            />
+                            <Stack>
+                                <IconButton
+                                    icon={<HiOutlineAdjustmentsHorizontal color='#FFF' />}
+                                    aria-label='open filter'
+                                    display={{
+                                        base: 'flex',
+                                        md: 'none'
+                                    }}
+                                    backgroundColor='#6742CE'
+                                    onClick={onOpen}
+                                />
+                            </Stack>
                         </HStack>
                         {isUserCardLoading ? (
                             <UserCardLoading />

@@ -5,14 +5,25 @@ const initialState = {
     subcategories: [],
     game: '',
     location: '',
-    siteType: [],
+    siteType: [
+        'on-site',
+        'remote',
+        'hybrid',
+        'open to relocation'
+    ],
     salary: {
         currency: 'usd',
         compensationType: 'hourly',
         min: -1,
         max: -1
     },
-    experience: [],
+    experience: ['1',
+        '2',
+        '3',
+        '4'
+    ],
+    pageNumber: 1,
+    itemsPerPage: 8
 }
 
 export const formSlice = createSlice({
@@ -43,6 +54,12 @@ export const formSlice = createSlice({
         },
         updateExperience: (state, action) => {
             state.experience = action.payload
+        },
+        updatePageNumber: (state, action) => {
+            state.pageNumber = action.payload
+        },
+        updateItemsPerPage: (state, action) => {
+            state.itemsPerPage = action.payload
         }
     }
 })
@@ -54,7 +71,9 @@ export const {
     updateLocation,
     updateSiteType,
     updateSalary,
-    updateExperience
+    updateExperience,
+    updatePageNumber,
+    updateItemsPerPage
 } = formSlice.actions
 
 export default formSlice.reducer

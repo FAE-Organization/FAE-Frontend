@@ -1,4 +1,5 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { activeBadgeSlice } from "./activeBadgeSlice";
 import { filterSubcategorySlice } from "./filterSubcategorySlice";
 import { formSlice } from "./formSlice";
 import { loadingSlice } from "./loadingSlice";
@@ -9,6 +10,7 @@ export const store = configureStore({
         form: formSlice.reducer,
         user: userSlice.reducer,
         filterSubcategoryDoNotChange: filterSubcategorySlice.reducer,
-        loading: loadingSlice.reducer
+        loading: loadingSlice.reducer,
+        activeBadge: activeBadgeSlice.reducer
     },
 })

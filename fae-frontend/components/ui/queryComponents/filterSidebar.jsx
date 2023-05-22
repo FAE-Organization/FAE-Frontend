@@ -27,11 +27,12 @@ import {
     updateSiteType,
     updateSalary,
     updateExperience,
+    updatePageNumber,
 } from "@/lib/redux/formSlice";
 import { useSelector, useDispatch } from "react-redux";
-import { setUser } from "@/lib/redux/userSlice";
+import { setUser, setUsersByFilter } from "@/lib/redux/userSlice";
 import { setSubcategories } from "@/lib/redux/filterSubcategorySlice";
-import { handleChangeWithDebounce } from "@/lib/functions/handleChangeWithDebounce";
+import debounce from "@/lib/functions/debounce";
 import { setIsUserCardLoading } from "@/lib/redux/loadingSlice";
 
 export default function FilterSidebar({ filterProps: {
@@ -114,6 +115,7 @@ function Form({
 
     useEffect(() => {
         const getUserCards = async () => {
+            dispatch(setIsUserCardLoading(true))
             const data = await (await fetch(process.env.NODE_ENV == 'development' ?
                 'http://localhost:3001/api/filter' : `${process.env.NEXT_PUBLIC_BACKEND_BASE_URI}/api/filter`, {
                 method: 'POST',
@@ -122,24 +124,50 @@ function Form({
                 },
                 body: JSON.stringify(fields)
             })).json()
-            dispatch(setUser(JSON.parse(data.payload)))
+            dispatch(updatePageNumber(1))
+            dispatch(setUsersByFilter(JSON.parse(data.payload)))
+            dispatch(setUser(JSON.parse(data.dataLength)))
+            dispatch(setIsUserCardLoading(false))
         }
         getUserCards()
-        dispatch(setIsUserCardLoading(false))
 
-    }, [fields, dispatch])
+    }, [fields])
 
-    const handleGameChange = handleChangeWithDebounce(updateGame, 850, setIsUserCardLoading)
-    const handleLocationChange = handleChangeWithDebounce(updateLocation, 850, setIsUserCardLoading)
+    const handleGameChange = (event) => {
+        dispatch(setIsUserCardLoading(true))
+        const value = event.target.value
+        updateGameChange(value)
+    }
+
+    const updateGameChange = debounce((value) => {
+        dispatch(updateGame(value))
+    }, 800)
+
+
+    const handleLocationChange = (event) => {
+        dispatch(setIsUserCardLoading(true))
+        const value = event.target.value
+        updateLocationChange(value)
+    }
+
+    const updateLocationChange = debounce((value) => {
+        dispatch(updateLocation(value))
+    }, 800)
+
+
 
     const handleSalaryChange = (data) => {
         dispatch(setIsUserCardLoading(true))
+        updateSalaryChange(data)
+    }
+
+    const updateSalaryChange = debounce((data) => {
         const value = {
             ...salaryExpectations,
             ...data
         }
         dispatch(updateSalary(value))
-    }
+    }, 800)
 
     const allCategories = useSelector((state) => state.filterSubcategoryDoNotChange.categories)
 
@@ -157,7 +185,6 @@ function Form({
                             dispatch(updateCategory(event.target.value))
                             dispatch(updateSubcategory(data))
                             dispatch(setSubcategories(data))
-                            dispatch(setIsUserCardLoading(true))
                         }
                         getSubCategoryOnChange(event)
                         router.push({
@@ -180,7 +207,6 @@ function Form({
                 <Stack>
                     <Text className='filter-title'>Subcategories</Text>
                     <CheckboxGroup onChange={(values) => {
-                        dispatch(setIsUserCardLoading(true))
                         if (values.length === 0) {
                             dispatch(updateSubcategory([...staticSubcategory].sort()))
                         } else {
@@ -208,7 +234,7 @@ function Form({
                     <Input
                         placeholder='e.g. VALORANT'
                         type='text'
-                        onChange={handleGameChange.handleChange}
+                        onChange={handleGameChange}
                     />
                 </Stack>
                 <Stack>
@@ -216,14 +242,13 @@ function Form({
                     <Input
                         placeholder='e.g. USA'
                         type='text'
-                        onChange={handleLocationChange.handleChange}
+                        onChange={handleLocationChange}
                     />
                 </Stack>
                 <Stack>
                     <Text className='filter-title'>Subcategories</Text>
                     <CheckboxGroup
                         onChange={(values) => {
-                            dispatch(setIsUserCardLoading(true))
                             if (values.length === 0) {
                                 dispatch(updateSiteType([...tempSiteTypeData.map(entry => entry.toLowerCase()).sort()]))
                             } else {
@@ -242,7 +267,6 @@ function Form({
                         <Select
                             defaultChecked='usd'
                             onChange={(event) => {
-                                dispatch(setIsUserCardLoading(true))
                                 handleSalaryChange({
                                     currency: event.currentTarget.value
                                 })
@@ -255,7 +279,6 @@ function Form({
                         <Select
                             defaultChecked='hourly'
                             onChange={(event) => {
-                                dispatch(setIsUserCardLoading(true))
                                 handleSalaryChange({
                                     compensationType: event.currentTarget.value
                                 })
@@ -270,7 +293,6 @@ function Form({
                         <Input
                             placeholder="Min."
                             onChange={(event) => {
-                                dispatch(setIsUserCardLoading(true))
                                 handleSalaryChange({
                                     min: event.target.value === "" ? -1 : +event.target.value
                                 })
@@ -279,7 +301,6 @@ function Form({
                         <Input
                             placeholder="Max."
                             onChange={(event) => {
-                                dispatch(setIsUserCardLoading(true))
                                 handleSalaryChange({
                                     max: event.target.value === "" ? -1 : +event.target.value
                                 })
@@ -291,7 +312,6 @@ function Form({
                     <Text className='filter-title'>Experience Level</Text>
                     <CheckboxGroup
                         onChange={(values) => {
-                            dispatch(setIsUserCardLoading(true))
                             if (values.length === 0) {
                                 dispatch(updateExperience(['1', '2', '3', '4']))
                             } else {
