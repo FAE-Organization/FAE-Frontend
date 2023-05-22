@@ -7,6 +7,7 @@ import { getCachedCategories } from "@/lib/functions/getCachedCategories";
 import { useViewportHeight } from "@/lib/hooks/useViewportHeight";
 
 export default function Directory(props) {
+
     const [isLoading, setIsLoading] = useState(true)
     const view = useViewportHeight()
 
@@ -14,7 +15,8 @@ export default function Directory(props) {
         props.directory.map((entry) => {
             getCachedCategories(entry.title)
         })
-        const fakeGetAsyncDataTimer = Math.floor(Math.random() * 2500) + 100
+
+        const fakeGetAsyncDataTimer = Math.floor(Math.random() * 1000) + 100
 
         const timer = setTimeout(() => {
             setIsLoading(false)
@@ -37,7 +39,10 @@ export default function Directory(props) {
                         <Spinner width='50px' height='50px' color='purple.700' />
                     </Stack>
                 ) : (
-                    <DirectoryGrid cards={props.directory} isLoading={isLoading} />
+                    <DirectoryGrid
+                        cards={props.directory}
+                        counts={JSON.parse(props.counts.payload)}
+                    />
                 )}
             </Stack>
         </React.Fragment >
@@ -46,7 +51,8 @@ export default function Directory(props) {
 
 export async function getServerSideProps() {
     const directory = await getDirectory()
+    const countData = await (await fetch('http://localhost:3001/api/directory/count')).json()
     return {
-        props: { directory: directory }
+        props: { directory: directory, counts: countData }
     }
 }
