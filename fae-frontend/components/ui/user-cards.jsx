@@ -18,7 +18,6 @@ export default function UserCards() {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        console.log('CALLED USER CARDS USE EFFECT')
         const searchMap = new Map()
         currentUserDataBySearch.data.forEach((entry => {
             searchMap.set(entry._id, entry)
@@ -36,8 +35,6 @@ export default function UserCards() {
         setCardValsLength(currentUserData ? currentUserData.length : 0)
         dispatch(setIsUserCardLoading(false))
     }, [currentUserDataByFilter, currentUserDataBySearch])
-
-    console.log(cardVals)
 
     return (
         <Stack width='100%'>
