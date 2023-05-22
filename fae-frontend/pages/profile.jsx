@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Flex, Text, TagLabel, Stack, Box, Grid, GridItem, } from '@chakra-ui/react';
+import { Button, Flex, Image, TagLabel, Stack, Box, Grid, GridItem, } from '@chakra-ui/react';
 import ProfilePicture from '@/components/ui/profile/UserBanner/profile-picture';
 import ProfileUsername from '@/components/ui/profile/UserBanner/profile-username';
 import PronounSelection from '@/components/ui/profile/UserBanner/profile-pronouns';
@@ -14,7 +14,6 @@ import Capsule from '@/components/ui/profile/UserBanner/capsule';
 
 export default function Profile() {
     const [editable, setEditable] = useState(false);
-    const [profilePicture, setProfilePicture] = useState('https://via.placeholder.com/150');
     const [bio, setBio] = useState('this is a test!');
     const [discord, setDiscord] = useState('user#0000');
 
@@ -54,7 +53,7 @@ export default function Profile() {
                             <PronounSelection editable={editable} />
                             <Salary editable={editable} />
                         </Stack>
-
+                
 
                         {/* Edit mode button -- PUSH TO THE RIGHT */}
                         <Flex>
@@ -68,8 +67,10 @@ export default function Profile() {
                     </Flex>
 
 
-                    <Box >
-                        {/* Second box */}
+                    <Box>
+                        <Stack>
+                            <Image src='/profile-test-images/socialMockImage.png' width='100px' />
+                        </Stack>
                         <Grid templateColumns='repeat(6, 1fr)' pt={5}>
                             <GridItem colSpan={2}>
                                 <ProfileRoles editable={editable} />
@@ -94,10 +95,8 @@ export default function Profile() {
                                     onSave={handleSaveDiscord} />
                             </GridItem>
                         </Grid>
-
                     </Box>
 
-                    {/* Third box */}
                     <Box pt={10}>
                         <UserBio
                             editable={editable}
@@ -105,8 +104,9 @@ export default function Profile() {
                             onSave={handleSaveBio} />
                     </Box>
                 </GridItem>
+                
                 <GridItem rowSpan={2} colSpan={5} >
-                    <ProfileBody />
+                    <ProfileBody editable={editable} />
                 </GridItem>
             </Grid>
         </Box>

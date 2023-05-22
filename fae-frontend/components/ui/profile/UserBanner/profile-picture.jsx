@@ -1,7 +1,6 @@
 import { Box, IconButton, Image, GridItem } from '@chakra-ui/react';
 import { MdOutlineAddPhotoAlternate } from "react-icons/md";
 import { TEST_PROFILE_RESPONSE_DATA } from '@/components/ui/profile/TEST_DATA';
-import { BiBrightness } from 'react-icons/bi';
 
 const { profilePic: value } = TEST_PROFILE_RESPONSE_DATA[0];
 
@@ -32,6 +31,7 @@ export default function ProfilePicture({ editable, onChange }) {
                 alt="Profile picture"
                 minW={'350px'}
                 h="auto"
+                borderRadius="2xl"
                 filter={editable ? "brightness(0.6)" : "brightness(1)"}>
             </Image>
             {editable && (
@@ -39,7 +39,7 @@ export default function ProfilePicture({ editable, onChange }) {
                     position="absolute"
                     top="50%"
                     left="50%"
-                    transform="translate(-50%, -50%)"
+                    transform="translate(-50%, -60%)"
                     display="flex"
                     flexDirection="column"
                     alignItems="center"
@@ -49,7 +49,7 @@ export default function ProfilePicture({ editable, onChange }) {
                         _hover={{}}
                         icon={<MdOutlineAddPhotoAlternate size='lg' />}
                         variant="unstyled"
-                        minW={'350px'}
+                        minW={'50px'}
                         color={'white'}
                         height={'100%'}
                         opacity={'0.8'}
