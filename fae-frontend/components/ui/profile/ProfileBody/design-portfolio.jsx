@@ -2,12 +2,10 @@ import { VStack, Box, IconButton, Text } from "@chakra-ui/react";
 import PortfolioBody from "./portfolio-body";
 import { MdOutlineUpload } from "react-icons/md";
 
-export default function DesignPortfolio( editable ) {
+export default function DesignPortfolio({ editable }) {
     
     return (
-        <VStack
-            align='left'
-        >
+        <VStack align='left' >
             <Box>
                 <Text
                     textTransform={'Uppercase'}
@@ -25,9 +23,7 @@ export default function DesignPortfolio( editable ) {
                         color={'purple.800'} />
                 )}
             </Box>
-
             <PortfolioBody editable={editable} />
-           
         </ VStack>
     )
 }

@@ -21,6 +21,9 @@ export const TEST_PROFILE_RESPONSE_DATA = [{
 // Data for profile pronoun popover component
 export const PRONOUN_DATA = ['She', 'Her', 'Hers', 'He', 'Him', 'His', 'They', 'Them', 'Theirs', 'All', 'Any', 'Other'];
 
+// Data for profile Showcase popover component
+export const SHOWCASE_DATA = ['Articles', 'Design Portfolio', 'Notable Events', 'Casting Reel', 'Editing Reel', 'Observer Reel'];
+
 
 // Data for profile roles popover component
 export const ROLES_DATA = [
@@ -50,6 +53,20 @@ export const ROLES_DATA = [
         },
     ];
 
+export const EVENT_DATA = [
+    {
+        imageUrl: '/profile-test-images/eventMockImage_1.png',
+        eventTitle: 'Calling All Heroes 2022',
+        gameTitle: 'Overwatch 2',
+        userRole: 'Tournament Admin',
+    },
+    {
+        imageUrl: '/profile-test-images/eventMockImage_2.png',
+        eventTitle: 'Astral Clash 2022',
+        gameTitle: 'Valorant',
+        userRole: 'Observer',
+    },
+];
 
 // FAKE EVENT DATA
 //

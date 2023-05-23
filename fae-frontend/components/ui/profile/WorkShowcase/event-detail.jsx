@@ -1,42 +1,82 @@
-import { HStack, VStack, Box, Image, Text } from "@chakra-ui/react";
+import { VStack, Flex, Box, IconButton, Image, Text } from "@chakra-ui/react";
+import { FaPlus, FaEllipsisH } from "react-icons/fa";
 
-export default function EventDetail({ imageUrl, eventTitle, gameTitle, userRole }) {
+export default function EventDetail({ editable, events }) {
+
+    function EventBox({ event }) {
+        const { imageUrl, eventTitle, gameTitle, userRole } = event;
+
+        return (
+            <Flex
+                border={editable ? '1px solid black' : ''}
+                borderRadius={editable ? 'md' : ''}
+                minWidth={'300px'}>
+                <Flex>
+                    <Image
+                        src={imageUrl}
+                        alt='event image'
+                    />
+                </Flex>
+                <Flex
+                    width='70%'
+                    alignItems='left'
+                    spacing='-4px'
+                    paddingTop='20px'
+                    direction={'column'}>
+                    <Text as='b' fontSize='sm' >
+                        {eventTitle}
+                    </Text>
+                    <Text as='b' fontSize='sm'>
+                        {gameTitle}
+                    </Text>
+                    <Text>
+                        {userRole}
+                    </Text>
+                </Flex>
+                {editable && (
+                    <IconButton
+                        size={'sm'}
+                        isRound
+                        bgColor={'white'}
+                        boxShadow={'md'}
+                        fontSize={'xl'}
+                        color={'purple.600'}
+                        position="relative"
+                        right="-3"
+                        top="-4"
+                        aria-label='Edit event'
+                        icon={<FaEllipsisH />}
+                    />
+                )}
+            </Flex>
+        );
+    };
+
     return (
-        <HStack
-            width='100%'
-            align='align-center'
-        >
-            <Box width='25%'>
-                <Image
-                    src={imageUrl}
-                    alt='event image'
-                    height='100px'
-                />
-            </Box>
-
-
-            <VStack 
-                width='75%'
-                alignItems='left'
-                spacing='-4px'
-                paddingTop='20px' // TODO: adjust this later
-            >
-                <Text 
-                    as='b'
-                    fontSize='sm'
-                >
-                    {eventTitle}
-                </Text>
-                <Text
-                    as='b'
-                    fontSize='sm'
-                >
-                    {gameTitle}
-                </Text>
-                <Text>
-                    {userRole}
-                </Text>
-            </VStack>
-        </HStack>
-    )
-}
+        <VStack spacing={4} align="start">
+            {events.map((event, index) => (
+                <EventBox key={index} event={event} editable={editable} />
+            ))}
+            {editable && (
+                <Box
+                    border={'1px solid black'}
+                    borderRadius={'md'}
+                    h={'13vh'}
+                    w={'100%'}>
+                    <IconButton
+                        size={'sm'}
+                        isRound
+                        bgColor={'white'}
+                        boxShadow={'md'}
+                        fontSize={'xl'}
+                        color={'purple.600'}
+                        position="relative"
+                        right="-275"
+                        top="-4"
+                        aria-label='Add event'
+                        icon={<FaPlus />} />
+                </Box>
+            )}
+        </VStack>
+    );
+};

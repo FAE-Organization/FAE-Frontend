@@ -2,10 +2,10 @@ import { Image, Stack, Box, Text } from "@chakra-ui/react";
 import { IconButton } from '@chakra-ui/react'
 import { MdOutlineUpload } from "react-icons/md";
 
-export default function ObserverReel( index, { editable }) {
+export default function ObserverReel({ index, editable }) {
     return (
         <Stack>
-             <Box>
+            <Box>
                 <Text
                     textTransform={'Uppercase'}
                     as='b'
@@ -16,13 +16,12 @@ export default function ObserverReel( index, { editable }) {
                 </Text>
 
                 {editable && (
-                    <IconButton 
-                        fontSize={'2xl'} 
-                        variant={'unstyled'} 
-                        icon={<MdOutlineUpload />} 
+                    <IconButton
+                        fontSize={'2xl'}
+                        variant={'unstyled'}
+                        icon={<MdOutlineUpload />}
                         color={'purple.800'} />
                 )}
-
             </Box>
 
             <Image // This may be changed later

@@ -1,6 +1,7 @@
 import { Box, Stack, IconButton, Text } from "@chakra-ui/react";
 import EventDetail from "./WorkShowcase/event-detail";
 import { BiAddToQueue } from "react-icons/bi";
+import { EVENT_DATA } from "./TEST_DATA";
 
 export default function Showcase({ index, editable }) {
     const directory = '/profile-test-images';
@@ -36,19 +37,14 @@ export default function Showcase({ index, editable }) {
                     pr={3}>
                     Past Events
                 </Text>
-                <EventDetail
-                    imageUrl={index === 1 ? directory + '/eventMockImage_1.png' : directory + '/eventMockImage_3.png'}
-                    eventTitle={index === 1 ? 'Calling All Heroes 2022' : 'Global Series Championship'}
-                    gameTitle={index === 1 ? 'Overwatch 2' : 'Apex Legends'}
-                    userRole={index === 1 ? 'Tournament Admin' : 'Caster'}
-                />
+                <EventDetail editable={editable} events={EVENT_DATA} />
 
-                <EventDetail
+                {/* <EventDetail
                     imageUrl={index === 1 ? directory + '/eventMockImage_2.png' : directory + '/eventMockImage_4.png'}
                     eventTitle={index === 1 ? 'Calling All Heroes 2022' : 'CDL Championship'}
                     gameTitle={index === 1 ? 'Overwatch 2' : 'Call of Duty: MWII'}
                     userRole={index === 1 ? 'Tournament Admin' : 'Observer'}
-                />
+                /> */}
             </Box>
         </Stack>
     )

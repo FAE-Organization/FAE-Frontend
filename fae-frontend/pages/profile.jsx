@@ -41,12 +41,12 @@ export default function Profile() {
                 templateRows='repeat(3, 1fr)'
                 columnGap={5}
                 templateColumns='repeat(5, 1fr)'>
+
                 <ProfilePicture
                     editable={editable}
-                    onChange={handleProfilePictureChange}
-                />
+                    onChange={handleProfilePictureChange} />
 
-                <GridItem colSpan={4} pt={3} px={3}>
+                <GridItem colSpan={4} pt={3} px={3} pb={2}>
                     <Flex justify={'space-between'}>
                         <Stack direction='row' spacing={3} justify={'center'} align='center'>
                             <ProfileUsername editable={editable} />
@@ -97,13 +97,13 @@ export default function Profile() {
                         </Grid>
                     </Box>
 
-                    <Box pt={10}>
+                    <Box pt={1}>
                         <UserBio
                             editable={editable}
                             initialValue={bio}
                             onSave={handleSaveBio} />
                     </Box>
-                </GridItem>
+                </GridItem> 
                 
                 <GridItem rowSpan={2} colSpan={5} >
                     <ProfileBody editable={editable} />
