@@ -53,7 +53,7 @@ export default function EventDetail({ editable, events }) {
     };
 
     return (
-        <VStack spacing={4} align="start">
+        <VStack spacing={editable ? 5 : 2} align='start'>
             {events.map((event, index) => (
                 <EventBox key={index} event={event} editable={editable} />
             ))}
@@ -61,7 +61,7 @@ export default function EventDetail({ editable, events }) {
                 <Box
                     border={'1px solid black'}
                     borderRadius={'md'}
-                    h={'13vh'}
+                    h={'10vh'}
                     w={'100%'}>
                     <IconButton
                         size={'sm'}
@@ -71,7 +71,7 @@ export default function EventDetail({ editable, events }) {
                         fontSize={'xl'}
                         color={'purple.600'}
                         position="relative"
-                        right="-275"
+                        right="-277"
                         top="-4"
                         aria-label='Add event'
                         icon={<FaPlus />} />
