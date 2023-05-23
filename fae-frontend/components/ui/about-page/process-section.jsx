@@ -11,22 +11,31 @@ import {
   AccordionPanel,
   Heading,
   Text,
+  IconButton,
 } from "@chakra-ui/react";
-import { IoSearchSharp } from 'react-icons/io5';
+import { FaSearch } from 'react-icons/fa'
+import {
+  IoBrush,
+  IoPeople,
+  IoHammer,
+  IoChevronForward
+} from 'react-icons/io5';
 
 // Renders 'Our Process' section of about page
 export default function ProcessSection() {
   return (
-    <Flex justify={'center'} align={'center'}>
-      <Box px={8} py={16}>
-          <Heading as="h2" fontSize="4xl" mb={4}>
-            Our Process
-          </Heading>
-          <Text fontSize="xl" mb={8}>
-            Over the course of about 3 months, our team built this project from the ground up. See our primary steps below, and check out our demo video to learn more.
-          </Text>
-        <Flex direction={{ base: "column", md: "row" }} justifyContent={"space-between"}>
-          <VStack flex={1} align="stretch" justify={'center'}>
+    <Flex justify={'center'} align={'center'} direction={'column'} px={8} py={16} w={'100%'}>
+      <Flex maxW={'1000px'} direction={'column'}>
+        <Heading as="h2" fontSize="4xl" mb={4}>
+          Our Process
+        </Heading>
+        <Text fontSize='xl' mb={8}>
+          Over the course of six months, our team built this project from the ground up. See our primary steps below, and check out our demo video to learn more.
+        </Text>
+      </Flex>
+      <Box px={20} py={8} w={'100%'}>
+        <Flex direction={{ base: 'column', md: 'row' }} justifyContent={'space-between'}>
+          <VStack flex={1} align='stretch' justify={'center'}>
             < AccordionSection />
           </VStack>
           <Flex flex={1} ml={{ base: 0, md: 8 }}>
@@ -45,7 +54,7 @@ export default function ProcessSection() {
   );
 };
 
-// Renders accordion section
+// Renders accordion section 
 const AccordionSection = () => {
   return (
     <Accordion
@@ -55,17 +64,23 @@ const AccordionSection = () => {
       {accordionItems.map(item => (
         <AccordionItem key={item.id}>
           <AccordionButton _hover={{}}>
-            <Flex
+            <IconButton
               w={10}
               h={10}
+              color='white'
+              fontSize={'2xl'}
               align="center"
               justify="center"
               rounded="full"
-              bg={item.iconBg}
+              colorScheme={item.iconBg}
               mr={4}>
-              {item.icon}
-            </Flex>
-            <Box flex="1" textAlign="left" px={2} py={3} fontSize={{ base: 'lg', lg: 'xl' }}>
+              {<item.icon />}
+            </IconButton>
+            <Box
+              flex="1"
+              textAlign="left"
+              px={2} py={3}
+              fontSize={{ base: 'lg', lg: 'xl' }}>
               {item.title}
             </Box>
             <AccordionIcon />
@@ -73,7 +88,11 @@ const AccordionSection = () => {
           <AccordionPanel pb={4} px={20}>
             <Text>{item.content}</Text>
             <Link href={item.link} isExternal>
-              <Button bg={item.iconBg} color='white' mt={4}>
+              <Button
+                colorScheme={item.iconBg}
+                color='white'
+                mt={4}
+                rightIcon={<IoChevronForward />}>
                 {item.route}
               </Button>
             </Link>
@@ -88,42 +107,38 @@ const AccordionSection = () => {
 const accordionItems = [
   {
     id: 1,
-    icon: IoSearchSharp,
-    iconBg: 'pink.500',
-    iconColor: 'white',
+    icon: FaSearch,
+    iconBg: 'pink',
     title: 'Research & Market Analysis',
     content: 'Market research, competitive analysis, literature reviews, and user interviews were conducted to understand our problem space.',
-    link: 'https://www.google.com/',
+    link: 'https://miro.com/app/board/uXjVMKC73W4=/?share_link_id=203832612831',
     route: 'View our Miro board',
   },
   {
     id: 2,
-    icon: IoSearchSharp,
-    iconBg: 'yellow.500',
-    iconColor: 'white',
+    icon: IoBrush,
+    iconBg: 'green',
     title: 'Wireframing & Prototyping',
     content: 'Brainstormed and designed FAE’s interface on Figma.',
-    link: 'https://www.google.com/',
+    link: 'https://www.figma.com/file/U6ZD5LWEs3vqA4bjWjWSPM/INFO-490%3A-FAE?type=design&node-id=522%3A654&t=KAWr8tbChOV52RZg-1',
     route: 'View our Figma design',
   },
   {
     id: 3,
-    icon: IoSearchSharp,
-    iconBg: 'purple.500',
-    iconColor: 'white',
+    icon: IoPeople,
+    iconBg: 'purple',
     title: 'Usability Testing',
     content: 'Conducted numerous rounds with stakeholders to test functionality and appearance.',
-    link: 'https://www.google.com/',
+    link: 'https://miro.com/app/board/uXjVMKC73W4=/?share_link_id=203832612831',
     route: 'View our Miro board',
   },
   {
     id: 4,
-    icon: IoSearchSharp,
-    iconBg: 'blue.500',
-    iconColor: 'white',
+    icon: IoHammer,
+    iconBg: 'blue',
     title: 'Development & Implementation',
     content: 'Front-end and back-end development to bring FAE to life!',
-    link: 'https://www.google.com/',
+    link: 'https://github.com/FAE-Organization/FAE-Frontend',
     route: 'View our Github repo',
   },
 ];

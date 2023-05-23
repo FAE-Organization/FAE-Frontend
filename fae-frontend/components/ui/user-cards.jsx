@@ -1,11 +1,46 @@
 import { Stack, Grid, GridItem, Image, HStack, Text, Badge, Icon } from "@chakra-ui/react"
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
 import { BiDollarCircle } from 'react-icons/bi'
+import { setIsUserCardLoading } from "@/lib/redux/loadingSlice";
+import Paginator from "../utils/Paginator";
+import { updatePageNumber } from "@/lib/redux/formSlice";
 
-export default function UserCards({ cardVals }) {
+export default function UserCards() {
+    const [cardVals, setCardVals] = useState()
+    const [cardValsLength, setCardValsLength] = useState(cardVals ? cardVals.length : 0)
+
+    const currentUserDataByFilter = useSelector((state) => state.user.usersByFilter)
+    const currentUserDataBySearch = useSelector((state) => state.user.usersBySearch)
+    const userLength = useSelector((state) => state.user.users)
+
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        const searchMap = new Map()
+        currentUserDataBySearch.data.forEach((entry => {
+            searchMap.set(entry._id, entry)
+        }))
+
+        const currentUserData = currentUserDataByFilter.filter((entry) => {
+            if (currentUserDataBySearch.initialLoad) {
+                return true
+            } else {
+                return searchMap.has(entry._id)
+            }
+        })
+
+        setCardVals(currentUserData)
+        setCardValsLength(currentUserData ? currentUserData.length : 0)
+        dispatch(setIsUserCardLoading(false))
+    }, [currentUserDataByFilter, currentUserDataBySearch])
 
     return (
         <Stack width='100%'>
+            {cardValsLength > 0 && (
+                <Paginator totalItems={userLength} itemsPerPage={8} />
+            )}
             <Grid
                 templateColumns={{
                     base: '1fr',
@@ -16,9 +51,9 @@ export default function UserCards({ cardVals }) {
                 gap='20px'
                 placeItems='center'
             >
-                {cardVals && (Array.from(cardVals).map(card => (
+                {cardVals && (Array.from(cardVals).map((card, index) => (
                     <GridItem
-                        key={card.id}
+                        key={index}
                         height='560px'
                         width={{ base: '75%', sm: '100%' }}
                         boxShadow='1px 1px 15px #888'
@@ -28,12 +63,11 @@ export default function UserCards({ cardVals }) {
                         }}
                         borderRadius='5px'
                     >
-                        {/* <Link href={`/user/${card.id}`}> */}
                         <Link href={`/user/profile?id='${card.id}'`}>
                             <Stack>
                                 <Image
                                     src={card.profilePic}
-                                    alt={`Profile image for ${card.name}`}
+                                    alt={`Profile image for ${card.username}`}
                                     borderTopLeftRadius='5px'
                                     borderTopRightRadius='5px'
                                     height='150px'
@@ -50,9 +84,8 @@ export default function UserCards({ cardVals }) {
                                         md: 'row'
                                     }}
                                     flexWrap='wrap'
-                                // Maybe do this instead: JoannaC... (they/them) 
                                 >
-                                    <Text fontSize='20px' fontWeight={600}>{card.name}</Text>
+                                    <Text fontSize='20px' fontWeight={600}>{card.username}</Text>
                                     <Text fontSize='12px' color='#8F8F8F'>{`(${card.pronouns})`}</Text>
                                 </Stack>
                                 <Stack
@@ -156,6 +189,9 @@ export default function UserCards({ cardVals }) {
 
                 )))}
             </Grid>
+            {cardValsLength > 0 && (
+                <Paginator totalItems={userLength} itemsPerPage={8} />
+            )}
         </Stack>
     )
 }
