@@ -103,7 +103,9 @@ export default function DesignPortfolio({ editable }) {
                                         color={'purple.600'}
                                         position='relative'
                                         aria-label='Add event'
-                                        icon={<FaMinus />} />
+                                        icon={<FaMinus />} 
+                                        onClick={() => handleRemoveImage(index)}
+                                    />
                                 </Box>
                             )}
                         </Box>

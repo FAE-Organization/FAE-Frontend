@@ -11,6 +11,7 @@ import UserTags from '@/components/ui/profile/UserBanner/profile-tags';
 import ProfileBody from '@/components/ui/profile/ProfileBody/profile-body';
 import Subheader from '@/components/ui/profile/ProfileBody/subheader';
 import Capsule from '@/components/ui/profile/UserBanner/capsule';
+import SocialButtons from '@/components/ui/profile/UserBanner/social-media-buttons';
 
 export default function Profile() {
     const [editable, setEditable] = useState(false);
@@ -44,10 +45,11 @@ export default function Profile() {
 
                 <ProfilePicture
                     editable={editable}
-                    onChange={handleProfilePictureChange} />
+                    onChange={handleProfilePictureChange} 
+                />
 
-                <GridItem colSpan={4} pt={3} px={3} pb={2}>
-                    <Flex justify={'space-between'}>
+                <GridItem colSpan={4} pt={3} px={3}>
+                    <Flex justify={'space-between'} pb={4}>
                         <Stack direction='row' spacing={3} justify={'center'} align='center'>
                             <ProfileUsername editable={editable} />
                             <PronounSelection editable={editable} />
@@ -69,7 +71,7 @@ export default function Profile() {
 
                     <Box>
                         <Stack>
-                            <Image src='/profile-test-images/socialMockImage.png' width='100px' />
+                            <SocialButtons editable={editable} />
                         </Stack>
                         <Grid templateColumns='repeat(6, 1fr)' pt={5}>
                             <GridItem colSpan={2}>
