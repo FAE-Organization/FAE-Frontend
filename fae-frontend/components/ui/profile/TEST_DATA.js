@@ -53,6 +53,7 @@ export const ROLES_DATA = [
         },
     ];
 
+// Data for past events on profile
 export const EVENT_DATA = [
     {
         imageUrl: '/profile-test-images/eventMockImage_1.png',
@@ -66,6 +67,14 @@ export const EVENT_DATA = [
         gameTitle: 'Valorant',
         userRole: 'Observer',
     },
+];
+
+// Data for Design Portfolio on profile
+export const DESIGN_DATA = [
+    '/profile-test-images/designMockImage_1.png',
+    '/profile-test-images/designMockImage_2.png',
+    '/profile-test-images/designMockImage_3.png',
+    '/profile-test-images/designMockImage_4.png', 
 ];
 
 // FAKE EVENT DATA

@@ -1,25 +1,26 @@
-import { HStack, Spacer } from "@chakra-ui/react";
+import { Grid, GridItem } from '@chakra-ui/react';
 import ObserverReel from "./observer-reel";
 import DesignPortfolio from "./design-portfolio";
 import Showcase from "../profile-showcase";
 
-
-
 export default function ProfileBody({ editable }) {
     return (
-        <HStack
-            maxWidth='100%'
-            gap='2'
-            align='top'
-            px={3}
+        <Grid
+            templateColumns={{
+                base: '1fr',
+                md: '1fr 1fr 1fr 1fr',
+            }}
+            gap={4}
         >
-            <Showcase editable={editable} />
-            <HStack>
-                <Spacer px={3} />
+            <GridItem p={4}>
+                <Showcase editable={editable} />
+            </GridItem>
+            <GridItem p={4} gridColumn={{ sm: 'span 2' }}>
                 <ObserverReel editable={editable} />
-                <Spacer px={5} />
+            </GridItem>
+            <GridItem p={4}>
                 <DesignPortfolio editable={editable} />
-            </HStack>
-        </HStack>
-    )
-}
+            </GridItem>
+        </Grid>
+    );
+};

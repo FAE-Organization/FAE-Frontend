@@ -1,8 +1,10 @@
 import { VStack, Flex, Box, IconButton, Image, Text } from "@chakra-ui/react";
 import { FaPlus, FaEllipsisH } from "react-icons/fa";
 
+// Renders all event items
 export default function EventDetail({ editable, events }) {
 
+    // Renders container for individual event items
     function EventBox({ event }) {
         const { imageUrl, eventTitle, gameTitle, userRole } = event;
 
@@ -10,7 +12,7 @@ export default function EventDetail({ editable, events }) {
             <Flex
                 border={editable ? '1px solid black' : ''}
                 borderRadius={editable ? 'md' : ''}
-                minWidth={'300px'}>
+                minWidth={'full'}>
                 <Flex>
                     <Image
                         src={imageUrl}
@@ -21,8 +23,9 @@ export default function EventDetail({ editable, events }) {
                     width='70%'
                     alignItems='left'
                     spacing='-4px'
-                    paddingTop='20px'
-                    direction={'column'}>
+                    py='10px'
+                    direction={'column'}
+                    justifyItems={'center'}>
                     <Text as='b' fontSize='sm' >
                         {eventTitle}
                     </Text>
@@ -41,12 +44,11 @@ export default function EventDetail({ editable, events }) {
                         boxShadow={'md'}
                         fontSize={'xl'}
                         color={'purple.600'}
-                        position="relative"
-                        right="-3"
-                        top="-4"
+                        position='relative'
+                        right='-3'
+                        top='-4'
                         aria-label='Edit event'
-                        icon={<FaEllipsisH />}
-                    />
+                        icon={<FaEllipsisH />} />
                 )}
             </Flex>
         );
@@ -58,11 +60,11 @@ export default function EventDetail({ editable, events }) {
                 <EventBox key={index} event={event} editable={editable} />
             ))}
             {editable && (
-                <Box
-                    border={'1px solid black'}
-                    borderRadius={'md'}
-                    h={'10vh'}
-                    w={'100%'}>
+                <Flex
+                border={editable ? '1px solid black' : ''}
+                borderRadius={editable ? 'md' : ''}
+                minH={'60px'}
+                width={'full'}>
                     <IconButton
                         size={'sm'}
                         isRound
@@ -70,12 +72,12 @@ export default function EventDetail({ editable, events }) {
                         boxShadow={'md'}
                         fontSize={'xl'}
                         color={'purple.600'}
-                        position="relative"
-                        right="-277"
-                        top="-4"
+                        position='relative'
+                        right='-307'
+                        top='-4'
                         aria-label='Add event'
                         icon={<FaPlus />} />
-                </Box>
+                </Flex>
             )}
         </VStack>
     );

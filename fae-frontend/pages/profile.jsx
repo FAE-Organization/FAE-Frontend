@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Flex, Image, TagLabel, Stack, Box, Grid, GridItem, } from '@chakra-ui/react';
+import { Button, Flex, Image, Stack, Box, Grid, GridItem, } from '@chakra-ui/react';
 import ProfilePicture from '@/components/ui/profile/UserBanner/profile-picture';
 import ProfileUsername from '@/components/ui/profile/UserBanner/profile-username';
 import PronounSelection from '@/components/ui/profile/UserBanner/profile-pronouns';

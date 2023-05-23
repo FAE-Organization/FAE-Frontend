@@ -2,29 +2,20 @@ import { Box, Stack, IconButton, Text } from "@chakra-ui/react";
 import EventDetail from "./WorkShowcase/event-detail";
 import { BiAddToQueue } from "react-icons/bi";
 import { EVENT_DATA } from "./TEST_DATA";
+import Subheader from "./ProfileBody/subheader";
 
-export default function Showcase({ index, editable }) {
-    const directory = '/profile-test-images';
+export default function Showcase({ editable }) {
     return (
-        <Stack
-            align='left'
-            mr='20px'
-        >
-            <Box>
-                <Text
-                    textTransform={'Uppercase'}
-                    as='b'
-                    fontSize={'24px'}
-                    width={'auto'}
-                    pr={3}>
-                    Work Showcase
-                </Text>
+        <Stack align='left' mr='20px'>
+            <Box justifyItems={'center'}>
+            <Subheader category='Work Showcase' fontSize={'24px'} />
                 {editable && (
                     <IconButton
                         fontSize={'2xl'}
                         variant={'unstyled'}
                         icon={<BiAddToQueue />}
-                        color={'purple.800'} />
+                        ml={2}
+                        color={'purple.700'} />
                 )}
             </Box>
 
@@ -33,18 +24,10 @@ export default function Showcase({ index, editable }) {
                     textTransform={'Uppercase'}
                     as='b'
                     fontSize={'20px'}
-                    width={'auto'}
-                    pr={3}>
+                    width={'auto'}>
                     Past Events
                 </Text>
                 <EventDetail editable={editable} events={EVENT_DATA} />
-
-                {/* <EventDetail
-                    imageUrl={index === 1 ? directory + '/eventMockImage_2.png' : directory + '/eventMockImage_4.png'}
-                    eventTitle={index === 1 ? 'Calling All Heroes 2022' : 'CDL Championship'}
-                    gameTitle={index === 1 ? 'Overwatch 2' : 'Call of Duty: MWII'}
-                    userRole={index === 1 ? 'Tournament Admin' : 'Observer'}
-                /> */}
             </Box>
         </Stack>
     )
