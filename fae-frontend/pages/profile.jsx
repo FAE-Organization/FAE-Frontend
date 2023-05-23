@@ -84,10 +84,7 @@ export default function Profile() {
                             <GridItem colSpan={1}>
                             <Stack direction={'column'}>
                                 <Subheader category='Region'/>
-                                <Capsule
-                                        color='#8F9AD2'
-                                        capName={'NA'}
-                                />
+                                <Capsule color='#8F9AD2' capName={'NA'} />
                             </Stack>
                             </GridItem>
                             <GridItem colSpan={1}>
