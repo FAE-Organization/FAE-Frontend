@@ -9,6 +9,9 @@ import {
     PopoverHeader,
     NumberInput,
     NumberInputField,
+    InputGroup,
+    InputLeftAddon,
+    InputRightAddon
 } from '@chakra-ui/react'
 import { HiOutlineCurrencyDollar } from "react-icons/hi";
 import { useState } from 'react';
@@ -46,6 +49,7 @@ export default function Salary({ editable }) {
                 <Popover isOpen={isOpen} onClose={togglePopover}>
                     <PopoverTrigger>
                         <Button
+                            px={6}
                             fontWeight='normal'
                             fontSize={'xl'}
                             _hover={{}}
@@ -57,7 +61,8 @@ export default function Salary({ editable }) {
                             borderRadius={'lg'}
                             borderColor={editable ? 'realPurple' : 'transparent'}
                             focus={{ boxShadow: 'none' }}
-                            leftIcon={<HiOutlineCurrencyDollar fontWeight={'b'} color={'#7BBB9C'} size={'4vh'} />}>
+                            leftIcon={<HiOutlineCurrencyDollar color={'#7BBB9C'} size={35} />}
+                        >
                             {getButtonText()}
                         </Button>
                     </PopoverTrigger>
@@ -79,15 +84,21 @@ export default function Salary({ editable }) {
                                 </Button>
                             </Stack>
                         </PopoverHeader>
-                        <PopoverBody px={20} py={4}>
+                        <PopoverBody py={4}>
+                            <InputGroup size='md' >
+                                <InputLeftAddon>
+                                    <HiOutlineCurrencyDollar color={'#7BBB9C'} size={35} />
+                                </InputLeftAddon>
                                 <NumberInput
                                     defaultValue=''
                                     value={tempPaySelection}
                                     size='md'
                                     clampValueOnBlur={true}
                                     onChange={setTempPaySelection}>
-                                    <NumberInputField />                           
+                                    <NumberInputField />
                                 </NumberInput>
+                                <InputRightAddon>/hr</InputRightAddon>
+                            </InputGroup>
                         </PopoverBody>
                     </PopoverContent>
                 </Popover>
@@ -101,7 +112,7 @@ export default function Salary({ editable }) {
                     borderColor='transparent'
                     colorScheme='none'
                     cursor='default'
-                    leftIcon={<HiOutlineCurrencyDollar fontWeight={'b'} color={'#7BBB9C'} size={'4vh'} />}>
+                    leftIcon={<HiOutlineCurrencyDollar color={'#7BBB9C'} size={'35'} />}>
                     {getButtonText()}
                 </Button>
             )}

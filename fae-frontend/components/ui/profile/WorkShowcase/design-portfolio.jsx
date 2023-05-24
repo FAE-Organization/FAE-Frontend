@@ -2,7 +2,6 @@ import { useState } from 'react';
 import {
     Box,
     Flex,
-    Heading,
     IconButton,
     Popover,
     PopoverTrigger,
@@ -10,18 +9,17 @@ import {
     PopoverBody,
     Button,
     PopoverFooter,
-    PopoverArrow,
     SimpleGrid,
     Image,
     GridItem,
 } from '@chakra-ui/react';
 import { MdOutlineUpload } from 'react-icons/md';
 import { FaMinus } from 'react-icons/fa';
-import Subheader from './subheader';
+import Subheader from '../ProfileBody/subheader';
 
-export default function DesignPortfolio({ editable }) {
+export default function DesignPortfolio({ editable, design_data }) {
     const [isPopoverOpen, setIsPopoverOpen] = useState(false);
-    const [uploadedImages, setUploadedImages] = useState([]);
+    const [uploadedImages, setUploadedImages] = useState(design_data);
 
     function handleButtonClick() {
         setIsPopoverOpen(!isPopoverOpen);
@@ -48,7 +46,6 @@ export default function DesignPortfolio({ editable }) {
                     placement='left'>
                     <PopoverTrigger>
                         <Flex align='center'>
-                            
                             <Subheader category='Design Portfolio' mr={2} />
                             {editable && (
                                 <IconButton
@@ -75,14 +72,17 @@ export default function DesignPortfolio({ editable }) {
                 </Popover>
             </Flex>
             {uploadedImages.length > 0 && (
-                <SimpleGrid columns={2} spacingX={1} spacingY={5} mt={4}>
+                <SimpleGrid columns={{md: '2'}} spacingX={1} spacingY={5} mt={4}>
                     {uploadedImages.map((imageURL, index) => (
                         <Box
                             key={index}
                             position={'relative'}
-                            boxSize='150px'
+                            maxWidth={'300px'}
                             bg='gray.200'
-                            borderRadius='md' >
+                            borderRadius='md'
+                            boxShadow={'lg'} 
+                            p={1}
+                        >
                             <Image
                                 src={imageURL}
                                 alt={`Uploaded Image ${index + 1}`}

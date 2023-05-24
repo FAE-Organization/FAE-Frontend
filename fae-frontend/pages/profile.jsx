@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Flex, Image, Stack, Box, Grid, GridItem, } from '@chakra-ui/react';
+import { Button, Flex, Stack, Box, Grid, GridItem, useBreakpointValue} from '@chakra-ui/react';
 import ProfilePicture from '@/components/ui/profile/UserBanner/profile-picture';
 import ProfileUsername from '@/components/ui/profile/UserBanner/profile-username';
 import PronounSelection from '@/components/ui/profile/UserBanner/profile-pronouns';
@@ -36,6 +36,8 @@ export default function Profile() {
         setDiscord(newDiscord);
     };
 
+    const showEditButton = useBreakpointValue({ base: false, md: true });
+
     return (
         <Box px={'3rem'} py={'4rem'}>
             <Grid
@@ -48,32 +50,37 @@ export default function Profile() {
                     onChange={handleProfilePictureChange} 
                 />
 
-                <GridItem colSpan={4} pt={3} px={3}>
-                    <Flex justify={'space-between'} pb={4}>
-                        <Stack direction='row' spacing={3} justify={'center'} align='center'>
+                {/* Profile Header */}
+                <GridItem colSpan={4} pt={4} px={3}>
+                    <Flex justify={'space-between'} >
+                        <Flex direction='row' spacing={3} justify={'center'} align='center' gap={3}>
                             <ProfileUsername editable={editable} />
                             <PronounSelection editable={editable} />
                             <Salary editable={editable} />
-                        </Stack>
+                        </Flex>
+
+                        <Grid>
+                            
+                        </Grid>
                 
 
-                        {/* Edit mode button -- PUSH TO THE RIGHT */}
-                        <Flex>
-                            <Button
-                                onClick={handleEditProfile}
-                                variant={editable ? 'solid' : 'outline'}
-                                colorScheme={'purple'}>
-                                {editable ? 'Save Profile' : 'Edit Profile'}
-                            </Button>
-                        </Flex>
+                        {/* Edit mode button -- Hidden on small screens */}
+                        {showEditButton && (
+                            <Flex>
+                                <Button
+                                    onClick={handleEditProfile}
+                                    variant={editable ? 'solid' : 'outline'}
+                                    colorScheme={'purple'}>
+                                    {editable ? 'Save Profile' : 'Edit Profile'}
+                                </Button>
+                            </Flex>
+                        )}
                     </Flex>
 
 
                     <Box>
-                        <Stack>
-                            <SocialButtons editable={editable} />
-                        </Stack>
-                        <Grid templateColumns='repeat(6, 1fr)' pt={5}>
+                        <SocialButtons editable={editable} />
+                        <Grid templateColumns={{base: '1fr', md: 'repeat(6, 1fr)'}} pt={1}>
                             <GridItem colSpan={2}>
                                 <ProfileRoles editable={editable} />
                             </GridItem>
@@ -96,12 +103,12 @@ export default function Profile() {
                         </Grid>
                     </Box>
 
-                    <Box pt={1}>
+                    <GridItem pt={2}>
                         <UserBio
                             editable={editable}
                             initialValue={bio}
                             onSave={handleSaveBio} />
-                    </Box>
+                    </GridItem>
                 </GridItem> 
                 
                 <GridItem rowSpan={2} colSpan={5} >

@@ -33,6 +33,8 @@ export default function PronounSelection({ editable }) {
                     <Checkbox
                         key={i}
                         value={item}
+                        colorScheme={'purple'}
+                        borderColor={'purple.500'}
                         onChange={handleCheckboxChange}
                         isChecked={true}>
                         {item}
@@ -43,6 +45,8 @@ export default function PronounSelection({ editable }) {
                     <Checkbox
                         key={i}
                         value={item}
+                        colorScheme={'purple'}
+                        borderColor={'purple.500'}
                         onChange={handleCheckboxChange}>
                         {item}
                     </Checkbox>

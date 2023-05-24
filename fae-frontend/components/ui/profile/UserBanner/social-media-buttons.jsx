@@ -1,98 +1,114 @@
 import { useState } from 'react';
 import {
-    Flex,
-    IconButton,
-    Popover,
-    PopoverTrigger,
-    PopoverContent,
-    PopoverArrow,
-    PopoverCloseButton,
-    PopoverBody,
-    Input,
-    HStack,
+  Flex,
+  Stack,
+  Button,
+  IconButton,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverBody,
+  Input,
+  Text,
+  VStack,
+  InputGroup,
+  InputLeftElement,
 } from '@chakra-ui/react';
-import { AiOutlineTwitter, AiOutlineYoutube, AiOutlineTwitch, AiOutlineMail } from 'react-icons/ai';
-import { FaPlus } from 'react-icons/fa';
+import { FaTwitter, FaYoutube, FaTwitch, FaRegEnvelope } from 'react-icons/fa';
+import { GoPlus } from 'react-icons/go'
+import { TEST_PROFILE_RESPONSE_DATA } from '../TEST_DATA'; // Import the test data
 
 export default function SocialButtons({ editable }) {
-    const [isPopoverOpen, setIsPopoverOpen] = useState(false);
-    const [socialLinks, setSocialLinks] = useState([
-        { name: 'Twitter', link: 'https://twitter.com' },
-        { name: 'YouTube', link: 'https://youtube.com' },
-        { name: 'Twitch', link: 'https://twitch.tv' },
-        { name: 'Email', link: 'mailto:example@example.com' },
-    ]);
+  const [isOpen, setIsOpen] = useState(false);
+  const [socialLinks, setSocialLinks] = useState({
+    twitter: TEST_PROFILE_RESPONSE_DATA[0].twitter,
+    youtube: TEST_PROFILE_RESPONSE_DATA[0].youtube,
+    twitch: TEST_PROFILE_RESPONSE_DATA[0].twitch,
+    email: TEST_PROFILE_RESPONSE_DATA[0].email,
+    
+  });
 
     function getSocialIcon(name) {
         switch (name.toLowerCase()) {
             case 'twitter':
-                return <AiOutlineTwitter />;
+                return <FaTwitter />;
             case 'youtube':
-                return <AiOutlineYoutube />;
+                return <FaYoutube />;
             case 'twitch':
-                return <AiOutlineTwitch />;
+                return <FaTwitch />;
             case 'email':
-                return <AiOutlineMail />;
+                return <FaRegEnvelope />;
             default:
                 return null;
         }
     };
 
-    function handlePopoverOpen() {
-        setIsPopoverOpen(true);
-    };
+  function handleLinkChange(name, event) {
+    const updatedLinks = { ...socialLinks };
+    updatedLinks[name] = event.target.value;
+    setSocialLinks(updatedLinks);
+  }
 
-    function handlePopoverClose() {
-        setIsPopoverOpen(false);
-    };
+  return (
+    <Flex align="center">
+      {Object.entries(socialLinks).map(([name, link], index) => (
+        <IconButton
+          key={index}
+          icon={getSocialIcon(name)}
+          aria-label={name}
+          onClick={() => window.open(link, '_blank')}
+          fontSize="2xl"
+          variant="unstyled"
+          color="#505050"
+        />
+      ))}
+      {editable && (
+        <Popover isOpen={isOpen} onOpen={() => setIsOpen(true)} onClose={() => setIsOpen(false)} placement="top-end">
+          <PopoverTrigger>
+            <IconButton
+              icon={<GoPlus />}
+              aria-label="Add Link"
+              variant="unstyled"
+              color="purple.600"
+              fontSize="2xl"
+            />
+          </PopoverTrigger>
+          <PopoverContent>
+            <PopoverHeader>
+              <Stack direction="row" justify="center" align="center">
+                <Button size="sm" colorScheme="purple" variant="outline" onClick={() => setIsOpen(false)}>
+                  Cancel
+                </Button>
 
-    function handleLinkChange(index, event) {
-        const updatedLinks = [...socialLinks];
-        updatedLinks[index].link = event.target.value;
-        setSocialLinks(updatedLinks);
-    };
+                <Text as="h2" px={5} fontWeight="bold" textTransform={'uppercase'}>
+                  Edit links
+                </Text>
 
-    function handleAddLink() {
-        const newLink = { name: '', link: '' };
-        setSocialLinks([...socialLinks, newLink]);
-    };
-
-    return (
-        <>
-            <Flex align="center">
-                {socialLinks.map((socialLink, index) => (
-                    <IconButton
-                        key={index}
-                        icon={getSocialIcon(socialLink.name)}
-                        aria-label={socialLink.name}
-                        onClick={() => window.open(socialLink.link, '_blank')}
-                        mr={2}
+                <Button size="sm" colorScheme="purple" variant="solid" onClick={() => setIsOpen(false)}>
+                  Done
+                </Button>
+              </Stack>
+            </PopoverHeader>
+            <PopoverBody>
+              <VStack spacing={2}>
+                {Object.entries(socialLinks).map(([name, link]) => (
+                  <InputGroup key={name}>
+                    <InputLeftElement pointerEvents="none">
+                      {getSocialIcon(name)}
+                    </InputLeftElement>
+                    <Input
+                      value={link}
+                      placeholder={name}
+                      onChange={(event) => handleLinkChange(name, event)}
                     />
+                  </InputGroup>
                 ))}
-                {editable && (
-                    <Popover isOpen={isPopoverOpen} onOpen={handlePopoverOpen} onClose={handlePopoverClose} placement="top-end">
-                        <PopoverTrigger>
-                            <IconButton icon={<FaPlus />} aria-label="Add Link" />
-                        </PopoverTrigger>
-                        <PopoverContent>
-                            <PopoverArrow />
-                            <PopoverCloseButton />
-                            <PopoverBody>
-                                <HStack spacing={2}>
-                                    {socialLinks.map((socialLink, index) => (
-                                        <Input
-                                            key={index}
-                                            value={socialLink.link}
-                                            placeholder={socialLink.name}
-                                            onChange={(event) => handleLinkChange(index, event)}
-                                        />
-                                    ))}
-                                </HStack>
-                            </PopoverBody>
-                        </PopoverContent>
-                    </Popover>
-                )}
-            </Flex>
-        </>
-    );
-};
+              </VStack>
+            </PopoverBody>
+          </PopoverContent>
+        </Popover>
+      )}
+    </Flex>
+  );
+}
