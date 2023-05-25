@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Flex, Image, TagLabel, Stack, Box, Grid, GridItem, } from '@chakra-ui/react';
+import { Button, Flex, Box, Grid, GridItem, useBreakpointValue} from '@chakra-ui/react';
 import ProfilePicture from '@/components/ui/profile/UserBanner/profile-picture';
 import ProfileUsername from '@/components/ui/profile/UserBanner/profile-username';
 import PronounSelection from '@/components/ui/profile/UserBanner/profile-pronouns';
@@ -9,8 +9,8 @@ import UserDiscord from '@/components/ui/profile/UserBanner/profile-discord';
 import ProfileRoles from '@/components/ui/profile/UserBanner/profile-roles';
 import UserTags from '@/components/ui/profile/UserBanner/profile-tags';
 import ProfileBody from '@/components/ui/profile/ProfileBody/profile-body';
-import Subheader from '@/components/ui/profile/ProfileBody/subheader';
-import Capsule from '@/components/ui/profile/UserBanner/capsule';
+import SocialButtons from '@/components/ui/profile/UserBanner/social-media-buttons';
+import RegionSelection from '@/components/ui/profile/UserBanner/region';
 
 export default function Profile() {
     const [editable, setEditable] = useState(false);
@@ -35,43 +35,48 @@ export default function Profile() {
         setDiscord(newDiscord);
     };
 
+    const showEditButton = useBreakpointValue({ base: false, lg: true });
+
     return (
         <Box px={'3rem'} py={'4rem'}>
             <Grid
                 templateRows='repeat(3, 1fr)'
                 columnGap={5}
                 templateColumns='repeat(5, 1fr)'>
+
+            <GridItem >
                 <ProfilePicture
                     editable={editable}
-                    onChange={handleProfilePictureChange}
+                    onChange={handleProfilePictureChange} 
                 />
+            </GridItem>
 
-                <GridItem colSpan={4} pt={3} px={3}>
-                    <Flex justify={'space-between'}>
-                        <Stack direction='row' spacing={3} justify={'center'} align='center'>
+                {/* Profile Header */}
+                <GridItem colSpan={4} pt={4} px={3}>
+                    <Flex justify={'space-between'} >
+                        <Flex direction='row' spacing={3} justify={'center'} align='center' gap={3}>
                             <ProfileUsername editable={editable} />
                             <PronounSelection editable={editable} />
                             <Salary editable={editable} />
-                        </Stack>
-                
-
-                        {/* Edit mode button -- PUSH TO THE RIGHT */}
-                        <Flex>
-                            <Button
-                                onClick={handleEditProfile}
-                                variant={editable ? 'solid' : 'outline'}
-                                colorScheme={'purple'}>
-                                {editable ? 'Save Profile' : 'Edit Profile'}
-                            </Button>
                         </Flex>
+                
+                        {/* Edit mode button -- Hidden on small screens */}
+                        {showEditButton && (
+                            <Flex>
+                                <Button
+                                    onClick={handleEditProfile}
+                                    variant={editable ? 'solid' : 'outline'}
+                                    colorScheme={'purple'}>
+                                    {editable ? 'Save Profile' : 'Edit Profile'}
+                                </Button>
+                            </Flex>
+                        )}
                     </Flex>
 
 
                     <Box>
-                        <Stack>
-                            <Image src='/profile-test-images/socialMockImage.png' width='100px' />
-                        </Stack>
-                        <Grid templateColumns='repeat(6, 1fr)' pt={5}>
+                        <SocialButtons editable={editable} />
+                        <Grid templateColumns={{base: '1fr', md: 'repeat(6, 1fr)'}} pt={1}>
                             <GridItem colSpan={2}>
                                 <ProfileRoles editable={editable} />
                             </GridItem>
@@ -80,13 +85,7 @@ export default function Profile() {
                                 <UserTags editable={editable} />
                             </GridItem>
                             <GridItem colSpan={1}>
-                            <Stack direction={'column'}>
-                                <Subheader category='Region'/>
-                                <Capsule
-                                        color='#8F9AD2'
-                                        capName={'NA'}
-                                />
-                            </Stack>
+                                <RegionSelection editable={editable } />
                             </GridItem>
                             <GridItem colSpan={1}>
                                 <UserDiscord
@@ -97,13 +96,13 @@ export default function Profile() {
                         </Grid>
                     </Box>
 
-                    <Box pt={10}>
+                    <GridItem pt={2}>
                         <UserBio
                             editable={editable}
                             initialValue={bio}
                             onSave={handleSaveBio} />
-                    </Box>
-                </GridItem>
+                    </GridItem>
+                </GridItem> 
                 
                 <GridItem rowSpan={2} colSpan={5} >
                     <ProfileBody editable={editable} />

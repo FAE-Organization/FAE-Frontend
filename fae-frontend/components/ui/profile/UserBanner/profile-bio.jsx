@@ -18,7 +18,7 @@ export default function UserBio({ value, editable }) {
     };
 
     return (
-        <Box >
+        <Box>
             <Text
                 textTransform={'Uppercase'}
                 as='b'
