@@ -9,12 +9,15 @@ import {
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { PRONOUN_DATA as RAW_PRONOUN_DATA, TEST_PROFILE_RESPONSE_DATA } from '@/components/ui/profile/TEST_DATA';
+import { PAUL_TEST_PROFILE_RESPONSE_DATA } from '@/pages/search/user/profile';
 
 const { pronouns } = TEST_PROFILE_RESPONSE_DATA[0];
 
-export default function PronounSelection({ editable }) {
-    const [selectedPronouns, setSelectedPronouns] = useState(pronouns ?? ['pronouns']);
+export default function PronounSelection({ editable, test }) {
+    const paul = PAUL_TEST_PROFILE_RESPONSE_DATA[0]
+    const [selectedPronouns, setSelectedPronouns] = useState(test ? paul.pronouns : (pronouns ?? ['pronouns']));
     const [tempSelectedPronouns, setTempSelectedPronouns] = useState(pronouns ?? []);
+
 
     const [isOpen, setIsOpen] = useState(false);
     const realPurple = '#6B46C1';
@@ -25,20 +28,20 @@ export default function PronounSelection({ editable }) {
 
     function renderCheckboxes(items) {
         return items.map((item, i) => {
-          return (
-            <Checkbox
-              key={i}
-              value={item}
-              colorScheme={'purple'}
-              borderColor={'purple.500'}
-              onChange={handleCheckboxChange}
-              isChecked={selectedPronouns.includes(item)} // Set isChecked based on selectedPronouns
-            >
-              {item}
-            </Checkbox>
-          );
+            return (
+                <Checkbox
+                    key={i}
+                    value={item}
+                    colorScheme={'purple'}
+                    borderColor={'purple.500'}
+                    onChange={handleCheckboxChange}
+                    isChecked={selectedPronouns.includes(item)} // Set isChecked based on selectedPronouns
+                >
+                    {item}
+                </Checkbox>
+            );
         });
-      }
+    }
 
     function togglePopover() {
         setIsOpen(!isOpen);
@@ -47,9 +50,9 @@ export default function PronounSelection({ editable }) {
     function handleCheckboxChange(event) {
         const { value } = event.target;
         if (selectedPronouns.includes(value)) {
-          setSelectedPronouns(selectedPronouns.filter((item) => item !== value));
+            setSelectedPronouns(selectedPronouns.filter((item) => item !== value));
         } else {
-          setSelectedPronouns([...selectedPronouns, value]);
+            setSelectedPronouns([...selectedPronouns, value]);
         }
     }
 
@@ -60,11 +63,11 @@ export default function PronounSelection({ editable }) {
 
     function getButtonText() {
         if (selectedPronouns.length === 0) {
-          return 'pronouns';
+            return 'pronouns';
         } else {
-          return selectedPronouns.join('/');
+            return selectedPronouns.join('/');
         }
-      }
+    }
 
     return (
         <>

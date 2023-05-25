@@ -11,7 +11,7 @@ import { getCachedCategories } from "@/lib/functions/getCachedCategories"
 import UserCardLoading from "@/components/ui/loading/user-card-loading"
 import { useSearchParams } from 'next/navigation'
 import { useDispatch, useSelector } from "react-redux"
-import { updateCategory, updateExperience, updateSiteType, updateSubcategory } from "@/lib/redux/formSlice"
+import { updateCategory, updateSubcategory } from "@/lib/redux/formSlice"
 import { setCategories, setSubcategories } from "@/lib/redux/filterSubcategorySlice"
 
 export default function Search({ directory }) {
@@ -26,7 +26,7 @@ export default function Search({ directory }) {
     const isUserCardLoading = useSelector((state) => state.loading.isUserCardLoading)
 
     useEffect(() => {
-        const category = searchParams.get('category')
+        const category = searchParams.get('category') ?? 'Broadcasting'
         const checkForCachedCategories = async () => {
             const data = await getCachedCategories(category)
             dispatch(setCategories(directory.map((entry) => entry.title)))
