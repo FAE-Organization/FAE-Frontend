@@ -7,7 +7,7 @@ import { getCachedCategories } from "@/lib/functions/getCachedCategories";
 import { useViewportHeight } from "@/lib/hooks/useViewportHeight";
 
 export default function Directory(props) {
-
+    console.log(props.counts)
     const [isLoading, setIsLoading] = useState(true)
     const view = useViewportHeight()
 
@@ -51,7 +51,18 @@ export default function Directory(props) {
 
 export async function getServerSideProps() {
     const directory = await getDirectory()
-    const countData = await (await fetch('http://localhost:3001/api/directory/count')).json()
+
+    // const countData = await (await fetch(
+    //     process.env.NODE_ENV === 'development' ? (
+    //         'http://localhost:3001/api/directory/count'
+    //     ) : (
+    //         `${process.env.NEXT_PUBLIC_BACKEND_BASE_URI}/api/directory/count`
+    //     ))).json()
+
+    const countData = await (await fetch(
+        'https://fae-backend.onrender.com/api/directory/count'
+    )).json()
+
     return {
         props: { directory: directory, counts: countData }
     }

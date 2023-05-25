@@ -5,10 +5,10 @@ import WorkShowcase from "../WorkShowcase/work-showcase";
 import VideoReel from "../WorkShowcase/video-reel";
 import ArticleSection from '../WorkShowcase/articles';
 import NotableEvents from '../WorkShowcase/notable-events';
-import { TEST_PROFILE_RESPONSE_DATA, REAL_TEST_MOCK } from '../TEST_DATA';
+import { TEST_PROFILE_RESPONSE_DATA } from '../TEST_DATA';
 
 
-const { showcase: test_showcase, events, articles, observer, editing, casting, design, } = REAL_TEST_MOCK[0];
+const { showcase: test_showcase, events, articles, observer, editing, casting, design, } = TEST_PROFILE_RESPONSE_DATA[0];
 
 export default function ProfileBody({ editable }) {
     const [selectedCategories, setSelectedCategories] = useState(test_showcase);

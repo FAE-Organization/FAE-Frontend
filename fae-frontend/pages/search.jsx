@@ -92,11 +92,9 @@ export default function Search({ directory }) {
 export async function getServerSideProps() {
     const directory = await getDirectory()
 
-    const userData = await (await fetch(`${process.env.BACKEND_BASE_URI}/api/profile`)).json()
     return {
         props: {
             directory: directory,
-            userData: userData
         }
     }
 }
