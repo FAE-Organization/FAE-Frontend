@@ -112,6 +112,7 @@ function Form({
 
     const staticSubcategory = useSelector((state) => state.filterSubcategoryDoNotChange.subcategories)
     const salaryExpectations = useSelector((state) => state.form.salary)
+    console.log(process.env.NODE_ENV)
 
     useEffect(() => {
         const getUserCards = async () => {
@@ -124,6 +125,18 @@ function Form({
                 },
                 body: JSON.stringify(fields)
             })).json()
+            // const promise = await fetch(`http://localhost:3001/api/filter`, {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json'
+            //     },
+            //     body: JSON.stringify(fields)
+            // })
+            // const data = await promise.json()
+            try {
+            } catch (error) {
+                console.log(error)
+            }
             dispatch(updatePageNumber(1))
             dispatch(setUsersByFilter(JSON.parse(data.payload)))
             dispatch(setUser(JSON.parse(data.dataLength)))
