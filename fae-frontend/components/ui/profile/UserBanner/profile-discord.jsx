@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Input, Box} from "@chakra-ui/react";
+import { Input, Flex} from "@chakra-ui/react";
 import Subheader from "../ProfileBody/subheader";
 import { TEST_PROFILE_RESPONSE_DATA } from '@/components/ui/profile/TEST_DATA';
 
@@ -22,7 +22,7 @@ export default function UserDiscord({ value, editable }) {
     };
 
     return (
-        <Box >
+        <Flex direction='column' gap={3}>
             <Subheader category='Discord' />
             <Input
                 value={discord}
@@ -33,11 +33,12 @@ export default function UserDiscord({ value, editable }) {
                 focusBorderColor={editable ? 'black' : 'transparent'}
                 resize='none'
                 borderRadius={'lg'}
-                size={'sm'}
+                size={'md'}
+                fontWeight={'bold'}
                 onChange={handleChange}
                 onFocus={handleFocus}
                 onBlur={handleBlur}
                 placeholder='user#0000'/>
-        </Box>
+        </Flex>
     );
 };
