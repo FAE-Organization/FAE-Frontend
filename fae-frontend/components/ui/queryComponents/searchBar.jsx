@@ -6,6 +6,31 @@ import { useForm, FormProvider, Controller } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { AiOutlineClose } from 'react-icons/ai'
 
+/**
+ * 
+ * TODO
+ * 
+ * 1. Clear all filters when leaving the page: Filters persist but form resets when users leave and come back to the page
+ * 2. Search filtering with tags does not work
+ * 3. Search filtering does not update the pagination: Filtering for observers and producers and then searching for "Paul" leaves 3 pages
+ * 4. Clicking on direcotry does not respond to the user. Need some suspense animation
+ * 5. Current Search badge makes the cursor a pointer. No good.
+ * 6. Paginator needs to have ... in between to signify start and end of search and update accordingly. Include 6 max. ex 123...789 or 123456.
+ * 7. Paginator needs arrows please.
+ * 8. Search bar Placeholder needs to change text as dropdown value changes.
+ * 9. Clicking on a user needs to take them to the user page located at search/user/profile. maybe do search/user/[...profile].jsx
+ * 10. Modify the profile page so other users cannot be seen.
+ * 11. Do not show current logged in users information in user cards.
+ * 12. Send logged in tokens to backend.
+ * 13. Get the correct users information when navigating to search/user/[...profile].jsx
+ * 14. Fix sign out dropdown position on larger screens
+ * 15. Implement dark mode
+ * 16. Fix backend search: currently it is using .skip()
+ * 17. Fix search when using search bar. Search bar only returns current values in user cards instead of searching through entire database.
+ * 18. Create colors for all tags
+ */
+
+
 export default function SearchBar() {
 
     const [trigger, setTrigger] = useState(false)
@@ -172,7 +197,7 @@ export default function SearchBar() {
                             fontSize={{ base: '12px', md: '13px', lg: '14px' }}
                         >
                             <Badge border='1px solid #BBB' fontSize={{ base: '10px', md: '11px', lg: '12px' }}>
-                                Current Filter
+                                Current Search
                             </Badge>
                             <Text>&gt;</Text>
                             {badgeName.length > 0 ? (
