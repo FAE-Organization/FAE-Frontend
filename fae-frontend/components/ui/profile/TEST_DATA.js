@@ -4,7 +4,7 @@
 export const REAL_TEST_MOCK = [
     {
         "id": "645163985070078b811a2e53",
-        "name": "Doyle",
+        "username": "Doyle",
         "bio": "Non excepteur dolore elit qui nisi nulla laborum. Velit duis et amet labore irure duis labore in anim in.",
         "pronouns": "he/him",
         "twitch": "twitch.tv",

@@ -72,40 +72,42 @@ export default function DesignPortfolio({ editable, design_data }) {
                 </Popover>
             </Flex>
             {uploadedImages.length > 0 && (
-                <SimpleGrid columns={{md: '2'}} spacingX={1} spacingY={5} mt={4}>
+                <SimpleGrid columns={{md: '2'}} gap={4} mt={4}>
                     {uploadedImages.map((imageURL, index) => (
                         <Box
                             key={index}
-                            position={'relative'}
-                            maxWidth={'300px'}
-                            bg='gray.200'
-                            borderRadius='md'
-                            boxShadow={'lg'} 
-                            p={1}
-                        >
+                            position="relative"
+                            boxSize={'150px'}
+                            bg="gray.200"
+                            borderRadius="md">
                             <Image
                                 src={imageURL}
                                 alt={`Uploaded Image ${index + 1}`}
-                                boxSize='100%'
-                                objectFit='cover' />
+                                w="100%"
+                                h="100%" 
+                                objectFit="cover"
+                                position="absolute"
+                                top="50%"
+                                left="50%"
+                                borderRadius={'md'}
+                                transform="translate(-50%, -50%)" />
                             {editable && (
                                 <Box
-                                    position='absolute'
-                                    top={'-3'}
-                                    right={'-2'}
-                                    boxShadow={'lg'}
-                                    borderRadius={'full'} >
+                                    position="absolute"
+                                    top="-3"
+                                    right="-2"
+                                    boxShadow="lg"
+                                    borderRadius="full">
                                     <IconButton
-                                        size={'sm'}
+                                        size="sm"
                                         isRound
-                                        bgColor={'white'}
-                                        fontSize={'xl'}
-                                        color={'purple.600'}
-                                        position='relative'
-                                        aria-label='Add event'
-                                        icon={<FaMinus />} 
-                                        onClick={() => handleRemoveImage(index)}
-                                    />
+                                        bgColor="white"
+                                        fontSize="xl"
+                                        color="purple.600"
+                                        position="relative"
+                                        aria-label="Add event"
+                                        icon={<FaMinus />}
+                                        onClick={() => handleRemoveImage(index)} />
                                 </Box>
                             )}
                         </Box>

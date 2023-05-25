@@ -3,11 +3,11 @@ import { useState } from 'react';
 import { TEST_PROFILE_RESPONSE_DATA } from '@/components/ui/profile/TEST_DATA';
 import { PAUL_TEST_PROFILE_RESPONSE_DATA } from '@/pages/search/user/profile';
 
-const { username: name } = TEST_PROFILE_RESPONSE_DATA[0];
+const { username } = TEST_PROFILE_RESPONSE_DATA[0];
 
 export default function ProfileUsername({ editable, test }) {
   const paul = PAUL_TEST_PROFILE_RESPONSE_DATA[0]
-  const [profileUsername, setProfileUsername] = useState(test ? paul.username : name);
+  const [profileUsername, setProfileUsername] = useState(test ? paul.username : username);
   const realPurple = '#6B46C1';
 
   return (
