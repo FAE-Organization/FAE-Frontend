@@ -116,7 +116,7 @@ function Form({
 
     useEffect(() => {
         const getUserCards = async () => {
-            // dispatch(setIsUserCardLoading(true))
+            dispatch(setIsUserCardLoading(true))
             // const data = await (await fetch(process.env.NODE_ENV == 'development' ?
             //     'http://localhost:3001/api/filter' : `${process.env.NEXT_PUBLIC_BACKEND_BASE_URI}/api/filter`, {
             //     method: 'POST',
@@ -125,15 +125,15 @@ function Form({
             //     },
             //     body: JSON.stringify(fields)
             // })).json()
+            const promise = await fetch(`http://localhost:3001/api/filter`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(fields)
+            })
+            const data = await promise.json()
             try {
-                const promise = await fetch(`https://easy-blue-butterfly-wear.cyclic.app/api/filter`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(fields)
-                })
-                const data = await promise.json()
             } catch (error) {
                 console.log(error)
             }

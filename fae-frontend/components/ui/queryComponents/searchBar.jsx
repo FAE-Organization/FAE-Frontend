@@ -41,7 +41,7 @@ export default function SearchBar() {
             //     `${process.env.NEXT_PUBLIC_BACKEND_BASE_URI}/api/filtersearch?category=${data.category.toLowerCase()}&value=${data.input}`
             // ))).json()
             const result = await (await fetch(
-                `https://easy-blue-butterfly-wear.cyclic.app/api/filtersearch?category=${data.category.toLowerCase()}&value=${data.input}`
+                `http://localhost:3001/api/filter/search?category=${data.category.toLowerCase()}&value=${data.input}`
             )).json()
 
             dispatch(setUsersBySearch({

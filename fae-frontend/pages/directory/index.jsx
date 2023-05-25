@@ -60,7 +60,7 @@ export async function getServerSideProps() {
     //     ))).json()
 
     const countData = await (await fetch(
-        `https://easy-blue-butterfly-wear.cyclic.app/api/directory/count`
+        `http://localhost:3001/api/directory/count`
     )).json()
     return {
         props: { directory: directory, counts: countData }
