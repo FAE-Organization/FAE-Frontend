@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Flex, Stack, Box, Grid, GridItem, useBreakpointValue} from '@chakra-ui/react';
+import { Button, Flex, Box, Grid, GridItem, useBreakpointValue} from '@chakra-ui/react';
 import ProfilePicture from '@/components/ui/profile/UserBanner/profile-picture';
 import ProfileUsername from '@/components/ui/profile/UserBanner/profile-username';
 import PronounSelection from '@/components/ui/profile/UserBanner/profile-pronouns';
@@ -9,9 +9,8 @@ import UserDiscord from '@/components/ui/profile/UserBanner/profile-discord';
 import ProfileRoles from '@/components/ui/profile/UserBanner/profile-roles';
 import UserTags from '@/components/ui/profile/UserBanner/profile-tags';
 import ProfileBody from '@/components/ui/profile/ProfileBody/profile-body';
-import Subheader from '@/components/ui/profile/ProfileBody/subheader';
-import Capsule from '@/components/ui/profile/UserBanner/capsule';
 import SocialButtons from '@/components/ui/profile/UserBanner/social-media-buttons';
+import RegionSelection from '@/components/ui/profile/UserBanner/region';
 
 export default function Profile() {
     const [editable, setEditable] = useState(false);
@@ -36,7 +35,7 @@ export default function Profile() {
         setDiscord(newDiscord);
     };
 
-    const showEditButton = useBreakpointValue({ base: false, md: true });
+    const showEditButton = useBreakpointValue({ base: false, lg: true });
 
     return (
         <Box px={'3rem'} py={'4rem'}>
@@ -45,10 +44,12 @@ export default function Profile() {
                 columnGap={5}
                 templateColumns='repeat(5, 1fr)'>
 
+            <GridItem >
                 <ProfilePicture
                     editable={editable}
                     onChange={handleProfilePictureChange} 
                 />
+            </GridItem>
 
                 {/* Profile Header */}
                 <GridItem colSpan={4} pt={4} px={3}>
@@ -58,12 +59,7 @@ export default function Profile() {
                             <PronounSelection editable={editable} />
                             <Salary editable={editable} />
                         </Flex>
-
-                        <Grid>
-                            
-                        </Grid>
                 
-
                         {/* Edit mode button -- Hidden on small screens */}
                         {showEditButton && (
                             <Flex>
@@ -89,10 +85,7 @@ export default function Profile() {
                                 <UserTags editable={editable} />
                             </GridItem>
                             <GridItem colSpan={1}>
-                            <Stack direction={'column'}>
-                                <Subheader category='Region'/>
-                                <Capsule color='#8F9AD2' capName={'NA'} />
-                            </Stack>
+                                <RegionSelection editable={editable } />
                             </GridItem>
                             <GridItem colSpan={1}>
                                 <UserDiscord

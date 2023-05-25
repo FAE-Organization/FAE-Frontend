@@ -149,7 +149,7 @@ export default function ProfileRoles({ editable }) {
                                     borderStyle="dashed"
                                     padding="0.5rem 1rem"
                                     borderRadius="2xl">
-                                    Add role
+                                    Add Role
                                 </Button>
                             </Box>
                         </PopoverTrigger>

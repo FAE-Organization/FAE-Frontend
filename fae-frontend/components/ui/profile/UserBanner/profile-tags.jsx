@@ -105,9 +105,9 @@ export default function UserTags({ editable }) {
                         <Tag
                             color={'black'}
                             borderRadius="full"
-                            bgColor={'blue.100'}
+                            bgColor={'gray.200'}
                             border={'3px solid'}
-                            borderColor={'blue.300'}
+                            borderColor={'gray.300'}
                             size="lg"
                             variant="solid">
                             {tag}

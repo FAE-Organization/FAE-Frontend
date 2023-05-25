@@ -7,7 +7,6 @@ export const TEST_PROFILE_RESPONSE_DATA = [{
     bio: 'these are a lot of words. Max 300 chars?',
     twitch: 'https://www.twitch.tv/hemmys',
     youtube: 'https://www.youtube.com/hemmys',
-    discord: 'https://www.discord.com/user/hemmys',
     twitter: 'https://www.twitter.com/hemmys',
     profilePic: '/profile-test-images/userMockIcon_1.png',
     email: 'hemmys@gmail.com',
@@ -37,7 +36,9 @@ export const TEST_PROFILE_RESPONSE_DATA = [{
         '/profile-test-images/designMockimage_1.png', 
         '/profile-test-images/designMockimage_2.png', 
         '/profile-test-images/designMockimage_3.png', 
-        '/profile-test-images/designMockimage_4.png']
+        '/profile-test-images/designMockimage_4.png'],
+    region: 'NA',
+    discord: 'hemmys#1131',
 }]
 
 

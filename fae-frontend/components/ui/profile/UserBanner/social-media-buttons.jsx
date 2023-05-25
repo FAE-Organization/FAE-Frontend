@@ -17,7 +17,7 @@ import {
 } from '@chakra-ui/react';
 import { FaTwitter, FaYoutube, FaTwitch, FaRegEnvelope } from 'react-icons/fa';
 import { GoPlus } from 'react-icons/go'
-import { TEST_PROFILE_RESPONSE_DATA } from '../TEST_DATA'; // Import the test data
+import { TEST_PROFILE_RESPONSE_DATA } from '../TEST_DATA';
 
 export default function SocialButtons({ editable }) {
   const [isOpen, setIsOpen] = useState(false);

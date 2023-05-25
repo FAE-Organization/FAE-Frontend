@@ -9,11 +9,11 @@ export default function ProfileUsername({ editable }) {
   const realPurple = '#6B46C1';
 
   return (
-      <InputGroup maxW='300px' >
+      <InputGroup maxW='13.5rem' >
         <Input
           value={editable? ' ' + profileUsername : profileUsername}
           fontWeight={'bold'}
-          fontSize={editable ? '2xl' : '6xl'}
+          fontSize={editable ? '2xl' : { base: 'xl' , md: '5xl'}}
           borderRadius={'lg'}
           isReadOnly={!editable}
           variant={editable ? 'outline' : 'unstyled'}

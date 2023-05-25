@@ -1,8 +1,12 @@
 import React, { useState } from "react";
-import { Input, Box, Text, Heading } from "@chakra-ui/react";
+import { Input, Box} from "@chakra-ui/react";
+import Subheader from "../ProfileBody/subheader";
+import { TEST_PROFILE_RESPONSE_DATA } from '@/components/ui/profile/TEST_DATA';
+
+const { discord: discord_data } = TEST_PROFILE_RESPONSE_DATA[0];
 
 export default function UserDiscord({ value, editable }) {
-    const [discord, setDiscord] = useState(value);
+    const [discord, setDiscord] = useState(discord_data || value);
     const [isFocused, setIsFocused] = useState(false);
 
     const handleChange = (event) => {
@@ -19,7 +23,7 @@ export default function UserDiscord({ value, editable }) {
 
     return (
         <Box >
-            <Heading fontSize="lg" mb={4} as={'h2'} textTransform={'uppercase'}>Discord</Heading>
+            <Subheader category='Discord' />
             <Input
                 value={discord}
                 isReadOnly={!editable}
