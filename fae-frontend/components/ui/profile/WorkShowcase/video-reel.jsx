@@ -84,7 +84,7 @@ export default function VideoReel({ headerText, editable, video_data }) {
         <Box borderRadius='lg' overflow='hidden'>
           <YouTube
             videoId={videoId}
-            opts={{ width: '100%', height: '350px' }} />
+            opts={{ width: '100%', height: '400px' }} />
         </Box>
       )}
     </Stack>
