@@ -59,7 +59,7 @@ export default function Region({ editable, userData }) {
 
     function findObjectColor(region) {
         const regionObj = regionOptions.find((option) => { return option.name === region })
-        return regionObj.color;
+        return regionObj?.color;
     }
 
     function togglePopover() {

@@ -17,69 +17,94 @@ export default function Profile() {
     const [editable, setEditable] = useState(false);
     const [userData, setUserData] = useState([{}]);
     const searchParams = useSearchParams()
+
+useEffect(() => {
+  const getUserProfile = async () => {
+    try {
+      const id = searchParams.get('id')
+      const response = await fetch(`http://localhost:3001/api/profile?id=${id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setUserData(data);
+        saveUserDataOnServer(data);
+      }
+    } catch (error) {
+      // Handle error if the fetch request fails
+    }
+  };
+
+  // Retrieve the user data from the server on component mount
+  getUserProfile();
+}, [searchParams]);
+
+    // useEffect(() => {
+    //   const getUserProfile = async () => {
+    //     try {
+    //       const id = searchParams.get('id')
+    //       const response = await fetch(`http://localhost:3001/api/profile?id=${id}`, {
+    //         method: 'GET',
+    //         headers: {
+    //           'Content-Type': 'application/json',
+    //         },
+    //       });
     
-    useEffect(() => {
-      const getUserProfile = async () => {
-        try {
-          const id = searchParams.get('id')
-          const response = await fetch(`http://localhost:3001/api/profile?id=${id}`, {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          });
+    //       if (response.ok) {
+    //         const data = await response.data.json();
+    //         setUserData(data);
+    //         saveUserDataOnServer(data);
+    //       }
+    //     } catch (error) {
+    //       // Handle error if the fetch request fails
+    //     }
+    //   };
     
-          if (response.ok) {
-            const data = await response.data.json();
-            setUserData(data);
-            saveUserDataOnServer(data);
-          }
-        } catch (error) {
-          // Handle error if the fetch request fails
-        }
-      };
+    //   const saveUserDataOnServer = async (data) => {
+    //     try {
+    //       const response = await fetch('http://localhost:3001/api/profile?user=Paul', {
+    //         method: 'POST',
+    //         headers: {
+    //           'Content-Type': 'application/json',
+    //         },
+    //         body: JSON.stringify(data),
+    //       });
     
-      const saveUserDataOnServer = async (data) => {
-        try {
-          const response = await fetch('http://localhost:3001/api/profile?user=Paul', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-          });
+    //       if (!response.ok) {
+    //         // Handle error if the save request fails
+    //       }
+    //     } catch (error) {
+    //       // Handle error if the save request fails
+    //     }
+    //   };
     
-          if (!response.ok) {
-            // Handle error if the save request fails
-          }
-        } catch (error) {
-          // Handle error if the save request fails
-        }
-      };
+    //   const retrieveUserDataFromServer = async () => {
+    //     try {
+    //       const response = await fetch('http://localhost:3001/api/profile?user=Paul', {
+    //         method: 'GET',
+    //         headers: {
+    //           'Content-Type': 'application/json',
+    //         },
+    //       });
     
-      const retrieveUserDataFromServer = async () => {
-        try {
-          const response = await fetch('http://localhost:3001/api/profile?user=Paul', {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          });
+    //       if (response.ok) {
+    //         const data = await response.json();
+    //         setUserData(data);
+    //       }
+    //     } catch (error) {
+    //       // Handle error if the retrieve request fails
+    //     }
+    //   };
     
-          if (response.ok) {
-            const data = await response.json();
-            setUserData(data);
-          }
-        } catch (error) {
-          // Handle error if the retrieve request fails
-        }
-      };
-    
-      getUserProfile();
+    //   getUserProfile();
     
       // Retrieve the user data from the server on component mount
-      retrieveUserDataFromServer();
-    }, [userData]);
+    //   retrieveUserDataFromServer();
+    // }, [userData]);
     
     // Rest of your component code...
     
@@ -145,7 +170,9 @@ export default function Profile() {
                             <Salary editable={editable} userData={userData} />
                         </Flex>
                 
-                        {/* Edit mode button -- Hidden on small screens */}
+                        {/* Edit mode button -- Hidden on small screens
+                            TODO: only show if this is the user's profile page
+                        */}
                         {showEditButton && (
                             <Flex>
                                 <Button
@@ -187,7 +214,7 @@ export default function Profile() {
                 </GridItem> 
                 
                 <GridItem rowSpan={2} colSpan={5} >
-                    <ProfileBody editable={editable} userData={userData} />
+                    {/* <ProfileBody editable={editable} userData={userData} /> */}
                 </GridItem>
             </Grid>
         </Box>

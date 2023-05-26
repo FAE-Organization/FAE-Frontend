@@ -11,7 +11,6 @@ export default function Salary({ editable, userData }) {
     const [isOpen, setIsOpen] = useState(false);
     const realPurple = '#6B46C1';
 
-
     function handleDone() {
         setPay(Number(tempPaySelection));
         setIsOpen(false);
