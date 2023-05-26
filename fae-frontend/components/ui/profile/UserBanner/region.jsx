@@ -21,7 +21,7 @@ import { TEST_PROFILE_RESPONSE_DATA } from '@/components/ui/profile/TEST_DATA';
 
 const { region } = TEST_PROFILE_RESPONSE_DATA[0];
 
-export default function Region({ editable }) {
+export default function Region({ editable, test }) {
     const [selectedRegion, setSelectedRegion] = useState([region]);
     const [tempSelectedRegion, setTempSelectedRegion] = useState([region]);
 
@@ -39,22 +39,22 @@ export default function Region({ editable }) {
     function renderRadios() {
         return (
             <RadioGroup value={tempSelectedRegion[0]} onChange={() => setTempSelectedRegion([tempSelectedRegion[0]])}>
-      <Grid templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(2, 1fr)" }} gap={4}>
-        {regionOptions.map((option, i) => (
-          <Radio
-            key={i}
-            value={option.name}
-            colorScheme="purple"
-            borderColor="purple.500"
-            size='lg'
-            onChange={handleRadioChange}
-            isChecked={tempSelectedRegion.includes(option.name)}
-          >
-            {option.name}
-          </Radio>
-        ))}
-      </Grid>
-    </RadioGroup>
+                <Grid templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(2, 1fr)" }} gap={4}>
+                    {regionOptions.map((option, i) => (
+                        <Radio
+                            key={i}
+                            value={option.name}
+                            colorScheme="purple"
+                            borderColor="purple.500"
+                            size='lg'
+                            onChange={handleRadioChange}
+                            isChecked={tempSelectedRegion.includes(option.name)}
+                        >
+                            {option.name}
+                        </Radio>
+                    ))}
+                </Grid>
+            </RadioGroup>
         );
     }
 
@@ -126,17 +126,33 @@ export default function Region({ editable }) {
                 </Popover>
             )}
             {!editable && (
-                <Tag
-                    color={'black'}
-                    w={'fit-content'}
-                    borderRadius="full"
-                    bgColor={`${findObjectColor(selectedRegion[0])}.100`}
-                    border={'3px solid'}
-                    borderColor={`${findObjectColor(selectedRegion[0])}.300`}
-                    size="lg"
-                    variant="solid">
-                    {getButtonText()}
-                </Tag>
+                test ? (
+                    <Tag
+                        color={'black'}
+                        w={'fit-content'}
+                        borderRadius="full"
+                        bgColor={`${findObjectColor(selectedRegion[0])}.100`}
+                        border={'3px solid'}
+                        borderColor={`${findObjectColor(selectedRegion[0])}.300`}
+                        size="lg"
+                        variant="solid"
+                    >
+                        EU
+                    </Tag>
+                ) : (
+
+                    <Tag
+                        color={'black'}
+                        w={'fit-content'}
+                        borderRadius="full"
+                        bgColor={`${findObjectColor(selectedRegion[0])}.100`}
+                        border={'3px solid'}
+                        borderColor={`${findObjectColor(selectedRegion[0])}.300`}
+                        size="lg"
+                        variant="solid">
+                        {getButtonText()}
+                    </Tag>
+                )
             )}
         </Flex>
     );
