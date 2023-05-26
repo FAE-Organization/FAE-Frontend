@@ -17,7 +17,7 @@ import {
     Heading
 } from "@chakra-ui/react";
 import { AddIcon } from '@chakra-ui/icons';
-import { TEST_PROFILE_RESPONSE_DATA, ROLES_DATA } from '@/components/ui/profile/TEST_DATA';
+import { TEST_PROFILE_RESPONSE_DATA, ROLES_DATA, REAL_TEST_MOCK } from '@/components/ui/profile/TEST_DATA';
 
 const { roles: test_roles } = TEST_PROFILE_RESPONSE_DATA[0];
 const roles = ROLES_DATA;

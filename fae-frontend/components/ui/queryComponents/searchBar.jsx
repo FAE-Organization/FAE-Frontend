@@ -64,15 +64,9 @@ export default function SearchBar() {
         dispatch(setIsUserCardLoading(true))
         setTrigger(false)
         if (data) {
-            const result = await (await fetch(process.env.NODE_ENV == 'development' ? (
-                `http://localhost:3001/api/filter/search?category=${data.category.toLowerCase()}&value=${data.input.toLowerCase()}`
-            ) : (
-                `${process.env.NEXT_PUBLIC_BACKEND_BASE_URI}/api/filtersearch?category=${data.category.toLowerCase()}&value=${data.input.toLowerCase()}`
-            ))).json()
-
-            // const result = await (await fetch(
-            //     `https://fae-backend.onrender.com/api/filter/search?category=${data.category.toLowerCase()}&value=${data.input}`
-            // )).json()
+            const result = await (await fetch(
+                `https://fae-backend.onrender.com/api/filter/search?category=${data.category.toLowerCase()}&value=${data.input.toLowerCase()}`
+            )).json()
 
             dispatch(setUsersBySearch({
                 data: Array.from(result.payload),

@@ -56,8 +56,6 @@ export default function Directory(props) {
 
 export async function getServerSideProps() {
     const directory = await getDirectory()
-
-
     const countData = await (await fetch(
         'https://fae-backend.onrender.com/api/directory/count'
     )).json()

@@ -16,14 +16,13 @@ import {
   PopoverHeader,
   PopoverBody,
 } from '@chakra-ui/react';
-import { EditIcon, CloseIcon } from '@chakra-ui/icons';
 import Subheader from '../ProfileBody/subheader';
-import { FaPlus } from 'react-icons/fa';
+import { FaEllipsisH, FaPlus } from 'react-icons/fa';
 
 export default function NotableEvents({ editable, article_data }) {
   const [articles, setArticles] = useState(article_data);
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
-  const [articleData, setArticleData] = useState(getInitialArticleData());
+  const [tempArticleData, setTempArticleData] = useState(getInitialArticleData());
 
   function getInitialArticleData() {
     return {
@@ -41,16 +40,16 @@ export default function NotableEvents({ editable, article_data }) {
 
   function handlePopoverClose() {
     setIsPopoverOpen(false);
-    setArticleData(getInitialArticleData());
+    setTempArticleData(getInitialArticleData());
   }
 
   function handleArticleDataChange(article) {
     const { name, value } = article.target;
-    setArticleData(prevData => ({ ...prevData, [name]: value }));
+    setTempArticleData(prevData => ({ ...prevData, [name]: value }));
   }
 
   function handleConfirmUpload() {
-    const { id, title, date, thumbnail, url } = articleData;
+    const { id, title, date, thumbnail, url } = tempArticleData;
 
     if (!title || !date || !thumbnail || !url) {
       return;
@@ -78,20 +77,29 @@ export default function NotableEvents({ editable, article_data }) {
   }
 
   function handleEdit(article) {
-    setArticleData(article);
+    setTempArticleData(article);
     setIsPopoverOpen(true);
   }
 
   function handleRemove(articleId) {
     setArticles(articles.filter(article => article.id !== articleId));
+    handlePopoverClose();
   }
 
   function renderArticles() {
     return articles.map(article => (
-      <Box key={article.id} p={4} borderWidth={1} borderRadius="md" cursor="pointer">
-        <Flex justify="space-between" align="center">
+      <Box 
+        key={article.id} 
+        p={1}
+        borderWidth={1} 
+        borderRadius="md" 
+        cursor="pointer" 
+        variant={editable ? "outline" : 'unstyled'}
+        border={editable ? '1px solid black' : '0px'}
+      >
+        <Flex justify="space-between" align="center" spacing={10}>
           <Box flex={1} marginRight={4}>
-            <Image src={article.thumbnail} alt={article.title} />
+            <Image src={article.thumbnail} alt={article.title} minW={100}/>
           </Box>
           <Box flex={4}>
             <Heading as="h3" size="sm" marginBottom={2}>
@@ -102,24 +110,26 @@ export default function NotableEvents({ editable, article_data }) {
             </Box>
           </Box>
           {editable && (
-            <Flex>
-              <IconButton
-                icon={<EditIcon />}
-                aria-label="Edit Event"
-                variant="unstyled"
-                color="purple.500"
-                size="sm"
-                onClick={() => handleEdit(article)}
-              />
-              <IconButton
-                icon={<CloseIcon />}
-                aria-label="Remove Event"
-                variant="unstyled"
-                color="red.500"
-                size="sm"
-                onClick={() => handleRemove(article.id)}
-              />
-            </Flex>
+            <Box position="relative" >
+              <Box
+                position="absolute"
+                top="-60px"
+                right="-15px"
+                boxShadow="lg"
+                borderRadius="full"
+              >
+                <IconButton
+                  size="sm"
+                  isRound
+                  bgColor="white"
+                  fontSize="xl"
+                  color="purple.600"
+                  aria-label="Remove Image"
+                  icon={<FaEllipsisH />}
+                  onClick={() => handleEdit(event)}
+                />
+              </Box>
+            </Box>
           )}
         </Flex>
       </Box>
@@ -127,26 +137,14 @@ export default function NotableEvents({ editable, article_data }) {
   }
 
   return (
-    <VStack align="stretch" spacing={4}>
+    <VStack align="stretch" pt={8}>
       <Subheader category="Articles" />
-      <VStack spacing={4} align="stretch" >
+      <VStack spacing={6} pb={4} align="stretch" >
         {renderArticles()}
       </VStack>
       {editable && (
         <Popover isOpen={isPopoverOpen} onClose={handlePopoverClose}>
           <PopoverTrigger>
-            {/* <Button
-              p={4}
-              borderWidth={1}
-              borderRadius="md"
-              variant="outline"
-              onClick={handleUpload}
-            >
-              <Flex justify="center" align="center">
-                <MdFileUpload size="24px" />
-                <Text ml={2}>Add Article</Text>
-              </Flex>
-            </Button> */}
             <Box
               p={4}
               borderWidth={1}
@@ -175,11 +173,11 @@ export default function NotableEvents({ editable, article_data }) {
               </Box>
             </Box>
           </PopoverTrigger>
-          <PopoverContent p={4}>
+          <PopoverContent >
             <PopoverCloseButton />
             <PopoverHeader align="center">
               <Text as="h2" px={5} textTransform="uppercase" fontWeight="bold">
-                {articleData.id ? 'Edit Article Details' : 'Upload Article'}
+                {tempArticleData.id ? 'Edit Article Details' : 'Upload Article'}
               </Text>
             </PopoverHeader>
             <PopoverBody>
@@ -187,35 +185,33 @@ export default function NotableEvents({ editable, article_data }) {
               <Input
                 placeholder="Article Title"
                 name="title"
-                value={articleData.title}
+                value={tempArticleData.title}
                 onChange={handleArticleDataChange}
               />
               <Input
                 type="date"
                 placeholder="Article Date"
                 name="date"
-                value={articleData.date}
+                value={tempArticleData.date}
                 onChange={handleArticleDataChange}
               />
               <Input
                 placeholder="Thumbnail URL"
                 name="thumbnail"
-                value={articleData.thumbnail}
+                value={tempArticleData.thumbnail}
                 onChange={handleArticleDataChange}
               />
               <Input
                 placeholder="Event URL"
                 name="url"
-                value={articleData.url}
+                value={tempArticleData.url}
                 onChange={handleArticleDataChange}
               />
               <Button colorScheme="purple" onClick={handleConfirmUpload}>
-                {articleData.id ? 'Update' : 'Upload'}
+                {tempArticleData.id ? 'Update' : 'Upload'}
               </Button>
-              {/* 
-               Something fucky is going on right here
-               
-              {articleData.id && (
+                             
+              {tempArticleData.id && (
                   <Button
                     aria-label="Delete Event"
                     variant="outline"
@@ -224,7 +220,7 @@ export default function NotableEvents({ editable, article_data }) {
                   >
                     Delete Event
                   </Button>
-                )} */}
+                )}
             </VStack>
           </PopoverBody>
           </PopoverContent>
