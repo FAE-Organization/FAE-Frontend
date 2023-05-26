@@ -57,7 +57,7 @@ export default function PronounSelection({ editable, test }) {
     }
 
     function handlePopoverClose() {
-        setSelectedPronouns(tempSelectedPronouns);
+        setSelectedPronouns(selectedPronouns);
         setIsOpen(false);
     }
 
@@ -101,7 +101,7 @@ export default function PronounSelection({ editable, test }) {
                                 </Stack>
                             </Stack>
                             <Button mt={4} onClick={handlePopoverClose} colorScheme="purple" variant="solid">
-                                Close
+                                Done
                             </Button>
                         </PopoverBody>
                     </PopoverContent>

@@ -118,28 +118,29 @@ export const PAUL_TEST_PROFILE_RESPONSE_DATA = [{
     events: [{
         id: 1,
         thumbnail: '/profile-test-images/eventMockimage_1.png',
-        title: 'Astral Clash 2022',
-        subtitle: 'Valorant',
+        title: 'Race to World First 2022',
+        subtitle: 'World of Warcraft',
         role: 'Caster'
     }],
 
     // Added these manually, not representative of DB:
-    showcase: ['Notable Events', 'Observer Reel', 'Design Portfolio'],
+    showcase: ['Notable Events', 'Observer Reel', 'Editing Reel', 'Design Portfolio'],
     articles: [{
         id: 1,
-        title: 'Astral Clash 2022',
+        title: 'Valorant Tournament 2019',
         date: '05/10/2023',
-        thumbnail: '/profile-test-images/eventMockimage_1.png',
+        thumbnail: '/profile-test-images/eventMockimage_3.png',
         URL: 'https://esportsinsider.com/'
     }],
-    observer: 'https://www.youtube.com/watch?v=zvnQxjvq0Dc',
+    observer: 'https://www.youtube.com/watch?v=K1JMtq5RQx4',
     editing: 'https://www.youtube.com/watch?v=zvnQxjvq0Dc',
     casting: 'https://www.youtube.com/watch?v=zvnQxjvq0Dc',
     design: [
+        '/profile-test-images/designMockimage_4.png',
         '/profile-test-images/designMockimage_1.png',
         '/profile-test-images/designMockimage_2.png',
         '/profile-test-images/designMockimage_3.png',
-        '/profile-test-images/designMockimage_4.png'],
+    ],
     region: 'NA',
     discord: 'hemmys#1131',
 }]

@@ -22,7 +22,7 @@ export default function ProfileBody({ editable }) {
         <Grid
             templateColumns={{
                 base: '1fr',
-                md: '1fr 1fr 1fr 1fr 1fr',
+                md: '1fr 1fr 1fr 1fr',
             }}
             gap={4} >
             <GridItem p={4} minWidth={'330px'}>
@@ -30,7 +30,7 @@ export default function ProfileBody({ editable }) {
                {isCategoryEnabled('Notable Events') && ( <NotableEvents editable={editable} events_data={events} /> )}
                 {isCategoryEnabled('Articles') && ( <ArticleSection editable={editable} article_data={articles} /> )}
             </GridItem>
-            <GridItem p={4} gridColumn={{ md: 'span 3' }}>
+            <GridItem p={4} gridColumn={{ md: 'span 2' }}>
                 {isCategoryEnabled('Observer Reel') && ( <VideoReel headerText={'Observer Reel'} editable={editable} video_data={observer} /> )}
                 {isCategoryEnabled('Editing Reel') && ( <VideoReel headerText={'Editing Reel'} editable={editable} video_data={editing} /> )}
             </GridItem>
