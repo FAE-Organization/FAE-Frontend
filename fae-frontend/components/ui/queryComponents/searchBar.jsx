@@ -19,11 +19,11 @@ import { setIsUserCardLoading } from '@/lib/redux/loadingSlice'
  * 6. DONE Paginator needs to have ... in between to signify start and end of search and update accordingly. Include 6 max. ex 123...789 or 123456.
  * 7. DONE Paginator needs button ... eh whatever
  * 8. DONE Search bar Placeholder needs to change text as dropdown value changes.
- * 9. Clicking on a user needs to take them to the user page located at search/user/profile. maybe do search/user/[...profile].jsx
+ * 9. DONE Clicking on a user needs to take them to the user page located at search/user/profile. maybe do search/user/[...profile].jsx
  * 10. Modify the profile page so other users cannot be seen.
  * 11. Do not show current logged in users information in user cards.
  * 12. Send logged in tokens to backend.
- * 13. Get the correct users information when navigating to search/user/[...profile].jsx
+ * 13. DONE Get the correct users information when navigating to search/user/[...profile].jsx
  * 14. Fix sign out dropdown position on larger screens
  * 15. Implement dark mode
  * 16. Fix backend search: currently it is using .skip()
