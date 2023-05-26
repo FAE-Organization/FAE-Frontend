@@ -17,16 +17,15 @@ import {
     Heading
 } from "@chakra-ui/react";
 import { AddIcon } from '@chakra-ui/icons';
-import { TEST_PROFILE_RESPONSE_DATA, ROLES_DATA } from '@/components/ui/profile/TEST_DATA';
+import { ROLES_DATA } from '@/components/ui/profile/TEST_DATA';
 
-const { roles: test_roles } = TEST_PROFILE_RESPONSE_DATA[0];
 const roles = ROLES_DATA;
 
 // Render user-selected Role tags & popover toggle
-export default function ProfileRoles({ editable }) {
-    const [selectedRoles, setSelectedRoles] = useState(test_roles);
+export default function ProfileRoles({ editable, userData }) {
+    const { roles: test_roles } = userData[0];
+    const [selectedRoles, setSelectedRoles] = useState(test_roles || [' ']);
     const [tempSelectedRoles, setTempSelectedRoles] = useState(selectedRoles);
-
     const [isOpen, setIsOpen] = useState(false);
 
 

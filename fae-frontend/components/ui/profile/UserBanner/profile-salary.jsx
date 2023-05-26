@@ -1,55 +1,57 @@
-import {
-    Button,
-    Text,
-    Stack,
-    Popover,
-    PopoverTrigger,
-    PopoverContent,
-    PopoverBody,
-    PopoverHeader,
-    NumberInput,
-    NumberInputField,
-    InputGroup,
-    InputLeftAddon,
-    InputRightAddon
-} from '@chakra-ui/react'
-import { HiOutlineCurrencyDollar } from "react-icons/hi";
+import { Button, Box, Text, Flex, Select, Stack, Popover, PopoverTrigger, PopoverContent, PopoverBody, PopoverHeader, NumberInput, NumberInputField, InputGroup, InputLeftAddon, InputRightAddon } from '@chakra-ui/react';
+import { HiOutlineCurrencyDollar, HiOutlineCurrencyPound } from "react-icons/hi";
 import { useState } from 'react';
-import { TEST_PROFILE_RESPONSE_DATA } from '@/components/ui/profile/TEST_DATA';
 
-const { salary } = TEST_PROFILE_RESPONSE_DATA[0]; 
-
-// Renders adjustible pay rate with popover toggle
-export default function Salary({ editable }) {
-    const [pay, setPay] = useState( salary ?? 0);
-    const [tempPaySelection, setTempPaySelection] = useState('');
+export default function Salary({ editable, userData }) {
+    const { salary } = userData[0];
+    const [pay, setPay] = useState(salary?.amount || 0);
+    const [tempPaySelection, setTempPaySelection] = useState(salary?.amount || 0);
+    const [tempRateSelection, setTempRateSelection] = useState('/hr');
+    const [selectedCurrency, setSelectedCurrency] = useState('usd');
     const [isOpen, setIsOpen] = useState(false);
     const realPurple = '#6B46C1';
 
-    // Handle done button function
     function handleDone() {
         setPay(Number(tempPaySelection));
-        setTempPaySelection('');
         setIsOpen(false);
     }
 
-    // Handle cancel button function
     function togglePopover() {
-        setTempPaySelection('');
         setIsOpen(!isOpen);
     }
 
     function getButtonText() {
-        return ('$' + pay + '/hr');
+        return (pay + tempRateSelection);
+    }
+
+    function handleCurrencyChange(event) {
+        setSelectedCurrency(event.target.value);
+    }
+
+    function handleRateChange(event) {
+        setTempRateSelection(event.target.value);
+    }
+
+    function getButtonIcon() {
+        switch (selectedCurrency) {
+            case 'usd':
+                return <HiOutlineCurrencyDollar color={'#7BBB9C'} size={35} p={2} />;
+            case 'cad':
+                return <HiOutlineCurrencyDollar color={'#7BBB9C'} size={35} p={2} />;
+            case 'gbp':
+                return <HiOutlineCurrencyPound color={'#7BBB9C'} size={35} p={2} />;
+            default:
+                return null;
+        }
     }
 
     return (
         <>
             {editable && (
-                <Popover isOpen={isOpen} onClose={togglePopover}>
+                <Popover isOpen={isOpen} onClose={togglePopover} Width={'fit-content'}>
                     <PopoverTrigger>
                         <Button
-                            px={6}
+                            px={2}
                             fontWeight='normal'
                             fontSize={'xl'}
                             _hover={{}}
@@ -61,14 +63,14 @@ export default function Salary({ editable }) {
                             borderRadius={'lg'}
                             borderColor={editable ? 'realPurple' : 'transparent'}
                             focus={{ boxShadow: 'none' }}
-                            leftIcon={<HiOutlineCurrencyDollar color={'#7BBB9C'} size={35} />}
+                            leftIcon={getButtonIcon()}
                         >
                             {getButtonText()}
                         </Button>
                     </PopoverTrigger>
-                    <PopoverContent align={'center'}>
+                    <PopoverContent align={'center'} width={'fit-content'}>
                         <PopoverHeader>
-                            <Stack direction='row' justify={'center'} align={'center'}>
+                            <Flex direction='row' justify={'space-between'}>
                                 <Button
                                     size='sm'
                                     colorScheme={'purple'}
@@ -82,22 +84,34 @@ export default function Salary({ editable }) {
                                     onClick={handleDone}>
                                     Done
                                 </Button>
-                            </Stack>
+                            </Flex>
                         </PopoverHeader>
-                        <PopoverBody py={4}>
-                            <InputGroup size='md' >
-                                <InputLeftAddon>
-                                    <HiOutlineCurrencyDollar color={'#7BBB9C'} size={35} />
-                                </InputLeftAddon>
-                                <NumberInput
-                                    defaultValue=''
-                                    value={tempPaySelection}
-                                    size='md'
-                                    clampValueOnBlur={true}
-                                    onChange={setTempPaySelection}>
-                                    <NumberInputField />
-                                </NumberInput>
-                                <InputRightAddon>/hr</InputRightAddon>
+                        <PopoverBody py={4} px={10}>
+                            <InputGroup size='md'>
+                                <Stack direction="column" spacing={2} align="center">
+                                    <Select placeholder='Currency' onChange={handleCurrencyChange}>
+                                        <option value='usd'>USD</option>
+                                        <option value='cad'>CAD</option>
+                                        <option value='gbp'>GBP</option>
+                                    </Select>
+                                    <InputGroup size='md'>
+                                        <NumberInput
+                                            defaultValue=''
+                                            value={tempPaySelection}
+                                            size='md'
+                                            clampValueOnBlur={true}
+                                            onChange={setTempPaySelection}>
+                                            <NumberInputField />
+                                        </NumberInput>
+                                        <Box width={'fit-content'}>
+                                        <Select placeholder='Rate' onChange={handleRateChange}>
+                                            <option value='/hr'>/hr</option>
+                                            <option value='/yr'>/yr</option>
+                                            <option value='/milestone'>/milestone</option>
+                                        </Select>
+                                        </Box>
+                                    </InputGroup>
+                                </Stack>
                             </InputGroup>
                         </PopoverBody>
                     </PopoverContent>
@@ -111,9 +125,11 @@ export default function Salary({ editable }) {
                     variant='outline'
                     borderColor='transparent'
                     colorScheme='none'
-                    cursor='default'
-                    leftIcon={<HiOutlineCurrencyDollar color={'#7BBB9C'} size={'35'} />}>
-                    {getButtonText()}
+                    cursor='default' >
+                    <Flex gap={2} align={'center'}>
+                        {getButtonIcon()}
+                        {getButtonText()}
+                    </Flex>
                 </Button>
             )}
         </>

@@ -1,10 +1,8 @@
 import { Box, IconButton, Image, GridItem, useBreakpointValue } from '@chakra-ui/react';
 import { MdOutlineAddPhotoAlternate } from "react-icons/md";
-import { TEST_PROFILE_RESPONSE_DATA } from '@/components/ui/profile/TEST_DATA';
 
-const { profilePic: value } = TEST_PROFILE_RESPONSE_DATA[0];
-
-export default function ProfilePicture({ editable, onChange }) {
+export default function ProfilePicture({ editable, onChange, userData }) {
+    const { profilePic: value } = userData[0];
     const imageSize = useBreakpointValue({ base: '100%', md: 'auto' });
     const containerSize = useBreakpointValue({ base: '100%', md: '350px' });
 
@@ -31,7 +29,7 @@ export default function ProfilePicture({ editable, onChange }) {
                 <Box position="relative" width="100%" paddingBottom="100%">
                     <Image
                         as="img"
-                        src={value || "https://via.placeholder.com/150"}
+                        src={value}
                         alt="Profile picture"
                         position="absolute"
                         top={0}

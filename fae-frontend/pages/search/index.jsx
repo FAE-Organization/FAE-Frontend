@@ -11,11 +11,10 @@ import { getCachedCategories } from "@/lib/functions/getCachedCategories"
 import UserCardLoading from "@/components/ui/loading/user-card-loading"
 import { useSearchParams } from 'next/navigation'
 import { useDispatch, useSelector } from "react-redux"
-import { updateCategory, updateExperience, updateSiteType, updateSubcategory } from "@/lib/redux/formSlice"
+import { updateCategory, updateSubcategory } from "@/lib/redux/formSlice"
 import { setCategories, setSubcategories } from "@/lib/redux/filterSubcategorySlice"
 
-export default function Search({ directory, userData, data }) {
-    console.log(data)
+export default function Search({ directory }) {
 
     const { isOpen, onOpen, onClose } = useDisclosure()
     const dispatch = useDispatch()
@@ -27,7 +26,7 @@ export default function Search({ directory, userData, data }) {
     const isUserCardLoading = useSelector((state) => state.loading.isUserCardLoading)
 
     useEffect(() => {
-        const category = searchParams.get('category')
+        const category = searchParams.get('category') ?? 'Broadcasting'
         const checkForCachedCategories = async () => {
             const data = await getCachedCategories(category)
             dispatch(setCategories(directory.map((entry) => entry.title)))
@@ -93,19 +92,9 @@ export default function Search({ directory, userData, data }) {
 export async function getServerSideProps() {
     const directory = await getDirectory()
 
-    const userData = await (await fetch(`${process.env.BACKEND_BASE_URI}/api/profile`)).json()
-    const data = await (await fetch(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URI}/api/filter`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(fields)
-    })).json()
     return {
         props: {
             directory: directory,
-            userData: userData,
-            filter: data
         }
     }
 }

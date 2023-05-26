@@ -25,19 +25,3 @@ export default function UserTags(props) {
         </HStack>
     );
 }
-
-{/* 
- 
-OLD TAG CODE
-
-    <Box
-        bg="black"
-        display={'inline-block'}
-        px={2}
-        py={1}
-        color="white"
-        mb={2}>
-        <Text fontSize={'xs'} fontWeight="medium">
-            {tags}
-        </Text>
-    </Box> */}

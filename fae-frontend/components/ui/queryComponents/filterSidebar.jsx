@@ -43,7 +43,7 @@ export default function FilterSidebar({ filterProps: {
 
     const [currentCategory, setCurrentCategory] = categoryStates
     const isSmallScreen = useBreakpointValue({ base: true, md: false })
-
+ 
     return (
         <React.Fragment>
             {isSmallScreen ? (
@@ -112,32 +112,29 @@ function Form({
 
     const staticSubcategory = useSelector((state) => state.filterSubcategoryDoNotChange.subcategories)
     const salaryExpectations = useSelector((state) => state.form.salary)
-    console.log(process.env.NODE_ENV)
 
     useEffect(() => {
         const getUserCards = async () => {
             dispatch(setIsUserCardLoading(true))
-            const data = await (await fetch(process.env.NODE_ENV == 'development' ?
-                'http://localhost:3001/api/filter' : `${process.env.NEXT_PUBLIC_BACKEND_BASE_URI}/api/filter`, {
+            // const data = await (await fetch(process.env.NODE_ENV == 'development' ?
+            //     'http://localhost:3001/api/filter' : `${process.env.NEXT_PUBLIC_BACKEND_BASE_URI}/api/filter`, {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     },
+            //     body: JSON.stringify(fields)
+            // })).json()
+
+            const data = await (await fetch(
+                'https://fae-backend.onrender.com/api/filter', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(fields)
-            })).json()
-            // const promise = await fetch(`http://localhost:3001/api/filter`, {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json'
-            //     },
-            //     body: JSON.stringify(fields)
-            // })
-            // const data = await promise.json()
-            try {
-            } catch (error) {
-                console.log(error)
             }
-            dispatch(updatePageNumber(1))
+            )).json()
+
             dispatch(setUsersByFilter(JSON.parse(data.payload)))
             dispatch(setUser(JSON.parse(data.dataLength)))
             dispatch(setIsUserCardLoading(false))
@@ -219,13 +216,22 @@ function Form({
                 </Select>
                 <Stack>
                     <Text className='filter-title'>Subcategories</Text>
-                    <CheckboxGroup onChange={(values) => {
-                        if (values.length === 0) {
-                            dispatch(updateSubcategory([...staticSubcategory].sort()))
-                        } else {
-                            dispatch(updateSubcategory([...values.sort()]))
+                    <CheckboxGroup
+                        onChange={(values) => {
+                            if (values.length === 0) {
+                                dispatch(updateSubcategory([...staticSubcategory].sort()))
+                            } else {
+                                dispatch(updateSubcategory([...values.sort()]))
+                            }
+                        }}
+                        defaultValue={
+                            fields.subcategories.length === staticSubcategory.length ? (
+                                null
+                            ) : (
+                                fields.subcategories
+                            )
                         }
-                    }}>
+                    >
                         {!staticSubcategory ? (
                             <div>Loading...</div>
                         ) : (

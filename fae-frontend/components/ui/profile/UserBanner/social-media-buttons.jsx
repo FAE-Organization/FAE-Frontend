@@ -17,16 +17,14 @@ import {
 } from '@chakra-ui/react';
 import { FaTwitter, FaYoutube, FaTwitch, FaRegEnvelope } from 'react-icons/fa';
 import { GoPlus } from 'react-icons/go'
-import { TEST_PROFILE_RESPONSE_DATA } from '../TEST_DATA';
 
-export default function SocialButtons({ editable }) {
+export default function SocialButtons({ editable, userData }) {
   const [isOpen, setIsOpen] = useState(false);
   const [socialLinks, setSocialLinks] = useState({
-    twitter: TEST_PROFILE_RESPONSE_DATA[0].twitter,
-    youtube: TEST_PROFILE_RESPONSE_DATA[0].youtube,
-    twitch: TEST_PROFILE_RESPONSE_DATA[0].twitch,
-    email: TEST_PROFILE_RESPONSE_DATA[0].email,
-    
+    twitter: userData[0].twitter || '',
+    youtube: userData[0].youtube || '',
+    twitch: userData[0].twitch || '',
+    email: userData[0].email || '',
   });
 
     function getSocialIcon(name) {

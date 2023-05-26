@@ -20,44 +20,15 @@ import {
 import { MinusIcon, AddIcon } from '@chakra-ui/icons'
 import { FiTag } from "react-icons/fi";
 import { useState } from 'react';
-import { TEST_PROFILE_RESPONSE_DATA } from '@/components/ui/profile/TEST_DATA';
-
-const { tags: user_tags } = TEST_PROFILE_RESPONSE_DATA[0];
-
-// Styling for tags in popover view 
-const TagButt = ({ text, onClick }) => {
-    return (
-        <Box p={'3px'}>
-            <Tag
-                size="md"
-                bgColor={'gray.300'}
-                onClick={onClick}
-                variant='outline'
-                borderRadius={'xl'}
-                border={'3px'}
-                color={'black'}
-                textAlign={'center'} >
-                {text}
-                <TagRightIcon
-                    as={MinusIcon}
-                    bgColor={'white'}
-                    borderRadius={'full'}
-                    borderColor={'pink'}
-                    border={'1px'}
-                    position="relative"
-                    right="-3"
-                    top="-3" />
-            </Tag>
-        </Box>
-    );
-};
 
 // Renders profile tags section & editable popover
-export default function UserTags({ editable }) {
-    const [tags, setTags] = useState(user_tags);
+export default function UserTags({ editable, userData }) {
+    const { tags: user_tags } = userData[0];
+    const [tags, setTags] = useState(user_tags || ['']);
     const [tagInput, setTagInput] = useState('');
     const [tempTags, setTempTags] = useState(tags);
     const [isOpen, setIsOpen] = useState(false);
+
 
     // Handle done button & updates tags
     function handleDone() {
@@ -185,3 +156,31 @@ export default function UserTags({ editable }) {
         </Box>
     );
 }
+
+// Styling for tags in popover view 
+function TagButt({ text, onClick }) {
+    return (
+        <Box p={'3px'}>
+            <Tag
+                size="md"
+                bgColor={'gray.300'}
+                onClick={onClick}
+                variant='outline'
+                borderRadius={'xl'}
+                border={'3px'}
+                color={'black'}
+                textAlign={'center'} >
+                {text}
+                <TagRightIcon
+                    as={MinusIcon}
+                    bgColor={'white'}
+                    borderRadius={'full'}
+                    borderColor={'pink'}
+                    border={'1px'}
+                    position="relative"
+                    right="-3"
+                    top="-3" />
+            </Tag>
+        </Box>
+    );
+};

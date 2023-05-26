@@ -1,5 +1,66 @@
 // TODO: Populate with fake data for testing
 
+
+export const REAL_TEST_MOCK = [
+    {
+        "id": "645163985070078b811a2e53",
+        "username": "Doyle",
+        "bio": "Non excepteur dolore elit qui nisi nulla laborum. Velit duis et amet labore irure duis labore in anim in.",
+        "pronouns": "he/him",
+        "twitch": "twitch.tv",
+        "youtube": "youtube.com",
+        "discord": "discord.com",
+        "twitter": "twitter.com",
+        "profilePic": "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png",
+        "email": "doylecalderon@slambda.com",
+        "salary": {
+            "amount": 25,
+            "currency": "USD",
+            "compensationType": "hourly"
+        },
+        "game": "CS:GO",
+        "region": "EU",
+        "experience": "2",
+        "siteType": "on-site",
+        "tags": [
+            "laboris",
+            "non",
+            "do",
+            "sunt"
+        ],
+        "roles": [
+            "producer",
+            "broadcaster",
+            "producer"
+        ],
+
+        // Add support for these to backend: 
+        "showcase": ['Notable Events', 'Observer Reel', 'Design Portfolio'],
+        "design": [
+            '/profile-test-images/designMockimage_1.png', 
+            '/profile-test-images/designMockimage_2.png', 
+            '/profile-test-images/designMockimage_3.png', 
+            '/profile-test-images/designMockimage_4.png'],
+        "events": [{
+            id: 1,
+            thumbnail: '/profile-test-images/eventMockimage_1.png',
+            title: 'Astral Clash 2022',
+            subtitle: 'Valorant',
+            role: 'Caster'
+        }],
+        "articles": [{ 
+            id: 1,
+            title: 'Astral Clash 2022', 
+            date: '05/10/2023', 
+            thumbnail: '/profile-test-images/eventMockimage_1.png', 
+            URL: 'https://esportsinsider.com/'
+        }],
+        "observer": 'https://www.youtube.com/watch?v=VKKtiLoNYts',
+        "editing": 'https://www.youtube.com/watch?v=25Um9QnIO3g',
+       "casting": 'https://www.youtube.com/watch?v=Wrdh5HrOCMc',
+    }
+]
+
 // Structure of server-side for profile page
 export const TEST_PROFILE_RESPONSE_DATA = [{
     username: 'Hemmys',
@@ -29,9 +90,9 @@ export const TEST_PROFILE_RESPONSE_DATA = [{
         thumbnail: '/profile-test-images/eventMockimage_1.png', 
         URL: 'https://esportsinsider.com/'
     }],
-    observer: 'https://www.youtube.com/watch?v=zvnQxjvq0Dc',
-    editing: 'https://www.youtube.com/watch?v=zvnQxjvq0Dc',
-    casting: 'https://www.youtube.com/watch?v=zvnQxjvq0Dc',
+    observer:'https://www.youtube.com/watch?v=VKKtiLoNYts',
+    editing: 'https://www.youtube.com/watch?v=25Um9QnIO3g',
+    casting: 'https://www.youtube.com/watch?v=Wrdh5HrOCMc',
     design: [
         '/profile-test-images/designMockimage_1.png', 
         '/profile-test-images/designMockimage_2.png', 
@@ -100,26 +161,3 @@ export const DESIGN_DATA = [
     '/profile-test-images/designMockImage_3.png',
     '/profile-test-images/designMockImage_4.png', 
 ];
-
-// FAKE EVENT DATA
-//
-// pastEvents = {
-//     [
-//     {
-//         title: 'Calling All Heroes 2022 Overwatch 2',
-//         position: 'Tournament Admin',
-//         image: {
-//             src: '',
-//             alt: ''
-//         }
-//     },
-//     {
-//         title: 'Calling All Heroes 2022 Overwatch 2',
-//         position: 'Tournament Admin',
-//         image: {
-//             src: '',
-//             alt: ''
-//         }
-//     }
-//     ]}
-// observerReel = {}
