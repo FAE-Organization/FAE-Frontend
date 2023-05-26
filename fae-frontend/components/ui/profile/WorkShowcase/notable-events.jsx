@@ -25,10 +25,10 @@ export default function NotableEvents({ editable, events_data }) {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [tempEventData, setTempEventData] = useState({
     id: 1,
-    title: 'farts',
-    subtitle: 'more farts',
-    role: 'doctor',
-    thumbnail: 'url.com'
+    title: '',
+    subtitle: '',
+    role: '',
+    thumbnail: ''
   });
   const fileInputRef = useRef(null);
 
@@ -88,7 +88,7 @@ export default function NotableEvents({ editable, events_data }) {
 
   function handleRemove(eventId) {
     setEvents(events.filter((event) => event.id !== eventId));
-    setIsPopoverOpen(false);
+    handlePopoverClose();
   }
 
   function renderEvents() {

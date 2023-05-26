@@ -5,9 +5,13 @@ import {
     PopoverTrigger,
     PopoverContent,
     PopoverBody,
+    PopoverHeader,
+    PopoverCloseButton,
     RadioGroup,
     Radio,
     Tag,
+    Text,
+    Grid,
     TagCloseButton
 } from '@chakra-ui/react';
 import { MdSettings } from 'react-icons/md';
@@ -34,32 +38,28 @@ export default function Region({ editable }) {
 
     function renderRadios() {
         return (
-            <RadioGroup
-                value={tempSelectedRegion[0]}
-                onChange={() => {
-                    setTempSelectedRegion([tempSelectedRegion[0]])
-                }}>
-                {
-                    regionOptions.map((option, i) => {
-                        return (
-                            <Radio
-                                key={i}
-                                value={option.name}
-                                colorScheme={'purple'}
-                                borderColor={'purple.500'}
-                                onChange={handleRadioChange}
-                                isChecked={tempSelectedRegion.includes(option.name)} >
-                                {option.name}
-                            </Radio>
-                        );
-                    })
-                }
-            </RadioGroup>
+            <RadioGroup value={tempSelectedRegion[0]} onChange={() => setTempSelectedRegion([tempSelectedRegion[0]])}>
+      <Grid templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(2, 1fr)" }} gap={4}>
+        {regionOptions.map((option, i) => (
+          <Radio
+            key={i}
+            value={option.name}
+            colorScheme="purple"
+            borderColor="purple.500"
+            size='lg'
+            onChange={handleRadioChange}
+            isChecked={tempSelectedRegion.includes(option.name)}
+          >
+            {option.name}
+          </Radio>
+        ))}
+      </Grid>
+    </RadioGroup>
         );
     }
 
     function findObjectColor(region) {
-        const regionObj = regionOptions.find((option) => {return option.name === region}) 
+        const regionObj = regionOptions.find((option) => { return option.name === region })
         return regionObj.color;
     }
 
@@ -71,7 +71,7 @@ export default function Region({ editable }) {
         const { value } = event.target;
         if (!selectedRegion.includes(value)) {
             setTempSelectedRegion([value]);
-        } 
+        }
     }
 
     function handlePopoverClose() {
@@ -108,6 +108,12 @@ export default function Region({ editable }) {
                         </Tag>
                     </PopoverTrigger>
                     <PopoverContent align="center">
+                        <PopoverCloseButton />
+                        <PopoverHeader align="center">
+                            <Text as="h2" px={5} textTransform="uppercase" fontWeight="bold">
+                                Select Region
+                            </Text>
+                        </PopoverHeader>
                         <PopoverBody>
                             <Flex direction="column" spacing={6} justify="center" align={'center'}>
                                 {renderRadios()}
