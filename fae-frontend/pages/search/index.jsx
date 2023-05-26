@@ -13,6 +13,7 @@ import { useSearchParams } from 'next/navigation'
 import { useDispatch, useSelector } from "react-redux"
 import { updateCategory, updateSubcategory } from "@/lib/redux/formSlice"
 import { setCategories, setSubcategories } from "@/lib/redux/filterSubcategorySlice"
+import { setIsPageLoading } from "@/lib/redux/loadingSlice"
 
 export default function Search({ directory }) {
 
@@ -26,6 +27,7 @@ export default function Search({ directory }) {
     const isUserCardLoading = useSelector((state) => state.loading.isUserCardLoading)
 
     useEffect(() => {
+        dispatch(setIsPageLoading(false))
         const category = searchParams.get('category') ?? 'Broadcasting'
         const checkForCachedCategories = async () => {
             const data = await getCachedCategories(category)
@@ -41,7 +43,10 @@ export default function Search({ directory }) {
     return (
         <Stack width='100%' alignItems='center'>
             <Stack width='90%'>
-                <Link href='/directory' style={{ width: 'fit-content' }}>
+                <Link
+                    href='/directory'
+                    style={{ width: 'fit-content' }}
+                >
                     <HStack
                         color='#6742CE'
                         borderRadius='5px'
@@ -49,7 +54,8 @@ export default function Search({ directory }) {
                         _hover={{
                             transition: '0.3s',
                             backgroundColor: '#EFEFEF'
-                        }}>
+                        }}
+                    >
                         <Icon as={MdOutlineKeyboardArrowLeft} />
                         <Text>Back to Directory</Text>
                     </HStack>
