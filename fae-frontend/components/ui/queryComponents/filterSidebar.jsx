@@ -43,7 +43,7 @@ export default function FilterSidebar({ filterProps: {
 
     const [currentCategory, setCurrentCategory] = categoryStates
     const isSmallScreen = useBreakpointValue({ base: true, md: false })
-
+ 
     return (
         <React.Fragment>
             {isSmallScreen ? (

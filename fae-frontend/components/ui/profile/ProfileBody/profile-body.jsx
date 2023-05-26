@@ -10,7 +10,7 @@ import { TEST_PROFILE_RESPONSE_DATA } from '../TEST_DATA';
 
 const { showcase: test_showcase, events, articles, observer, editing, casting, design, } = TEST_PROFILE_RESPONSE_DATA[0];
 
-export default function ProfileBody({ editable }) {
+export default function ProfileBody({ editable, userData }) {
     const [selectedCategories, setSelectedCategories] = useState(test_showcase);
 
     // Helper function to check if showcase title is enabled

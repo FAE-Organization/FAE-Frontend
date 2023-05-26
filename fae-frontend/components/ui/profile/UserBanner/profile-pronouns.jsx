@@ -8,17 +8,10 @@ import {
     Checkbox,
 } from '@chakra-ui/react';
 import { useState } from 'react';
-import { PRONOUN_DATA as RAW_PRONOUN_DATA, TEST_PROFILE_RESPONSE_DATA } from '@/components/ui/profile/TEST_DATA';
-import { PAUL_TEST_PROFILE_RESPONSE_DATA } from '@/pages/search/user/profile';
+import { PRONOUN_DATA as RAW_PRONOUN_DATA } from '@/components/ui/profile/TEST_DATA';
 
-const { pronouns } = TEST_PROFILE_RESPONSE_DATA[0];
-
-export default function PronounSelection({ editable, test }) {
-    const paul = PAUL_TEST_PROFILE_RESPONSE_DATA[0]
-    const [selectedPronouns, setSelectedPronouns] = useState(test ? paul.pronouns : (pronouns ?? ['pronouns']));
-    const [tempSelectedPronouns, setTempSelectedPronouns] = useState(pronouns ?? []);
-
-
+export default function PronounSelection({ editable, userData }) {
+    const [selectedPronouns, setSelectedPronouns] = useState(userData[0].pronouns || ['pronouns']);
     const [isOpen, setIsOpen] = useState(false);
     const realPurple = '#6B46C1';
 
@@ -35,7 +28,7 @@ export default function PronounSelection({ editable, test }) {
                     colorScheme={'purple'}
                     borderColor={'purple.500'}
                     onChange={handleCheckboxChange}
-                    isChecked={selectedPronouns.includes(item)} // Set isChecked based on selectedPronouns
+                    isChecked={selectedPronouns.includes(item)}
                 >
                     {item}
                 </Checkbox>

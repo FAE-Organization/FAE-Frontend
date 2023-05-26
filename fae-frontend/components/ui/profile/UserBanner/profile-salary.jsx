@@ -1,17 +1,16 @@
 import { Button, Box, Text, Flex, Select, Stack, Popover, PopoverTrigger, PopoverContent, PopoverBody, PopoverHeader, NumberInput, NumberInputField, InputGroup, InputLeftAddon, InputRightAddon } from '@chakra-ui/react';
 import { HiOutlineCurrencyDollar, HiOutlineCurrencyPound } from "react-icons/hi";
 import { useState } from 'react';
-import { TEST_PROFILE_RESPONSE_DATA } from '@/components/ui/profile/TEST_DATA';
 
-const { salary } = TEST_PROFILE_RESPONSE_DATA[0];
-
-export default function Salary({ editable }) {
-    const [pay, setPay] = useState(salary ?? 0);
-    const [tempPaySelection, setTempPaySelection] = useState(salary ?? '');
+export default function Salary({ editable, userData }) {
+    const { salary } = userData[0];
+    const [pay, setPay] = useState(salary?.amount || 0);
+    const [tempPaySelection, setTempPaySelection] = useState(salary?.amount || 0);
     const [tempRateSelection, setTempRateSelection] = useState('/hr');
     const [selectedCurrency, setSelectedCurrency] = useState('usd');
     const [isOpen, setIsOpen] = useState(false);
     const realPurple = '#6B46C1';
+
 
     function handleDone() {
         setPay(Number(tempPaySelection));

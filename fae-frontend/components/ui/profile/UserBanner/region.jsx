@@ -17,13 +17,12 @@ import {
 import { MdSettings } from 'react-icons/md';
 import { useState } from 'react';
 import Subheader from '../ProfileBody/subheader';
-import { TEST_PROFILE_RESPONSE_DATA } from '@/components/ui/profile/TEST_DATA';
 
-const { region } = TEST_PROFILE_RESPONSE_DATA[0];
-
-export default function Region({ editable }) {
-    const [selectedRegion, setSelectedRegion] = useState([region]);
+export default function Region({ editable, userData }) {
+    const { region } = userData[0];
+    const [selectedRegion, setSelectedRegion] = useState(region ? [region] : [''] );
     const [tempSelectedRegion, setTempSelectedRegion] = useState([region]);
+
 
     const [isOpen, setIsOpen] = useState(false);
 

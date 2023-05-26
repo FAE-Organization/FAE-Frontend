@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button, Flex, Box, Grid, GridItem, useBreakpointValue} from '@chakra-ui/react';
 import ProfilePicture from '@/components/ui/profile/UserBanner/profile-picture';
 import ProfileUsername from '@/components/ui/profile/UserBanner/profile-username';
@@ -11,13 +11,105 @@ import UserTags from '@/components/ui/profile/UserBanner/profile-tags';
 import ProfileBody from '@/components/ui/profile/ProfileBody/profile-body';
 import SocialButtons from '@/components/ui/profile/UserBanner/social-media-buttons';
 import RegionSelection from '@/components/ui/profile/UserBanner/region';
+import {useSearchParams} from 'next/navigation'
 
 export default function Profile() {
     const [editable, setEditable] = useState(false);
-    const [bio, setBio] = useState('this is a test!');
-    const [discord, setDiscord] = useState('user#0000');
+    const [userData, setUserData] = useState([{}]);
+    const searchParams = useSearchParams()
+    
+    useEffect(() => {
+      const getUserProfile = async () => {
+        try {
+          const id = searchParams.get('id')
+          const response = await fetch(`http://localhost:3001/api/profile?id=${id}`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+    
+          if (response.ok) {
+            const data = await response.data.json();
+            setUserData(data);
+            saveUserDataOnServer(data);
+          }
+        } catch (error) {
+          // Handle error if the fetch request fails
+        }
+      };
+    
+      const saveUserDataOnServer = async (data) => {
+        try {
+          const response = await fetch('http://localhost:3001/api/profile?user=Paul', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+          });
+    
+          if (!response.ok) {
+            // Handle error if the save request fails
+          }
+        } catch (error) {
+          // Handle error if the save request fails
+        }
+      };
+    
+      const retrieveUserDataFromServer = async () => {
+        try {
+          const response = await fetch('http://localhost:3001/api/profile?user=Paul', {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+    
+          if (response.ok) {
+            const data = await response.json();
+            setUserData(data);
+          }
+        } catch (error) {
+          // Handle error if the retrieve request fails
+        }
+      };
+    
+      getUserProfile();
+    
+      // Retrieve the user data from the server on component mount
+      retrieveUserDataFromServer();
+    }, [userData]);
+    
+    // Rest of your component code...
+    
 
-    // TODO: Clean this up later!!
+    // useEffect(() => {
+    //     const getUserProfile = async () => {
+    //         const data = await (await fetch(
+    //             'http://localhost:3001/api/profile?user=Paul',  {
+    //             method: 'GET',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //             },  
+    //         })).json()
+
+    //         // const data = await (await fetch(
+    //         //     'https://fae-backend.onrender.com/api/profile', {
+    //         //     method: 'GET',
+    //         //     headers: {
+    //         //         'Content-Type': 'application/json',
+    //         //     },
+    //         // }
+    //         // )).json()
+
+    //         // dispatch(setUsersByFilter(JSON.parse(data.payload)))
+    //         setUserData(data);
+            
+    //     }
+    //     getUserProfile()
+
+    // }, [])
 
     function handleEditProfile() {
         setEditable(!editable);
@@ -26,14 +118,6 @@ export default function Profile() {
     function handleProfilePictureChange(value) {
         setProfilePicture(value);
     }
-
-    function handleSaveBio(newBio) {
-        setBio(newBio);
-    };
-
-    function handleSaveDiscord(newDiscord) {
-        setDiscord(newDiscord);
-    };
 
     const showEditButton = useBreakpointValue({ base: false, lg: true });
 
@@ -48,6 +132,7 @@ export default function Profile() {
                 <ProfilePicture
                     editable={editable}
                     onChange={handleProfilePictureChange} 
+                    userData={userData} 
                 />
             </GridItem>
 
@@ -55,9 +140,9 @@ export default function Profile() {
                 <GridItem colSpan={4} pt={4} px={3}>
                     <Flex justify={'space-between'} >
                         <Flex direction='row' spacing={3} justify={'center'} align='center' gap={3}>
-                            <ProfileUsername editable={editable} />
-                            <PronounSelection editable={editable} />
-                            <Salary editable={editable} />
+                            <ProfileUsername editable={editable} userData={userData} />
+                            <PronounSelection editable={editable} userData={userData} />
+                            <Salary editable={editable} userData={userData} />
                         </Flex>
                 
                         {/* Edit mode button -- Hidden on small screens */}
@@ -75,23 +160,20 @@ export default function Profile() {
 
 
                     <Box>
-                        <SocialButtons editable={editable} />
+                        <SocialButtons editable={editable} userData={userData} />
                         <Grid templateColumns={{base: '1fr', md: 'repeat(6, 1fr)'}} pt={1}>
                             <GridItem colSpan={2}>
-                                <ProfileRoles editable={editable} />
+                                <ProfileRoles editable={editable} userData={userData} />
                             </GridItem>
 
                             <GridItem colSpan={2}>
-                                <UserTags editable={editable} />
+                                <UserTags editable={editable} userData={userData} />
                             </GridItem>
                             <GridItem colSpan={1}>
-                                <RegionSelection editable={editable } />
+                                <RegionSelection editable={editable } userData={userData} />
                             </GridItem>
                             <GridItem colSpan={1}>
-                                <UserDiscord
-                                    editable={editable}
-                                    initialValue={discord}
-                                    onSave={handleSaveDiscord} />
+                                <UserDiscord editable={editable} userData={userData} />
                             </GridItem>
                         </Grid>
                     </Box>
@@ -99,13 +181,13 @@ export default function Profile() {
                     <GridItem pt={2}>
                         <UserBio
                             editable={editable}
-                            initialValue={bio}
-                            onSave={handleSaveBio} />
+                            userData={userData}
+                        />
                     </GridItem>
                 </GridItem> 
                 
                 <GridItem rowSpan={2} colSpan={5} >
-                    <ProfileBody editable={editable} />
+                    <ProfileBody editable={editable} userData={userData} />
                 </GridItem>
             </Grid>
         </Box>

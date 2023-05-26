@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Textarea, Box, Text } from "@chakra-ui/react";
 
-export default function UserBio({ value, editable }) {
-    const [bio, setBio] = useState(value);
+export default function UserBio({ editable, userData }) {
+    const [bio, setBio] = useState(userData[0].bio || '');
     const [isFocused, setIsFocused] = useState(false);
 
     const handleChange = (event) => {
