@@ -25,7 +25,7 @@ export default function ProfileBody({ editable }) {
                 md: '1fr 1fr 1fr 1fr 1fr',
             }}
             gap={4} >
-            <GridItem p={4}>
+            <GridItem p={4} minWidth={'330px'}>
                <WorkShowcase editable={editable} setSelectedCategories={setSelectedCategories} selectedCategories={selectedCategories} />
                {isCategoryEnabled('Notable Events') && ( <NotableEvents editable={editable} events_data={events} /> )}
                 {isCategoryEnabled('Articles') && ( <ArticleSection editable={editable} article_data={articles} /> )}

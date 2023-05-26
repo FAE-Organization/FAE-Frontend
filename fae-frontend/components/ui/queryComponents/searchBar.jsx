@@ -69,10 +69,9 @@ export default function SearchBar() {
             ) : (
                 `${process.env.NEXT_PUBLIC_BACKEND_BASE_URI}/api/filtersearch?category=${data.category.toLowerCase()}&value=${data.input.toLowerCase()}`
             ))).json()
-
-            // const result = await (await fetch(
-            //     `https://fae-backend.onrender.com/api/filter/search?category=${data.category.toLowerCase()}&value=${data.input}`
-            // )).json()
+            const result = await (await fetch(
+                `https://fae-backend.onrender.com/api/filter/search?category=${data.category.toLowerCase()}&value=${data.input}`
+            )).json()
 
             dispatch(setUsersBySearch({
                 data: Array.from(result.payload),
