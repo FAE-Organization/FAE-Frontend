@@ -57,18 +57,19 @@ export default function Directory(props) {
 export async function getServerSideProps() {
     const directory = await getDirectory()
 
-    const countData = await (await fetch(
-        process.env.NODE_ENV === 'development' ? (
-            'http://localhost:3001/api/directory/count'
-        ) : (
-            `https://fae-backend.onrender.com/api/directory/count`
-        ))).json()
 
-    // const countData = await (await fetch(
-    //     'https://fae-backend.onrender.com/api/directory/count'
-    // )).json()
+    const countData = await (await fetch(
+        'https://fae-backend.onrender.com/api/directory/count'
+    )).json()
 
     return {
         props: { directory: directory, counts: countData }
     }
 }
+
+    // const countData = await (await fetch(
+    //     process.env.NODE_ENV === 'development' ? (
+    //         'http://localhost:3001/api/directory/count'
+    //     ) : (
+    //         `https://fae-backend.onrender.com/api/directory/count`
+    //     ))).json()
