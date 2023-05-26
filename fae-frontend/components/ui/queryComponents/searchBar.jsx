@@ -234,7 +234,7 @@ export default function SearchBar() {
                                                 initialLoad: true
                                             }))
                                             const data = await (await fetch(process.env.NODE_ENV == 'development' ?
-                                                'http://localhost:3001/api/filter' : `${process.env.NEXT_PUBLIC_BACKEND_BASE_URI}/api/filter`, {
+                                                'http://localhost:3001/api/filter' : `https://fae-backend.onrender.com/api/filter`, {
                                                 method: 'POST',
                                                 headers: {
                                                     'Content-Type': 'application/json',

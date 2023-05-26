@@ -61,7 +61,7 @@ export async function getServerSideProps() {
         process.env.NODE_ENV === 'development' ? (
             'http://localhost:3001/api/directory/count'
         ) : (
-            `${process.env.NEXT_PUBLIC_BACKEND_BASE_URI}/api/directory/count`
+            `https://fae-backend.onrender.com/api/directory/count`
         ))).json()
 
     // const countData = await (await fetch(
