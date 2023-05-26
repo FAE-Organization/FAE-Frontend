@@ -5,7 +5,6 @@ import Link from "next/link";
 import { BiDollarCircle } from 'react-icons/bi'
 import { setIsUserCardLoading } from "@/lib/redux/loadingSlice";
 import Paginator from "../utils/Paginator";
-import { updatePageNumber } from "@/lib/redux/formSlice";
 
 export default function UserCards() {
     const [cardVals, setCardVals] = useState()
@@ -63,7 +62,8 @@ export default function UserCards() {
                         }}
                         borderRadius='5px'
                     >
-                        <Link href={`search/user/profile?id='${card.username}'`}>
+                        {/* <Link href={`search/user/profile?id='${card.username}'`}> */}
+                        <Link href={`search/user/${card._id}`}>
                             <Stack>
                                 <Image
                                     src={card.profilePic}
