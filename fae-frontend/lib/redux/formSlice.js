@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+export const initialState = {
     category: '',
     subcategories: [],
     game: '',
@@ -60,6 +60,9 @@ export const formSlice = createSlice({
         },
         updateItemsPerPage: (state, action) => {
             state.itemsPerPage = action.payload
+        },
+        resetForm: (_, action) => {
+            return { ...action.payload }
         }
     }
 })
@@ -73,7 +76,8 @@ export const {
     updateSalary,
     updateExperience,
     updatePageNumber,
-    updateItemsPerPage
+    updateItemsPerPage,
+    resetForm
 } = formSlice.actions
 
 export default formSlice.reducer

@@ -3,6 +3,9 @@ import AboutHeader from '@/components/ui/about-page/about-header';
 import MemberCards from '@/components/ui/about-page/member-cards.jsx';
 import PurposeSection from '@/components/ui/about-page/purpose-section';
 import ProcessSection from '@/components/ui/about-page/process-section';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { setIsPageLoading } from '@/lib/redux/loadingSlice';
 
 let team_data = [
     {
@@ -44,6 +47,11 @@ let team_data = [
 
 // Renders entire About page
 export default function About() {
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(setIsPageLoading(false))
+    })
     return (
         <Box>
             <Box>

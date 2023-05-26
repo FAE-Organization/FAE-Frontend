@@ -5,17 +5,22 @@ import React, { useEffect, useState } from "react";
 import { getDirectory } from "@/lib/cms/getComponents/getDirectory";
 import { getCachedCategories } from "@/lib/functions/getCachedCategories";
 import { useViewportHeight } from "@/lib/hooks/useViewportHeight";
+import { useDispatch } from "react-redux";
+import { initialState, resetForm } from "@/lib/redux/formSlice";
+import { setIsPageLoading } from "@/lib/redux/loadingSlice";
 
 export default function Directory(props) {
-    console.log(props.counts)
     const [isLoading, setIsLoading] = useState(true)
     const view = useViewportHeight()
+    const dispatch = useDispatch()
 
     useEffect(() => {
+        dispatch(setIsPageLoading(false))
         props.directory.map((entry) => {
             getCachedCategories(entry.title)
         })
 
+        dispatch(resetForm(initialState))
         const fakeGetAsyncDataTimer = Math.floor(Math.random() * 1000) + 100
 
         const timer = setTimeout(() => {
