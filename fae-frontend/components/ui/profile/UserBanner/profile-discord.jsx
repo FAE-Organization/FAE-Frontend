@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { Input, Flex} from "@chakra-ui/react";
 import Subheader from "../ProfileBody/subheader";
+import { useSelector } from "react-redux";
 
-export default function UserDiscord({ editable, userData }) {
-    const { discord } = userData[0];
+export default function UserDiscord({ editable }) {
+    const userData = useSelector((state) => state.userProfile.userData);
+
+    const { discord } = userData;
     const [discordData, setDiscordData] = useState(discord || '');
     const [isFocused, setIsFocused] = useState(false);
 

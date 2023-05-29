@@ -7,17 +7,25 @@ import {
     PopoverBody,
     Checkbox,
 } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { PRONOUN_DATA as RAW_PRONOUN_DATA } from '@/components/ui/profile/TEST_DATA';
 
-export default function PronounSelection({ editable, userData }) {
-    const [selectedPronouns, setSelectedPronouns] = useState(userData[0].pronouns || ['pronouns']);
+export default function PronounSelection({ editable }) {
+    const userData = useSelector((state) => state.userProfile.userData);
+    const [selectedPronouns, setSelectedPronouns] = useState([]); // userData.pronouns || ['pronouns']
     const [isOpen, setIsOpen] = useState(false);
     const realPurple = '#6B46C1';
 
     const halfLength = Math.ceil(RAW_PRONOUN_DATA.length / 2);
     const leftItems = RAW_PRONOUN_DATA.slice(0, halfLength);
     const rightItems = RAW_PRONOUN_DATA.slice(halfLength);
+
+    useEffect(() => {
+        if (userData && userData.pronouns) {
+          setSelectedPronouns(userData.pronouns);
+        }
+      }, [userData]);
 
     function renderCheckboxes(items) {
         return items.map((item, i) => {

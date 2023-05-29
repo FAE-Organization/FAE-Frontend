@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Textarea, Box, Text } from "@chakra-ui/react";
+import { useSelector } from "react-redux";
 
-export default function UserBio({ editable, userData }) {
-    const [bio, setBio] = useState(userData[0].bio || '');
-    const [isFocused, setIsFocused] = useState(false);
+export default function UserBio({ editable }) {
+    const userData = useSelector((state) => state.userProfile.userData);
+    const [bio, setBio] = useState('');
+
+    useEffect(() => {
+        setBio(userData.bio || '');
+    }, [userData]);
 
     const handleChange = (event) => {
         setBio(event.target.value);

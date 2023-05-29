@@ -1,8 +1,10 @@
 import { Box, IconButton, Image, GridItem, useBreakpointValue } from '@chakra-ui/react';
 import { MdOutlineAddPhotoAlternate } from "react-icons/md";
+import { useSelector } from 'react-redux';
 
-export default function ProfilePicture({ editable, onChange, userData }) {
-    const { profilePic: value } = userData[0];
+export default function ProfilePicture({ editable, onChange }) {
+    const userData = useSelector((state) => state.userProfile.userData);
+    const { profilePic: value } = userData;
     const imageSize = useBreakpointValue({ base: '100%', md: 'auto' });
     const containerSize = useBreakpointValue({ base: '100%', md: '350px' });
 

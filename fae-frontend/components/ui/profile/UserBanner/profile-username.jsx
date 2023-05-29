@@ -1,9 +1,11 @@
 import { Input, InputGroup, } from '@chakra-ui/react'
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 
-export default function ProfileUsername({ editable, userData }) {
-  const { name } = userData[0];
+export default function ProfileUsername({ editable }) {
+  const userData = useSelector((state) => state.userProfile.userData);
+  const { name } = userData;
   const [profileUsername, setProfileUsername] = useState(name);
   const realPurple = '#6B46C1';
 

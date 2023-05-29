@@ -19,16 +19,22 @@ import {
 } from '@chakra-ui/react'
 import { MinusIcon, AddIcon } from '@chakra-ui/icons'
 import { FiTag } from "react-icons/fi";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
 // Renders profile tags section & editable popover
-export default function UserTags({ editable, userData }) {
-    const { tags: user_tags } = userData[0];
-    const [tags, setTags] = useState(user_tags || ['']);
+export default function UserTags({ editable }) {
+    const userData = useSelector((state) => state.userProfile.userData);
+    const { tags: userTags } = userData;
+    const [tags, setTags] = useState(userTags || ['']);
     const [tagInput, setTagInput] = useState('');
     const [tempTags, setTempTags] = useState(tags);
     const [isOpen, setIsOpen] = useState(false);
 
+    useEffect(() => {
+        setTags(userTags || ['']);
+        setTempTags(userTags || ['']);
+    }, [userTags]);
 
     // Handle done button & updates tags
     function handleDone() {
@@ -52,20 +58,20 @@ export default function UserTags({ editable, userData }) {
 
     // Deleting a tag
     function removeTag(i) {
-        tempTags.splice(i, 1);
+        const updatedTags = tempTags.filter((_, index) => index !== i);
+        setTempTags(updatedTags);
     }
 
     // Render tag buttons in popover
     function renderButts(tags) {
-        return tags.map((tag, i) => {
-            return (
-                <TagButt
-                    key={i} 
-                    text={tag} 
-                    onClick={() => removeTag(i)} />
-            );
-        });
-    };
+        return (
+            <Flex flexWrap="wrap" gap={1}>
+                {tags.map((tag, i) => (
+                    <TagButt key={i} text={tag} onClick={() => removeTag(i)} />
+                ))}
+            </Flex>
+        );
+    }
 
     return (
         <Box>
@@ -136,7 +142,11 @@ export default function UserTags({ editable, userData }) {
                                             borderRadius={'2xl'}
                                             onChange={(e) => (setTagInput(e.target.value))}
                                         />
-                                        <IconButton icon={<AddIcon />} onClick={() => addTag(tagInput)} />
+                                        <IconButton
+                                            icon={<AddIcon />}
+                                            onClick={() => addTag(tagInput)}
+                                            variant={'unstyled'}
+                                        />
                                     </InputGroup>
 
                                     <Box align='left'>
@@ -160,27 +170,37 @@ export default function UserTags({ editable, userData }) {
 // Styling for tags in popover view 
 function TagButt({ text, onClick }) {
     return (
-        <Box p={'3px'}>
+        <Flex p={'3px'} position="relative">
             <Tag
-                size="md"
-                bgColor={'gray.300'}
-                onClick={onClick}
-                variant='outline'
-                borderRadius={'xl'}
-                border={'3px'}
+                size="lg"
+                pr={4}
+                bgColor={'#E8E8E8'}
+                borderRadius={'2xl'}
+                border={'2px solid #C4C4C4'}
                 color={'black'}
-                textAlign={'center'} >
+                textAlign={'center'}
+                cursor="pointer" >
                 {text}
+            </Tag>
+            <Box
+                position="absolute"
+                top="10%"
+                right="-1"
+                transform="translateY(-50%)"
+                cursor="pointer"
+                opacity={0.8}
+                _hover={{ opacity: 1 }} >
                 <TagRightIcon
                     as={MinusIcon}
+                    onClick={onClick}
+                    boxShadow="rgba(0, 0, 0, 0.2) 0px 2px 4px 0px"
                     bgColor={'white'}
                     borderRadius={'full'}
-                    borderColor={'pink'}
-                    border={'1px'}
-                    position="relative"
-                    right="-3"
-                    top="-3" />
-            </Tag>
-        </Box>
+                    p={'0.5'}
+                    border={'1px solid #e2e2e2'}
+                    boxSize={6}
+                />
+            </Box>
+        </Flex>
     );
 };

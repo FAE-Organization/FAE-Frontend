@@ -63,7 +63,7 @@ export default function UserCards() {
                         }}
                         borderRadius='5px'
                     >
-                        <Link href={`search/user/profile?id='${card.username}'`}>
+                        <Link href={`/profile?id=${card._id}`}>
                             <Stack>
                                 <Image
                                     src={card.profilePic}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     Button,
     Flex,
@@ -18,16 +18,23 @@ import {
 } from "@chakra-ui/react";
 import { AddIcon } from '@chakra-ui/icons';
 import { ROLES_DATA } from '@/components/ui/profile/TEST_DATA';
+import { useSelector } from "react-redux";
 
 const roles = ROLES_DATA;
 
 // Render user-selected Role tags & popover toggle
-export default function ProfileRoles({ editable, userData }) {
-    const { roles: test_roles } = userData[0];
-    const [selectedRoles, setSelectedRoles] = useState(test_roles || [' ']);
+export default function ProfileRoles({ editable }) {
+    const userData = useSelector((state) => state.userProfile.userData);
+    const { roles: test_roles } = userData;
+    const [selectedRoles, setSelectedRoles] = useState([]); //test_roles || [' ']
     const [tempSelectedRoles, setTempSelectedRoles] = useState(selectedRoles);
     const [isOpen, setIsOpen] = useState(false);
 
+    useEffect(() => {
+        if (test_roles && test_roles.length > 0) {
+          setSelectedRoles(test_roles);
+        }
+      }, [test_roles]);
 
     // Toggle cancel button on popover
     function togglePopover() {

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Flex,
   Stack,
@@ -17,15 +17,26 @@ import {
 } from '@chakra-ui/react';
 import { FaTwitter, FaYoutube, FaTwitch, FaRegEnvelope } from 'react-icons/fa';
 import { GoPlus } from 'react-icons/go'
+import { useSelector } from 'react-redux';
 
-export default function SocialButtons({ editable, userData }) {
+export default function SocialButtons({ editable }) {
+  const userData = useSelector((state) => state.userProfile.userData);
   const [isOpen, setIsOpen] = useState(false);
   const [socialLinks, setSocialLinks] = useState({
-    twitter: userData[0].twitter || '',
-    youtube: userData[0].youtube || '',
-    twitch: userData[0].twitch || '',
-    email: userData[0].email || '',
+    twitter: '',
+    youtube: '',
+    twitch: '',
+    email: '',
   });
+
+  useEffect(() => {
+    setSocialLinks({
+      twitter: userData.twitter || '',
+      youtube: userData.youtube || '',
+      twitch: userData.twitch || '',
+      email: userData.email || '',
+    });
+  }, [userData]);
 
     function getSocialIcon(name) {
         switch (name.toLowerCase()) {

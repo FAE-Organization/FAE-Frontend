@@ -1,43 +1,45 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    "id": "",
-    "username": "",
-    "bio": "",
-    "pronouns": "",
-    "twitch": "",
-    "youtube": "",
-    "discord": "",
-    "twitter": "",
-    "profilePic": "",
-    "email": "",
-    "salary": {
-        "amount": 0,
-        "currency": "",
-        "compensationType": ""
-    },
-    "game": "",
-    "region": "",
-    "experience": "",
-    "siteType": "",
-    "tags": [],
-    "roles": [],
-    "showcase": [],
-    "design": [],
-    "events": [{}],
-    "articles": [{}],
-    "observer": '',
-    "editing": '',
-    "casting": '',
+    userData: {
+        "id": "",
+        "username": "",
+        "bio": "",
+        "pronouns": "pronouns",
+        "twitch": "",
+        "youtube": "",
+        "discord": "",
+        "twitter": "",
+        "profilePic": "",
+        "email": "",
+        "salary": {
+            "amount": 0,
+            "currency": "",
+            "compensationType": ""
+        },
+        "game": "",
+        "region": "",
+        "experience": "",
+        "siteType": "",
+        "tags": [],
+        "roles": [],
+        "showcase": [],
+        "design": [],
+        "events": [{}],
+        "articles": [{}],
+        "observer": '',
+        "editing": '',
+        "casting": '',
+    }
 };
 
 export const userProfileSlice = createSlice({
     name: 'userProfile',
     initialState,
     reducers: {
-        // setUserProfile: (state, action) => {
-        //     state.userProfileData = action.payload
-        // },
+        setUserData: (state, action) => {
+            return { ...state, userData: action.payload[0] };
+        },
         setId: (state, action) => {
             state.id = action.payload
         },
@@ -51,7 +53,7 @@ export const userProfileSlice = createSlice({
             state.pronouns = action.payload
         },
         setTwitch: (state, action) => {
-            state.twitch= action.payload
+            state.twitch = action.payload
         },
         setYoutube: (state, action) => {
             state.youtube = action.payload
@@ -69,7 +71,8 @@ export const userProfileSlice = createSlice({
             state.email = action.payload
         },
         setSalary: (state, action) => {
-            const { currency, compensationType, amount} = action.payload;
+            const { currency, compensationType, amount } = action.payload;
+            state.salary = {};
             state.salary.amount = amount
             state.salary.currency = currency
             state.salary.compensationType = compensationType
@@ -86,7 +89,7 @@ export const userProfileSlice = createSlice({
         setSiteType: (state, action) => {
             state.siteType = action.payload
         },
-        setTags: (state, action) => {s
+        setTags: (state, action) => {
             state.tags = action.payload
         },
         setRoles: (state, action) => {
@@ -116,6 +119,6 @@ export const userProfileSlice = createSlice({
     }
 })
 
-export const { setUserProfile } = userProfileSlice.actions
+export const { setUserData, setSalary } = userProfileSlice.actions
 
 export default userProfileSlice.reducer

@@ -1,15 +1,26 @@
 import { Button, Box, Text, Flex, Select, Stack, Popover, PopoverTrigger, PopoverContent, PopoverBody, PopoverHeader, NumberInput, NumberInputField, InputGroup, InputLeftAddon, InputRightAddon } from '@chakra-ui/react';
 import { HiOutlineCurrencyDollar, HiOutlineCurrencyPound } from "react-icons/hi";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
-export default function Salary({ editable, userData }) {
-    const { salary } = userData[0];
-    const [pay, setPay] = useState(salary?.amount || 0);
-    const [tempPaySelection, setTempPaySelection] = useState(salary?.amount || 0);
+export default function Salary({ editable }) {
+    const salary = useSelector((state) => state.userProfile.salary);
+
+    const [pay, setPay] = useState(salary?.amount);
+    const [tempPaySelection, setTempPaySelection] = useState(pay);
     const [tempRateSelection, setTempRateSelection] = useState('/hr');
     const [selectedCurrency, setSelectedCurrency] = useState('usd');
     const [isOpen, setIsOpen] = useState(false);
     const realPurple = '#6B46C1';
+
+    useEffect(() => {
+        if (salary) {
+            setPay(salary.amount || 0);
+            setTempPaySelection(salary.amount || 0);
+            setTempRateSelection(salary.compensationType || '/hr');
+            setSelectedCurrency(salary.currency || 'usd');
+        }
+    }, [salary]);
 
     function handleDone() {
         setPay(Number(tempPaySelection));

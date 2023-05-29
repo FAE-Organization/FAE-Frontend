@@ -15,16 +15,17 @@ import {
     TagCloseButton
 } from '@chakra-ui/react';
 import { MdSettings } from 'react-icons/md';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Subheader from '../ProfileBody/subheader';
+import { useSelector } from 'react-redux';
 
-export default function Region({ editable, userData }) {
-    const { region } = userData[0];
-    const [selectedRegion, setSelectedRegion] = useState(region ? [region] : [''] );
-    const [tempSelectedRegion, setTempSelectedRegion] = useState([region]);
-
-
+export default function Region({ editable }) {
+    const userData = useSelector((state) => state.userProfile.userData);
+    const { region } = userData;
+    const [selectedRegion, setSelectedRegion] = useState(region ? [region] : ['']);
+    const [tempSelectedRegion, setTempSelectedRegion] = useState(selectedRegion);
     const [isOpen, setIsOpen] = useState(false);
+
 
     const regionOptions = [
         { name: 'NA', color: 'blue' },
@@ -34,6 +35,11 @@ export default function Region({ editable, userData }) {
         { name: 'SEA', color: 'teal' },
         { name: 'BR', color: 'purple' },
     ];
+
+    useEffect(() => {
+        setSelectedRegion(region ? [region] : ['']);
+        setTempSelectedRegion(region ? [region] : ['']);
+    }, [region]);
 
     function renderRadios() {
         return (

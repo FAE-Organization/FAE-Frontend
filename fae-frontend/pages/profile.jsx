@@ -12,129 +12,18 @@ import ProfileBody from '@/components/ui/profile/ProfileBody/profile-body';
 import SocialButtons from '@/components/ui/profile/UserBanner/social-media-buttons';
 import RegionSelection from '@/components/ui/profile/UserBanner/region';
 import {useSearchParams} from 'next/navigation'
+import { useDispatch, useSelector } from 'react-redux';
+import { setUserData, setSalary } from '@/lib/redux/userProfileSlice';
 
-export default function Profile() {
+export default function Profile( props ) {
     const [editable, setEditable] = useState(false);
-    const [userData, setUserData] = useState([{}]);
-    const searchParams = useSearchParams()
+    const dispatch = useDispatch();
 
-useEffect(() => {
-  const getUserProfile = async () => {
-    try {
-      const id = searchParams.get('id')
-      const response = await fetch(`http://localhost:3001/api/profile?id=${id}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setUserData(data);
-        saveUserDataOnServer(data);
-      }
-    } catch (error) {
-      // Handle error if the fetch request fails
-    }
-  };
-
-  // Retrieve the user data from the server on component mount
-  getUserProfile();
-}, [searchParams]);
-
-    // useEffect(() => {
-    //   const getUserProfile = async () => {
-    //     try {
-    //       const id = searchParams.get('id')
-    //       const response = await fetch(`http://localhost:3001/api/profile?id=${id}`, {
-    //         method: 'GET',
-    //         headers: {
-    //           'Content-Type': 'application/json',
-    //         },
-    //       });
-    
-    //       if (response.ok) {
-    //         const data = await response.data.json();
-    //         setUserData(data);
-    //         saveUserDataOnServer(data);
-    //       }
-    //     } catch (error) {
-    //       // Handle error if the fetch request fails
-    //     }
-    //   };
-    
-    //   const saveUserDataOnServer = async (data) => {
-    //     try {
-    //       const response = await fetch('http://localhost:3001/api/profile?user=Paul', {
-    //         method: 'POST',
-    //         headers: {
-    //           'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify(data),
-    //       });
-    
-    //       if (!response.ok) {
-    //         // Handle error if the save request fails
-    //       }
-    //     } catch (error) {
-    //       // Handle error if the save request fails
-    //     }
-    //   };
-    
-    //   const retrieveUserDataFromServer = async () => {
-    //     try {
-    //       const response = await fetch('http://localhost:3001/api/profile?user=Paul', {
-    //         method: 'GET',
-    //         headers: {
-    //           'Content-Type': 'application/json',
-    //         },
-    //       });
-    
-    //       if (response.ok) {
-    //         const data = await response.json();
-    //         setUserData(data);
-    //       }
-    //     } catch (error) {
-    //       // Handle error if the retrieve request fails
-    //     }
-    //   };
-    
-    //   getUserProfile();
-    
-      // Retrieve the user data from the server on component mount
-    //   retrieveUserDataFromServer();
-    // }, [userData]);
-    
-    // Rest of your component code...
-    
-
-    // useEffect(() => {
-    //     const getUserProfile = async () => {
-    //         const data = await (await fetch(
-    //             'http://localhost:3001/api/profile?user=Paul',  {
-    //             method: 'GET',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //             },  
-    //         })).json()
-
-    //         // const data = await (await fetch(
-    //         //     'https://fae-backend.onrender.com/api/profile', {
-    //         //     method: 'GET',
-    //         //     headers: {
-    //         //         'Content-Type': 'application/json',
-    //         //     },
-    //         // }
-    //         // )).json()
-
-    //         // dispatch(setUsersByFilter(JSON.parse(data.payload)))
-    //         setUserData(data);
-            
-    //     }
-    //     getUserProfile()
-
-    // }, [])
+    useEffect(() => {
+        // Dispatch the setUserProfile action here
+        dispatch(setUserData(props.userResponse));
+        dispatch(setSalary(props.userResponse?.[0]?.salary))
+      }, []);
 
     function handleEditProfile() {
         setEditable(!editable);
@@ -157,7 +46,6 @@ useEffect(() => {
                 <ProfilePicture
                     editable={editable}
                     onChange={handleProfilePictureChange} 
-                    userData={userData} 
                 />
             </GridItem>
 
@@ -165,13 +53,13 @@ useEffect(() => {
                 <GridItem colSpan={4} pt={4} px={3}>
                     <Flex justify={'space-between'} >
                         <Flex direction='row' spacing={3} justify={'center'} align='center' gap={3}>
-                            <ProfileUsername editable={editable} userData={userData} />
-                            <PronounSelection editable={editable} userData={userData} />
-                            <Salary editable={editable} userData={userData} />
+                            <ProfileUsername editable={editable} />
+                            <PronounSelection editable={editable} />
+                            <Salary editable={editable} />
                         </Flex>
                 
                         {/* Edit mode button -- Hidden on small screens
-                            TODO: only show if this is the user's profile page
+                            TODO: only show if this is the logged-in user's profile page
                         */}
                         {showEditButton && (
                             <Flex>
@@ -187,36 +75,51 @@ useEffect(() => {
 
 
                     <Box>
-                        <SocialButtons editable={editable} userData={userData} />
+                        <SocialButtons editable={editable} />
                         <Grid templateColumns={{base: '1fr', md: 'repeat(6, 1fr)'}} pt={1}>
                             <GridItem colSpan={2}>
-                                <ProfileRoles editable={editable} userData={userData} />
+                                <ProfileRoles editable={editable} />
                             </GridItem>
 
                             <GridItem colSpan={2}>
-                                <UserTags editable={editable} userData={userData} />
+                                <UserTags editable={editable} />
                             </GridItem>
                             <GridItem colSpan={1}>
-                                <RegionSelection editable={editable } userData={userData} />
+                                <RegionSelection editable={editable } />
                             </GridItem>
                             <GridItem colSpan={1}>
-                                <UserDiscord editable={editable} userData={userData} />
+                                <UserDiscord editable={editable} />
                             </GridItem>
                         </Grid>
                     </Box>
 
                     <GridItem pt={2}>
-                        <UserBio
-                            editable={editable}
-                            userData={userData}
-                        />
+                        <UserBio editable={editable} />
                     </GridItem>
                 </GridItem> 
                 
                 <GridItem rowSpan={2} colSpan={5} >
-                    {/* <ProfileBody editable={editable} userData={userData} /> */}
+                    {/* <ProfileBody editable={editable} /> */}
                 </GridItem>
             </Grid>
         </Box>
     );
+}
+
+export async function getServerSideProps({ query }) {
+    // if null render paul
+    const userId = query?.id ?? '645163982b93e4decabe5bae'; 
+
+    const data = await (await fetch(
+        `http://localhost:3001/api/profile?id=${userId}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })).json()
+        // 'https://fae-backend.onrender.com/api/directory/count'
+
+    return {
+        props: { userResponse: data }
+    }
 }
