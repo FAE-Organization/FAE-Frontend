@@ -17,16 +17,20 @@ import {
 import { MdOutlineUpload } from 'react-icons/md';
 import YouTube from 'react-youtube';
 import Subheader from '../ProfileBody/subheader';
+import { useSelector } from 'react-redux';
 
 function getVideoId(url) {
   const videoIdMatch = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu.be\/)([\w-]+)/i);
   return videoIdMatch && videoIdMatch[1];
 };
 
-export default function VideoReel({ headerText, editable, video_data }) {
+export default function VideoReel({ headerText, editable, video_type }) {
+
+  const video_data = useSelector((state) => state.userProfile?.userData?.[video_type]);
+
   const [isOpen, setIsOpen] = useState(false);
-  const [videoUrl, setVideoUrl] = useState('');
-  const [videoId, setVideoId] = useState(video_data && getVideoId(video_data));
+  const [videoUrl, setVideoUrl] = useState(video_data || '');
+  const [videoId, setVideoId] = useState((video_data && getVideoId(video_data)) || '');
 
   const handleButtonClick = () => {
     setIsOpen(!isOpen);

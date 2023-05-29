@@ -99,7 +99,7 @@ export default function Profile( props ) {
                 </GridItem> 
                 
                 <GridItem rowSpan={2} colSpan={5} >
-                    {/* <ProfileBody editable={editable} /> */}
+                    <ProfileBody editable={editable} />
                 </GridItem>
             </Grid>
         </Box>

@@ -17,7 +17,7 @@ import { MdOutlineQueue } from 'react-icons/md';
 import Subheader from '../ProfileBody/subheader';
 import { SHOWCASE_DATA } from '../TEST_DATA';
 
-export default function WorkShowcase({ editable, setSelectedCategories, selectedCategories = [] }) {
+export default function WorkShowcase({ editable, setSelectedCategories, selectedCategories }) {
     const [tempSelectedCategories, setTempSelectedCategories] = useState(selectedCategories);
 
     const [isOpen, setIsOpen] = useState(false);

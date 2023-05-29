@@ -44,7 +44,7 @@ export default function Salary({ editable }) {
     }
 
     function getButtonIcon() {
-        switch (selectedCurrency) {
+        switch (selectedCurrency.toLowerCase()) {
             case 'usd':
                 return <HiOutlineCurrencyDollar color={'#7BBB9C'} size={35} p={2} />;
             case 'cad':
