@@ -132,33 +132,17 @@ export default function Region({ editable }) {
                 </Popover>
             )}
             {!editable && (
-                test ? (
-                    <Tag
-                        color={'black'}
-                        w={'fit-content'}
-                        borderRadius="full"
-                        bgColor={`${findObjectColor(selectedRegion[0])}.100`}
-                        border={'3px solid'}
-                        borderColor={`${findObjectColor(selectedRegion[0])}.300`}
-                        size="lg"
-                        variant="solid"
-                    >
-                        EU
-                    </Tag>
-                ) : (
-
-                    <Tag
-                        color={'black'}
-                        w={'fit-content'}
-                        borderRadius="full"
-                        bgColor={`${findObjectColor(selectedRegion[0])}.100`}
-                        border={'3px solid'}
-                        borderColor={`${findObjectColor(selectedRegion[0])}.300`}
-                        size="lg"
-                        variant="solid">
-                        {getButtonText()}
-                    </Tag>
-                )
+                <Tag
+                    color={'black'}
+                    w={'fit-content'}
+                    borderRadius="full"
+                    bgColor={`${findObjectColor(selectedRegion[0])}.100`}
+                    border={'3px solid'}
+                    borderColor={`${findObjectColor(selectedRegion[0])}.300`}
+                    size="lg"
+                    variant="solid">
+                    {getButtonText()}
+                </Tag>
             )}
         </Flex>
     );
