@@ -16,11 +16,15 @@ import {
 import { MdOutlineQueue } from 'react-icons/md';
 import Subheader from '../ProfileBody/subheader';
 import { SHOWCASE_DATA } from '../TEST_DATA';
+import { useDispatch, useSelector } from "react-redux";
+import { setShowcase } from "@/lib/redux/userProfileSlice";
 
-export default function WorkShowcase({ editable, setSelectedCategories, selectedCategories = [] }) {
+
+export default function WorkShowcase({ editable }) {
+    const selectedCategories = useSelector((state) => state.userProfile.userData?.showcase);
     const [tempSelectedCategories, setTempSelectedCategories] = useState(selectedCategories);
-
     const [isOpen, setIsOpen] = useState(false);
+    const dispatch = useDispatch();
 
     // Toggle cancel button on popover
     function togglePopover() {
@@ -29,8 +33,8 @@ export default function WorkShowcase({ editable, setSelectedCategories, selected
     }
 
     function handleDone() {
-        setSelectedCategories(tempSelectedCategories);
         setTempSelectedCategories(selectedCategories);
+        dispatch(setShowcase(tempSelectedCategories));
         setIsOpen(false);
     }
 

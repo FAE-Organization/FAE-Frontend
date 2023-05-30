@@ -114,28 +114,28 @@ export const SHOWCASE_DATA = ['Articles', 'Casting Reel', 'Design Portfolio', 'E
 // Data for profile roles popover component
 export const ROLES_DATA = [
     {
-        heading: 'broadcast',
-        options: ['Caster', 'Host', 'Observer', 'Producer', 'Replay Operator', 'Technical Director'],
+        heading: 'broadcasting',
+        options: ['caster', 'host', 'observer', 'producer', 'replay operator', 'technical director'],
     },
     {
         heading: 'business operations',
-        options: ['Administrative', 'Finance', 'Information Technology', 'Operations', 'Project Management'],
+        options: ['administrative', 'finance', 'information technology', 'operations', 'project management'],
     },
     {
         heading: 'communications & marketing',
-        options: ['Community Management', 'Marketing', 'Partnerships', 'Social Media'],
+        options: ['community management', 'marketing', 'partnerships', 'social media'],
     },
     {
         heading: 'content creation',
-        options: ['Editorial', 'Graphic Design', 'Motion Design', 'Photography', 'Videography', 'Video Editing'],
+        options: ['editorial', 'graphic design', 'motion design', 'photography', 'videography', 'video editing'],
     },
     {
         heading: 'performance',
-        options: ['Coaching', 'Health', 'Psychology', 'Team Manager'],
+        options: ['coaching', 'health', 'psychology', 'team manager'],
     },
     {
         heading: 'tournaments & events',
-        options: ['Event Organizer', 'Facilities Management', 'Tournament Admin', 'Tournament Organizer'],
+        options: ['event organizer', 'facilities management', 'tournament admin', 'tournament organizer'],
     },
 ];
 

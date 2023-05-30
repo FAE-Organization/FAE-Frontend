@@ -15,17 +15,20 @@ import {
     TagCloseButton
 } from '@chakra-ui/react';
 import { MdSettings } from 'react-icons/md';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Subheader from '../ProfileBody/subheader';
-import { TEST_PROFILE_RESPONSE_DATA } from '@/components/ui/profile/TEST_DATA';
+import { useDispatch, useSelector } from 'react-redux';
+import { setRegion } from '@/lib/redux/userProfileSlice';
 
-const { region } = TEST_PROFILE_RESPONSE_DATA[0];
 
-export default function Region({ editable, test }) {
-    const [selectedRegion, setSelectedRegion] = useState([region]);
-    const [tempSelectedRegion, setTempSelectedRegion] = useState([region]);
-
+export default function Region({ editable }) {
+    const region = useSelector((state) => state.userProfile.userData?.region);
+    const [selectedRegion, setSelectedRegion] = useState(region ? [region] : ['']);
+    const [tempSelectedRegion, setTempSelectedRegion] = useState(selectedRegion);
     const [isOpen, setIsOpen] = useState(false);
+    const dispatch = useDispatch();
+
+
 
     const regionOptions = [
         { name: 'NA', color: 'blue' },
@@ -35,6 +38,11 @@ export default function Region({ editable, test }) {
         { name: 'SEA', color: 'teal' },
         { name: 'BR', color: 'purple' },
     ];
+
+    useEffect(() => {
+        setSelectedRegion(region ? [region] : ['']);
+        setTempSelectedRegion(region ? [region] : ['']);
+    }, [region]);
 
     function renderRadios() {
         return (
@@ -60,7 +68,7 @@ export default function Region({ editable, test }) {
 
     function findObjectColor(region) {
         const regionObj = regionOptions.find((option) => { return option.name === region })
-        return regionObj.color;
+        return regionObj?.color;
     }
 
     function togglePopover() {
@@ -75,9 +83,12 @@ export default function Region({ editable, test }) {
     }
 
     function handlePopoverClose() {
+        const selectedRegionString = tempSelectedRegion[0] || '';
         setSelectedRegion(tempSelectedRegion);
+        dispatch(setRegion(selectedRegionString));
         setIsOpen(false);
-    }
+      }
+      
 
     function getButtonText() {
         if (selectedRegion.length === 0) {
@@ -126,33 +137,17 @@ export default function Region({ editable, test }) {
                 </Popover>
             )}
             {!editable && (
-                test ? (
-                    <Tag
-                        color={'black'}
-                        w={'fit-content'}
-                        borderRadius="full"
-                        bgColor={`${findObjectColor(selectedRegion[0])}.100`}
-                        border={'3px solid'}
-                        borderColor={`${findObjectColor(selectedRegion[0])}.300`}
-                        size="lg"
-                        variant="solid"
-                    >
-                        EU
-                    </Tag>
-                ) : (
-
-                    <Tag
-                        color={'black'}
-                        w={'fit-content'}
-                        borderRadius="full"
-                        bgColor={`${findObjectColor(selectedRegion[0])}.100`}
-                        border={'3px solid'}
-                        borderColor={`${findObjectColor(selectedRegion[0])}.300`}
-                        size="lg"
-                        variant="solid">
-                        {getButtonText()}
-                    </Tag>
-                )
+                <Tag
+                    color={'black'}
+                    w={'fit-content'}
+                    borderRadius="full"
+                    bgColor={`${findObjectColor(selectedRegion[0])}.100`}
+                    border={'3px solid'}
+                    borderColor={`${findObjectColor(selectedRegion[0])}.300`}
+                    size="lg"
+                    variant="solid">
+                    {getButtonText()}
+                </Tag>
             )}
         </Flex>
     );

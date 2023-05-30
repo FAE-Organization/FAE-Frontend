@@ -1,21 +1,22 @@
 import { Grid, GridItem } from '@chakra-ui/react';
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DesignPortfolio from "../WorkShowcase/design-portfolio";
 import WorkShowcase from "../WorkShowcase/work-showcase";
 import VideoReel from "../WorkShowcase/video-reel";
 import ArticleSection from '../WorkShowcase/articles';
 import NotableEvents from '../WorkShowcase/notable-events';
-import { TEST_PROFILE_RESPONSE_DATA } from '../TEST_DATA';
-
-
-const { showcase: test_showcase, events, articles, observer, editing, casting, design, } = TEST_PROFILE_RESPONSE_DATA[0];
+import { useSelector } from 'react-redux';
 
 export default function ProfileBody({ editable }) {
-    const [selectedCategories, setSelectedCategories] = useState(test_showcase);
+    const showcase = useSelector((state) => state.userProfile?.userData?.showcase);
+    const events_data = useSelector((state) => state.userProfile?.userData?.events);
+    const article_data = useSelector((state) => state.userProfile?.userData?.articles);
+    const design_portfolio_data = useSelector((state) => state.userProfile?.userData?.design);
+    
 
     // Helper function to check if showcase title is enabled
     function isCategoryEnabled(showcaseCategory) {
-       return selectedCategories.includes(showcaseCategory);
+        return showcase && showcase.includes(showcaseCategory);
     }
 
     return (
@@ -26,17 +27,17 @@ export default function ProfileBody({ editable }) {
             }}
             gap={4} >
             <GridItem p={4} minWidth={'330px'}>
-               <WorkShowcase editable={editable} setSelectedCategories={setSelectedCategories} selectedCategories={selectedCategories} />
-               {isCategoryEnabled('Notable Events') && ( <NotableEvents editable={editable} events_data={events} /> )}
-                {isCategoryEnabled('Articles') && ( <ArticleSection editable={editable} article_data={articles} /> )}
+                <WorkShowcase editable={editable}  />
+                {isCategoryEnabled('Notable Events') && (<NotableEvents editable={editable} events_data={events_data} />)}
+                {isCategoryEnabled('Articles') && (<ArticleSection editable={editable} article_data={article_data} />)}
             </GridItem>
             <GridItem p={4} gridColumn={{ md: 'span 2' }}>
-                {isCategoryEnabled('Observer Reel') && ( <VideoReel headerText={'Observer Reel'} editable={editable} video_data={observer} /> )}
-                {isCategoryEnabled('Editing Reel') && ( <VideoReel headerText={'Editing Reel'} editable={editable} video_data={editing} /> )}
+                {isCategoryEnabled('Observer Reel') && (<VideoReel headerText={'Observer Reel'} editable={editable} video_type={'observer'} />)}
+                {isCategoryEnabled('Editing Reel') && (<VideoReel headerText={'Editing Reel'} editable={editable} video_type={'editing'} />)}
             </GridItem>
             <GridItem p={4}>
-                {isCategoryEnabled('Design Portfolio') && ( <DesignPortfolio editable={editable} design_data={design} /> )}
-                {isCategoryEnabled('Casting Reel') && ( <VideoReel headerText={'Casting Reel'} editable={editable} video_data={casting} /> )}
+                {isCategoryEnabled('Design Portfolio') && (<DesignPortfolio editable={editable} design_data={design_portfolio_data} />)}
+                {isCategoryEnabled('Casting Reel') && (<VideoReel headerText={'Casting Reel'} editable={editable} video_type={'casting'} />)}
             </GridItem>
         </Grid>
     );

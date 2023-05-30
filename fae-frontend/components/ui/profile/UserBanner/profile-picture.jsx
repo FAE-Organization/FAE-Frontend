@@ -1,14 +1,15 @@
+import { setProfilePic } from '@/lib/redux/userProfileSlice';
 import { Box, IconButton, Image, GridItem, useBreakpointValue } from '@chakra-ui/react';
 import { MdOutlineAddPhotoAlternate } from "react-icons/md";
-import { TEST_PROFILE_RESPONSE_DATA } from '@/components/ui/profile/TEST_DATA';
-import { PAUL_TEST_PROFILE_RESPONSE_DATA } from '@/pages/search/user/profile';
+import { useDispatch, useSelector } from 'react-redux';
 
-const { profilePic: value } = TEST_PROFILE_RESPONSE_DATA[0];
 
-export default function ProfilePicture({ editable, onChange, test }) {
-    const paul = PAUL_TEST_PROFILE_RESPONSE_DATA[0]
+export default function ProfilePicture({ editable, onChange }) {
+    const value = useSelector((state) => state.userProfile?.userData?.profilePic);
     const imageSize = useBreakpointValue({ base: '100%', md: 'auto' });
     const containerSize = useBreakpointValue({ base: '100%', md: '350px' });
+
+    const dispatch = useDispatch();
 
     function handleImageChange(event) {
         const file = event.target.files[0];
@@ -17,6 +18,7 @@ export default function ProfilePicture({ editable, onChange, test }) {
             onChange(reader.result);
         };
         reader.readAsDataURL(file);
+        dispatch(setProfilePic(file));
     }
 
     return (
@@ -33,7 +35,7 @@ export default function ProfilePicture({ editable, onChange, test }) {
                 <Box position="relative" width="100%" paddingBottom="100%">
                     <Image
                         as="img"
-                        src={test ? paul.profilePic : (value || "https://via.placeholder.com/150")}
+                        src={value}
                         alt="Profile picture"
                         position="absolute"
                         top={0}

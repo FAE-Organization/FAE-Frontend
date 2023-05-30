@@ -7,24 +7,27 @@ import {
     PopoverBody,
     Checkbox,
 } from '@chakra-ui/react';
-import { useState } from 'react';
-import { PRONOUN_DATA as RAW_PRONOUN_DATA, TEST_PROFILE_RESPONSE_DATA } from '@/components/ui/profile/TEST_DATA';
-import { PAUL_TEST_PROFILE_RESPONSE_DATA } from '@/pages/search/user/profile';
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { PRONOUN_DATA as RAW_PRONOUN_DATA } from '@/components/ui/profile/TEST_DATA';
+import { setPronouns } from '@/lib/redux/userProfileSlice';
 
-const { pronouns } = TEST_PROFILE_RESPONSE_DATA[0];
-
-export default function PronounSelection({ editable, test }) {
-    const paul = PAUL_TEST_PROFILE_RESPONSE_DATA[0]
-    const [selectedPronouns, setSelectedPronouns] = useState(test ? paul.pronouns : (pronouns ?? ['pronouns']));
-    const [tempSelectedPronouns, setTempSelectedPronouns] = useState(pronouns ?? []);
-
-
+export default function PronounSelection({ editable }) {
+    const userData = useSelector((state) => state.userProfile.userData);
+    const [selectedPronouns, setSelectedPronouns] = useState([]); // userData.pronouns || ['pronouns']
     const [isOpen, setIsOpen] = useState(false);
     const realPurple = '#6B46C1';
+    const dispatch = useDispatch();
 
     const halfLength = Math.ceil(RAW_PRONOUN_DATA.length / 2);
     const leftItems = RAW_PRONOUN_DATA.slice(0, halfLength);
     const rightItems = RAW_PRONOUN_DATA.slice(halfLength);
+
+    useEffect(() => {
+        if (userData && userData.pronouns) {
+          setSelectedPronouns(userData.pronouns);
+        }
+      }, [userData]);
 
     function renderCheckboxes(items) {
         return items.map((item, i) => {
@@ -35,7 +38,7 @@ export default function PronounSelection({ editable, test }) {
                     colorScheme={'purple'}
                     borderColor={'purple.500'}
                     onChange={handleCheckboxChange}
-                    isChecked={selectedPronouns.includes(item)} // Set isChecked based on selectedPronouns
+                    isChecked={selectedPronouns.includes(item)}
                 >
                     {item}
                 </Checkbox>
@@ -58,6 +61,7 @@ export default function PronounSelection({ editable, test }) {
 
     function handlePopoverClose() {
         setSelectedPronouns(selectedPronouns);
+        dispatch(setPronouns(selectedPronouns));
         setIsOpen(false);
     }
 

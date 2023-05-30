@@ -19,49 +19,29 @@ import {
 } from '@chakra-ui/react'
 import { MinusIcon, AddIcon } from '@chakra-ui/icons'
 import { FiTag } from "react-icons/fi";
-import { useState } from 'react';
-import { TEST_PROFILE_RESPONSE_DATA } from '@/components/ui/profile/TEST_DATA';
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setTags } from '@/lib/redux/userProfileSlice';
 
-const { tags: user_tags } = TEST_PROFILE_RESPONSE_DATA[0];
-
-// Styling for tags in popover view 
-const TagButt = ({ text, onClick }) => {
-    return (
-        <Box p={'3px'}>
-            <Tag
-                size="md"
-                bgColor={'gray.300'}
-                onClick={onClick}
-                variant='outline'
-                borderRadius={'xl'}
-                border={'3px'}
-                color={'black'}
-                textAlign={'center'} >
-                {text}
-                <TagRightIcon
-                    as={MinusIcon}
-                    bgColor={'white'}
-                    borderRadius={'full'}
-                    borderColor={'pink'}
-                    border={'1px'}
-                    position="relative"
-                    right="-3"
-                    top="-3" />
-            </Tag>
-        </Box>
-    );
-};
 
 // Renders profile tags section & editable popover
 export default function UserTags({ editable }) {
-    const [tags, setTags] = useState(user_tags);
+    const userTags = useSelector((state) => state.userProfile.userData?.tags);
+    const [tags, setTags] = useState(userTags || ['']);
     const [tagInput, setTagInput] = useState('');
     const [tempTags, setTempTags] = useState(tags);
     const [isOpen, setIsOpen] = useState(false);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        setTags(userTags || ['']);
+        setTempTags(userTags || ['']);
+    }, [userTags]);
 
     // Handle done button & updates tags
     function handleDone() {
         setTagInput('');
+        dispatch(setTags(tempTags));
         setTags(tempTags);
         setIsOpen(false);
     }
@@ -81,20 +61,20 @@ export default function UserTags({ editable }) {
 
     // Deleting a tag
     function removeTag(i) {
-        tempTags.splice(i, 1);
+        const updatedTags = tempTags.filter((_, index) => index !== i);
+        setTempTags(updatedTags);
     }
 
     // Render tag buttons in popover
     function renderButts(tags) {
-        return tags.map((tag, i) => {
-            return (
-                <TagButt
-                    key={i} 
-                    text={tag} 
-                    onClick={() => removeTag(i)} />
-            );
-        });
-    };
+        return (
+            <Flex flexWrap="wrap" gap={1}>
+                {tags.map((tag, i) => (
+                    <TagButt key={i} text={tag} onClick={() => removeTag(i)} />
+                ))}
+            </Flex>
+        );
+    }
 
     return (
         <Box>
@@ -165,7 +145,11 @@ export default function UserTags({ editable }) {
                                             borderRadius={'2xl'}
                                             onChange={(e) => (setTagInput(e.target.value))}
                                         />
-                                        <IconButton icon={<AddIcon />} onClick={() => addTag(tagInput)} />
+                                        <IconButton
+                                            icon={<AddIcon />}
+                                            onClick={() => addTag(tagInput)}
+                                            variant={'unstyled'}
+                                        />
                                     </InputGroup>
 
                                     <Box align='left'>
@@ -185,3 +169,41 @@ export default function UserTags({ editable }) {
         </Box>
     );
 }
+
+// Styling for tags in popover view 
+function TagButt({ text, onClick }) {
+    return (
+        <Flex p={'3px'} position="relative">
+            <Tag
+                size="lg"
+                pr={4}
+                bgColor={'#E8E8E8'}
+                borderRadius={'2xl'}
+                border={'2px solid #C4C4C4'}
+                color={'black'}
+                textAlign={'center'}
+                cursor="pointer" >
+                {text}
+            </Tag>
+            <Box
+                position="absolute"
+                top="10%"
+                right="-1"
+                transform="translateY(-50%)"
+                cursor="pointer"
+                opacity={0.8}
+                _hover={{ opacity: 1 }} >
+                <TagRightIcon
+                    as={MinusIcon}
+                    onClick={onClick}
+                    boxShadow="rgba(0, 0, 0, 0.2) 0px 2px 4px 0px"
+                    bgColor={'white'}
+                    borderRadius={'full'}
+                    p={'0.5'}
+                    border={'1px solid #e2e2e2'}
+                    boxSize={6}
+                />
+            </Box>
+        </Flex>
+    );
+};

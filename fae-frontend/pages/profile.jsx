@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button, Flex, Box, Grid, GridItem, useBreakpointValue} from '@chakra-ui/react';
 import ProfilePicture from '@/components/ui/profile/UserBanner/profile-picture';
 import ProfileUsername from '@/components/ui/profile/UserBanner/profile-username';
@@ -11,29 +11,42 @@ import UserTags from '@/components/ui/profile/UserBanner/profile-tags';
 import ProfileBody from '@/components/ui/profile/ProfileBody/profile-body';
 import SocialButtons from '@/components/ui/profile/UserBanner/social-media-buttons';
 import RegionSelection from '@/components/ui/profile/UserBanner/region';
+import {useSearchParams} from 'next/navigation'
+import { useDispatch, useSelector } from 'react-redux';
+import { setUserData } from '@/lib/redux/userProfileSlice';
+import { saveUserProfile } from '@/lib/redux/userProfileSlice';
 
-export default function Profile() {
+
+export default function Profile( props ) {
     const [editable, setEditable] = useState(false);
-    const [bio, setBio] = useState('this is a test!');
-    const [discord, setDiscord] = useState('user#0000');
+    const dispatch = useDispatch();
+    
+    const userProfileData = useSelector((state) => state.userProfile.userData);
 
-    // TODO: Clean this up later!!
+    useEffect(() => {
+        dispatch(setUserData(props.userResponse));
+    }, []);
+
+    const handleSaveProfile = async () => {
+        const userId = userProfileData.id;
+        await dispatch(saveUserProfile(userId));
+      };
+      
 
     function handleEditProfile() {
-        setEditable(!editable);
+        // handle toggling editable --> static
+        if (editable === true) {
+            handleSaveProfile();
+            setEditable(!editable);
+        } else {
+        // handle static -> editable
+            setEditable(!editable);
+        }
     }
 
     function handleProfilePictureChange(value) {
         setProfilePicture(value);
     }
-
-    function handleSaveBio(newBio) {
-        setBio(newBio);
-    };
-
-    function handleSaveDiscord(newDiscord) {
-        setDiscord(newDiscord);
-    };
 
     const showEditButton = useBreakpointValue({ base: false, lg: true });
 
@@ -60,7 +73,9 @@ export default function Profile() {
                             <Salary editable={editable} />
                         </Flex>
                 
-                        {/* Edit mode button -- Hidden on small screens */}
+                        {/* Edit mode button -- Hidden on small screens
+                            TODO: only show if this is the logged-in user's profile page
+                        */}
                         {showEditButton && (
                             <Flex>
                                 <Button
@@ -88,19 +103,13 @@ export default function Profile() {
                                 <RegionSelection editable={editable } />
                             </GridItem>
                             <GridItem colSpan={1}>
-                                <UserDiscord
-                                    editable={editable}
-                                    initialValue={discord}
-                                    onSave={handleSaveDiscord} />
+                                <UserDiscord editable={editable} />
                             </GridItem>
                         </Grid>
                     </Box>
 
                     <GridItem pt={2}>
-                        <UserBio
-                            editable={editable}
-                            initialValue={bio}
-                            onSave={handleSaveBio} />
+                        <UserBio editable={editable} />
                     </GridItem>
                 </GridItem> 
                 
@@ -110,4 +119,22 @@ export default function Profile() {
             </Grid>
         </Box>
     );
+}
+
+export async function getServerSideProps({ query }) {
+    // if null render paul
+    const userId = query?.id ?? '645163982b93e4decabe5bae'; 
+
+    const data = await (await fetch(
+        `http://localhost:3001/api/profile?id=${userId}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })).json()
+        // 'https://fae-backend.onrender.com/api/directory/count'
+
+    return {
+        props: { userResponse: data }
+    }
 }

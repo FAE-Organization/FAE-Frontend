@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     Button,
     Flex,
@@ -17,18 +17,27 @@ import {
     Heading
 } from "@chakra-ui/react";
 import { AddIcon } from '@chakra-ui/icons';
-import { TEST_PROFILE_RESPONSE_DATA, ROLES_DATA, REAL_TEST_MOCK } from '@/components/ui/profile/TEST_DATA';
+import { ROLES_DATA } from '@/components/ui/profile/TEST_DATA';
+import { useDispatch, useSelector } from "react-redux";
+import { setRoles } from "@/lib/redux/userProfileSlice";
 
-const { roles: test_roles } = TEST_PROFILE_RESPONSE_DATA[0];
+
 const roles = ROLES_DATA;
 
 // Render user-selected Role tags & popover toggle
 export default function ProfileRoles({ editable }) {
-    const [selectedRoles, setSelectedRoles] = useState(test_roles);
+    const test_roles = useSelector((state) => state.userProfile.userData?.roles);
+    const [selectedRoles, setSelectedRoles] = useState(test_roles || ['']);
     const [tempSelectedRoles, setTempSelectedRoles] = useState(selectedRoles);
-
     const [isOpen, setIsOpen] = useState(false);
 
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (test_roles && test_roles.length > 0) {
+          setSelectedRoles(test_roles);
+        }
+      }, [test_roles]);
 
     // Toggle cancel button on popover
     function togglePopover() {
@@ -37,6 +46,7 @@ export default function ProfileRoles({ editable }) {
     }
 
     function handleDone() {
+        dispatch(setRoles(tempSelectedRoles));
         setSelectedRoles(tempSelectedRoles);
         setIsOpen(false);
     }
@@ -50,6 +60,7 @@ export default function ProfileRoles({ editable }) {
                     <Checkbox
                         key={i}
                         value={item}
+                        textTransform={'capitalize'}
                         colorScheme='purple'
                         borderColor={'purple.500'}
                         onChange={handleRoleSelect}
@@ -62,6 +73,7 @@ export default function ProfileRoles({ editable }) {
                     <Checkbox
                         key={i}
                         value={item}
+                        textTransform={'capitalize'}
                         colorScheme='purple'
                         borderColor={'purple.500'}
                         onChange={handleRoleSelect} >
@@ -125,6 +137,7 @@ export default function ProfileRoles({ editable }) {
                         <Tag
                             borderRadius="full"
                             size="lg"
+                            textTransform={'capitalize'}
                             color={'black'}
                             bgColor={'purple.100'}
                             border={'3px solid'}

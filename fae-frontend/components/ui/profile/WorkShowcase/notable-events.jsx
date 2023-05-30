@@ -21,6 +21,7 @@ import { FaEllipsisH, FaPlus } from 'react-icons/fa';
 
 
 export default function NotableEvents({ editable, events_data }) {
+
   const [events, setEvents] = useState(events_data);
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [tempEventData, setTempEventData] = useState({

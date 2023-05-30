@@ -1,20 +1,37 @@
 import { Button, Box, Text, Flex, Select, Stack, Popover, PopoverTrigger, PopoverContent, PopoverBody, PopoverHeader, NumberInput, NumberInputField, InputGroup, InputLeftAddon, InputRightAddon } from '@chakra-ui/react';
 import { HiOutlineCurrencyDollar, HiOutlineCurrencyPound } from "react-icons/hi";
-import { useState } from 'react';
-import { TEST_PROFILE_RESPONSE_DATA } from '@/components/ui/profile/TEST_DATA';
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSalary } from '@/lib/redux/userProfileSlice';
 
-const { salary } = TEST_PROFILE_RESPONSE_DATA[0];
 
 export default function Salary({ editable }) {
-    const [pay, setPay] = useState(salary ?? 0);
-    const [tempPaySelection, setTempPaySelection] = useState(salary ?? '');
-    const [tempRateSelection, setTempRateSelection] = useState('/hr');
+    const salary = useSelector((state) => state.userProfile.userData.salary);
+
+    const [pay, setPay] = useState(salary?.amount);
+    const [tempPaySelection, setTempPaySelection] = useState(pay);
+    const [tempRateSelection, setTempRateSelection] = useState('hourly');
     const [selectedCurrency, setSelectedCurrency] = useState('usd');
     const [isOpen, setIsOpen] = useState(false);
     const realPurple = '#6B46C1';
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (salary) {
+            setPay(salary.amount || 0);
+            setTempPaySelection(salary.amount || 0);
+            setTempRateSelection(salary.compensationType || 'hourly');
+            setSelectedCurrency(salary.currency || 'usd');
+        }
+    }, [salary]);
 
     function handleDone() {
         setPay(Number(tempPaySelection));
+        dispatch(setSalary({
+            currency: selectedCurrency,
+            compensationType: tempRateSelection,
+            amount: tempPaySelection
+        }));
         setIsOpen(false);
     }
 
@@ -23,7 +40,7 @@ export default function Salary({ editable }) {
     }
 
     function getButtonText() {
-        return (pay + tempRateSelection);
+        return (pay);
     }
 
     function handleCurrencyChange(event) {
@@ -35,7 +52,7 @@ export default function Salary({ editable }) {
     }
 
     function getButtonIcon() {
-        switch (selectedCurrency) {
+        switch (selectedCurrency.toLowerCase()) {
             case 'usd':
                 return <HiOutlineCurrencyDollar color={'#7BBB9C'} size={35} p={2} />;
             case 'cad':
@@ -47,10 +64,23 @@ export default function Salary({ editable }) {
         }
     }
 
+    function getRate() {
+        switch (tempRateSelection) {
+            case 'hourly':
+                return '/hr';
+            case 'yearly':
+                return '/yr';
+            case 'milestone':
+                return '/milestone';
+            default:
+                return '/hr';
+        }
+    }
+
     return (
         <>
             {editable && (
-                <Popover isOpen={isOpen} onClose={togglePopover} Width={'fit-content'}>
+                <Popover isOpen={isOpen} onClose={togglePopover} Width={'fit-content'} >
                     <PopoverTrigger>
                         <Button
                             px={2}
@@ -68,6 +98,7 @@ export default function Salary({ editable }) {
                             leftIcon={getButtonIcon()}
                         >
                             {getButtonText()}
+                            {getRate()}
                         </Button>
                     </PopoverTrigger>
                     <PopoverContent align={'center'} width={'fit-content'}>
@@ -107,9 +138,9 @@ export default function Salary({ editable }) {
                                         </NumberInput>
                                         <Box width={'fit-content'}>
                                         <Select placeholder='Rate' onChange={handleRateChange}>
-                                            <option value='/hr'>/hr</option>
-                                            <option value='/yr'>/yr</option>
-                                            <option value='/milestone'>/milestone</option>
+                                            <option value='hourly'>hourly</option>
+                                            <option value='yearly'>yearly</option>
+                                            <option value='milestone'>milestone</option>
                                         </Select>
                                         </Box>
                                     </InputGroup>
@@ -131,6 +162,7 @@ export default function Salary({ editable }) {
                     <Flex gap={2} align={'center'}>
                         {getButtonIcon()}
                         {getButtonText()}
+                        {getRate()}
                     </Flex>
                 </Button>
             )}
