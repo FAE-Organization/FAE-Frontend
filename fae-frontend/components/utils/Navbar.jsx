@@ -23,18 +23,58 @@ import {
     ChevronDownIcon
 } from '@chakra-ui/icons';
 import Link from "next/link"
-import { useState, useEffect } from 'react';
 import { useUser } from '@auth0/nextjs-auth0/client';
 import { useRouter } from 'next/router';
+import { useDispatch, useSelector } from 'react-redux';
+import { setIsPageLoading } from '@/lib/redux/loadingSlice';
+import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react'
+
+const superCringePuns = [
+    "Rebooting skills",
+    "Calculating perfect freelancer",
+    "Counting down to victory",
+    "Summoning the loading bar gods",
+    "Preparing for epic plays",
+    "Spawning epic skills",
+    "Perfecting button mashing technique",
+    "Rendering the other side",
+    "Optimizing performance",
+    "Rushing spawn",
+    "Finding compatible lobby",
+    "Boosting FPS",
+    "Waiting for the loading bar to leave the game"
+];
 
 export default function NavBar({ logo, isLoading }) {
     const { isOpen, onToggle } = useDisclosure();
     const isSmallScreen = useBreakpointValue({ base: true, md: false })
+    const isPageLoading = useSelector((state) => state.loading.isPageLoading)
+    const router = useRouter()
+    const path = router.asPath
+    const dispatch = useDispatch()
 
+    const [selectRandomPun, setSelectRandomPun] = useState(0)
+    const [dots, setDots] = useState('...')
+
+    useEffect(() => {
+        const random = Math.floor(Math.random() * superCringePuns.length)
+        setSelectRandomPun(random)
+        const interval = setInterval(() => {
+            setDots(prevDots => {
+                if (prevDots.length === 3) {
+                    return '.';
+                } else {
+                    return prevDots + '.';
+                }
+            });
+        }, 500);
+        return () => clearInterval(interval);
+    }, [isPageLoading])
 
     return (
         <Box bg='#FFF' padding='10px' width='100%'>
-            <HStack fontSize={{ base: '14px', md: '16px', lg: '18px' }}>
+            <HStack fontSize={{ base: '14px', md: '16px', lg: '18px' }} zIndex={2} position='relative' backgroundColor='#FFF'>
                 {isSmallScreen ? (
                     <MobileNav isOpen={isOpen} onToggle={onToggle} isSmallScreen={isSmallScreen} />
                 ) : (
@@ -48,6 +88,11 @@ export default function NavBar({ logo, isLoading }) {
                                         width='100px'
                                         src={`https:${logo.fields.file.url}`}
                                         alt={logo.fields.title}
+                                        onClick={() => {
+                                            if ('/' !== path) {
+                                                dispatch(setIsPageLoading(true))
+                                            }
+                                        }}
                                     />
                                 )}
                             </Link>
@@ -58,20 +103,56 @@ export default function NavBar({ logo, isLoading }) {
                     </HStack>
                 )}
             </HStack >
+            {isPageLoading && (
+                <Stack>
+                    <motion.div
+                        initial={{ width: 0 }}
+                        animate={{ width: "100%" }}
+                        transition={{ delay: 0.3, duration: 0.3, ease: 'easeInOut' }}
+                        style={{
+                            backgroundColor: '#6B46C1',
+                            position: 'absolute',
+                            height: '100vh',
+                            zIndex: '1',
+                            marginLeft: '-10px',
+                            marginTop: '5px',
+                            background: 'radial-gradient(circle, rgba(107,70,193,1) 58%, rgba(89,58,176,1) 76%)'
+                        }}
+                    >
+                        <Stack width='100%' height='100%' alignItems='center' justifyContent='center'>
+                            <Text
+                                color='#FFF'
+                                fontSize='22px'
+                            >
+                                {superCringePuns[selectRandomPun]} {dots}
+                            </Text>
+                        </Stack>
+                    </motion.div>
+                </Stack>
+            )}
         </Box >
     );
 };
 
 // Styling for Navbar links
 const DesktopNav = ({ isSmallScreen }) => {
-    const router = useRouter();
+
+    const dispatch = useDispatch()
+    const router = useRouter()
+    const path = router.asPath
 
     return (
         <Stack direction='row' width='100%' justifyContent='space-between'>
             <HStack gap={{ base: '15px', md: '10px', lg: '20px' }}>
                 {NAV_ITEMS.map((navItem) => (
                     <Center key={navItem.label}>
-                        <Link href={navItem.href ?? '#'}>
+                        <Link href={navItem.href ?? '#'}
+                            onClick={() => {
+                                if (navItem.href !== path) {
+                                    dispatch(setIsPageLoading(true))
+                                }
+                            }}
+                        >
                             <Text
                                 p={2}
                                 fontSize={{ base: '14px', md: '16px', lg: '18px' }}
@@ -93,6 +174,11 @@ const DesktopNav = ({ isSmallScreen }) => {
 };
 
 const MobileNav = ({ onToggle, isSmallScreen }) => {
+
+    const dispatch = useDispatch()
+    const router = useRouter()
+    const path = router.asPath
+
     return (
         <HStack
             width='100%'
@@ -117,7 +203,14 @@ const MobileNav = ({ onToggle, isSmallScreen }) => {
                             />
                             <MenuList>
                                 {NAV_ITEMS.map((navItem) => (
-                                    <MenuItem key={navItem.label}>
+                                    <MenuItem
+                                        key={navItem.label}
+                                        onClick={() => {
+                                            if (navItem.href !== path) {
+                                                dispatch(setIsPageLoading(true))
+                                            }
+                                        }}
+                                    >
                                         <MobileNavItem {...navItem} />
                                     </MenuItem>
                                 ))}

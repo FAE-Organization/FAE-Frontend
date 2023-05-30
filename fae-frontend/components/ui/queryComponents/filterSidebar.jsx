@@ -116,14 +116,6 @@ function Form({
     useEffect(() => {
         const getUserCards = async () => {
             dispatch(setIsUserCardLoading(true))
-            // const data = await (await fetch(process.env.NODE_ENV == 'development' ?
-            //     'http://localhost:3001/api/filter' : `${process.env.NEXT_PUBLIC_BACKEND_BASE_URI}/api/filter`, {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //     },
-            //     body: JSON.stringify(fields)
-            // })).json()
 
             const data = await (await fetch(
                 'https://fae-backend.onrender.com/api/filter', {
@@ -361,3 +353,12 @@ function Form({
         </form>
     )
 }
+
+// const data = await (await fetch(process.env.NODE_ENV == 'development' ?
+//     'http://localhost:3001/api/filter' : `https://fae-backend.onrender.com/api/filter`, {
+//     method: 'POST',
+//     headers: {
+//         'Content-Type': 'application/json',
+//     },
+//     body: JSON.stringify(fields)
+// })).json()

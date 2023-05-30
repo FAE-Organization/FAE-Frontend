@@ -5,7 +5,6 @@ import Link from "next/link";
 import { BiDollarCircle } from 'react-icons/bi'
 import { setIsUserCardLoading } from "@/lib/redux/loadingSlice";
 import Paginator from "../utils/Paginator";
-import { updatePageNumber } from "@/lib/redux/formSlice";
 
 export default function UserCards() {
     const [cardVals, setCardVals] = useState()

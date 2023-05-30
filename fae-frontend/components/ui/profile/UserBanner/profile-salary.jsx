@@ -59,7 +59,7 @@ export default function Salary({ editable }) {
     return (
         <>
             {editable && (
-                <Popover isOpen={isOpen} onClose={togglePopover} Width={'fit-content'}>
+                <Popover isOpen={isOpen} onClose={togglePopover} Width={'fit-content'} >
                     <PopoverTrigger>
                         <Button
                             px={2}

@@ -5,17 +5,22 @@ import React, { useEffect, useState } from "react";
 import { getDirectory } from "@/lib/cms/getComponents/getDirectory";
 import { getCachedCategories } from "@/lib/functions/getCachedCategories";
 import { useViewportHeight } from "@/lib/hooks/useViewportHeight";
+import { useDispatch } from "react-redux";
+import { initialState, resetForm } from "@/lib/redux/formSlice";
+import { setIsPageLoading } from "@/lib/redux/loadingSlice";
 
 export default function Directory(props) {
-    console.log(props.counts)
     const [isLoading, setIsLoading] = useState(true)
     const view = useViewportHeight()
+    const dispatch = useDispatch()
 
     useEffect(() => {
+        dispatch(setIsPageLoading(false))
         props.directory.map((entry) => {
             getCachedCategories(entry.title)
         })
 
+        dispatch(resetForm(initialState))
         const fakeGetAsyncDataTimer = Math.floor(Math.random() * 1000) + 100
 
         const timer = setTimeout(() => {
@@ -51,14 +56,6 @@ export default function Directory(props) {
 
 export async function getServerSideProps() {
     const directory = await getDirectory()
-
-    // const countData = await (await fetch(
-    //     process.env.NODE_ENV === 'development' ? (
-    //         'http://localhost:3001/api/directory/count'
-    //     ) : (
-    //         `${process.env.NEXT_PUBLIC_BACKEND_BASE_URI}/api/directory/count`
-    //     ))).json()
-
     const countData = await (await fetch(
         'https://fae-backend.onrender.com/api/directory/count'
     )).json()
@@ -67,3 +64,10 @@ export async function getServerSideProps() {
         props: { directory: directory, counts: countData }
     }
 }
+
+    // const countData = await (await fetch(
+    //     process.env.NODE_ENV === 'development' ? (
+    //         'http://localhost:3001/api/directory/count'
+    //     ) : (
+    //         `https://fae-backend.onrender.com/api/directory/count`
+    //     ))).json()

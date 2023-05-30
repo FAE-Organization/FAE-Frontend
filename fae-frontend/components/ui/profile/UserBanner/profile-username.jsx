@@ -10,7 +10,7 @@ export default function ProfileUsername({ editable }) {
   const realPurple = '#6B46C1';
 
   return (
-    <InputGroup maxW='13.5rem' >
+    <InputGroup width='13.5rem' >
       <Input
         value={editable ? ' ' + name : name}
         fontWeight={'bold'}
@@ -22,7 +22,7 @@ export default function ProfileUsername({ editable }) {
         border={editable ? '2px solid ' + realPurple : 'none'}
         onChange={(e) => (setProfileUsername(e.target.value))}
         focusBorderColor={''}
-        size={'xl'}
+        size={'lg'}
       />
     </InputGroup>
   );
