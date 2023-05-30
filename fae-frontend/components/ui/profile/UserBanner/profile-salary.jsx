@@ -8,7 +8,7 @@ export default function Salary({ editable }) {
 
     const [pay, setPay] = useState(salary?.amount);
     const [tempPaySelection, setTempPaySelection] = useState(pay);
-    const [tempRateSelection, setTempRateSelection] = useState('/hr');
+    const [tempRateSelection, setTempRateSelection] = useState('hourly');
     const [selectedCurrency, setSelectedCurrency] = useState('usd');
     const [isOpen, setIsOpen] = useState(false);
     const realPurple = '#6B46C1';
@@ -17,7 +17,7 @@ export default function Salary({ editable }) {
         if (salary) {
             setPay(salary.amount || 0);
             setTempPaySelection(salary.amount || 0);
-            setTempRateSelection(salary.compensationType || '/hr');
+            setTempRateSelection(salary.compensationType || 'hourly');
             setSelectedCurrency(salary.currency || 'usd');
         }
     }, [salary]);
@@ -32,7 +32,7 @@ export default function Salary({ editable }) {
     }
 
     function getButtonText() {
-        return (pay + tempRateSelection);
+        return (pay);
     }
 
     function handleCurrencyChange(event) {
@@ -53,6 +53,19 @@ export default function Salary({ editable }) {
                 return <HiOutlineCurrencyPound color={'#7BBB9C'} size={35} p={2} />;
             default:
                 return null;
+        }
+    }
+
+    function getRate() {
+        switch (tempRateSelection) {
+            case 'hourly':
+                return '/hr';
+            case 'yearly':
+                return '/yr';
+            case 'milestone':
+                return '/milestone';
+            default:
+                return '/hr';
         }
     }
 
@@ -77,6 +90,7 @@ export default function Salary({ editable }) {
                             leftIcon={getButtonIcon()}
                         >
                             {getButtonText()}
+                            {getRate()}
                         </Button>
                     </PopoverTrigger>
                     <PopoverContent align={'center'} width={'fit-content'}>
@@ -116,9 +130,9 @@ export default function Salary({ editable }) {
                                         </NumberInput>
                                         <Box width={'fit-content'}>
                                         <Select placeholder='Rate' onChange={handleRateChange}>
-                                            <option value='/hr'>/hr</option>
-                                            <option value='/yr'>/yr</option>
-                                            <option value='/milestone'>/milestone</option>
+                                            <option value='hourly'>hourly</option>
+                                            <option value='yearly'>yearly</option>
+                                            <option value='milestone'>milestone</option>
                                         </Select>
                                         </Box>
                                     </InputGroup>
@@ -140,6 +154,7 @@ export default function Salary({ editable }) {
                     <Flex gap={2} align={'center'}>
                         {getButtonIcon()}
                         {getButtonText()}
+                        {getRate()}
                     </Flex>
                 </Button>
             )}

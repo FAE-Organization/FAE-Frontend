@@ -145,7 +145,7 @@ export default function UserCards() {
                                     <Text fontSize='12px' fontWeight={600}>NOTABLE EVENTS</Text>
                                     <Stack lineHeight='10px' fontSize='12px'>
                                         {card.events.map((events, index) => (
-                                            <Text key={index}>{events}</Text>
+                                            <Text key={index}>{events.title}</Text>
                                         ))}
                                     </Stack>
                                 </Stack>

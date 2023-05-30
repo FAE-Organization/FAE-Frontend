@@ -113,6 +113,7 @@ export const SHOWCASE_DATA = ['Articles', 'Casting Reel', 'Design Portfolio', 'E
 
 // Data for profile roles popover component
 export const ROLES_DATA = [
+<<<<<<< Updated upstream
     {
         heading: 'broadcast',
         options: ['Caster', 'Host', 'Observer', 'Producer', 'Replay Operator', 'Technical Director'],
@@ -138,6 +139,33 @@ export const ROLES_DATA = [
         options: ['Event Organizer', 'Facilities Management', 'Tournament Admin', 'Tournament Organizer'],
     },
 ];
+=======
+        {
+            heading: 'broadcasting',
+            options: ['caster', 'host', 'observer', 'producer', 'replay operator', 'technical director'],
+        },
+        {
+            heading: 'business operations',
+            options: ['administrative', 'finance', 'information technology', 'operations', 'project management'],
+        },
+        {
+            heading: 'communications & marketing',
+            options: ['community management', 'marketing', 'partnerships', 'social media'],
+        },
+        {
+            heading: 'content creation',
+            options: ['editorial', 'graphic design', 'motion design', 'photography', 'videography', 'video editing'],
+        },
+        {
+            heading: 'performance',
+            options: ['coaching', 'health', 'psychology', 'team manager'],
+        },
+        {
+            heading: 'tournaments & events',
+            options: ['event organizer', 'facilities management', 'tournament admin', 'tournament organizer'],
+        },
+    ];
+>>>>>>> Stashed changes
 
 // Data for past events on profile
 export const EVENT_DATA = [

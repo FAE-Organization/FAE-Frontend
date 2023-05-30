@@ -56,6 +56,7 @@ export default function ProfileRoles({ editable }) {
                     <Checkbox
                         key={i}
                         value={item}
+                        textTransform={'capitalize'}
                         colorScheme='purple'
                         borderColor={'purple.500'}
                         onChange={handleRoleSelect}
@@ -68,6 +69,7 @@ export default function ProfileRoles({ editable }) {
                     <Checkbox
                         key={i}
                         value={item}
+                        textTransform={'capitalize'}
                         colorScheme='purple'
                         borderColor={'purple.500'}
                         onChange={handleRoleSelect} >
@@ -131,6 +133,7 @@ export default function ProfileRoles({ editable }) {
                         <Tag
                             borderRadius="full"
                             size="lg"
+                            textTransform={'capitalize'}
                             color={'black'}
                             bgColor={'purple.100'}
                             border={'3px solid'}
