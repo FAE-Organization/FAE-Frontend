@@ -1,10 +1,12 @@
 import { Button, Box, Text, Flex, Select, Stack, Popover, PopoverTrigger, PopoverContent, PopoverBody, PopoverHeader, NumberInput, NumberInputField, InputGroup, InputLeftAddon, InputRightAddon } from '@chakra-ui/react';
 import { HiOutlineCurrencyDollar, HiOutlineCurrencyPound } from "react-icons/hi";
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSalary } from '@/lib/redux/userProfileSlice';
+
 
 export default function Salary({ editable }) {
-    const salary = useSelector((state) => state.userProfile.salary);
+    const salary = useSelector((state) => state.userProfile.userData.salary);
 
     const [pay, setPay] = useState(salary?.amount);
     const [tempPaySelection, setTempPaySelection] = useState(pay);
@@ -12,6 +14,7 @@ export default function Salary({ editable }) {
     const [selectedCurrency, setSelectedCurrency] = useState('usd');
     const [isOpen, setIsOpen] = useState(false);
     const realPurple = '#6B46C1';
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if (salary) {
@@ -24,6 +27,11 @@ export default function Salary({ editable }) {
 
     function handleDone() {
         setPay(Number(tempPaySelection));
+        dispatch(setSalary({
+            currency: selectedCurrency,
+            compensationType: tempRateSelection,
+            amount: tempPaySelection
+        }));
         setIsOpen(false);
     }
 

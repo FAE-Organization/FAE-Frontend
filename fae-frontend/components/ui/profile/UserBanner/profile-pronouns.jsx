@@ -8,14 +8,16 @@ import {
     Checkbox,
 } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { PRONOUN_DATA as RAW_PRONOUN_DATA } from '@/components/ui/profile/TEST_DATA';
+import { setPronouns } from '@/lib/redux/userProfileSlice';
 
 export default function PronounSelection({ editable }) {
     const userData = useSelector((state) => state.userProfile.userData);
     const [selectedPronouns, setSelectedPronouns] = useState([]); // userData.pronouns || ['pronouns']
     const [isOpen, setIsOpen] = useState(false);
     const realPurple = '#6B46C1';
+    const dispatch = useDispatch();
 
     const halfLength = Math.ceil(RAW_PRONOUN_DATA.length / 2);
     const leftItems = RAW_PRONOUN_DATA.slice(0, halfLength);
@@ -59,6 +61,7 @@ export default function PronounSelection({ editable }) {
 
     function handlePopoverClose() {
         setSelectedPronouns(selectedPronouns);
+        dispatch(setPronouns(selectedPronouns));
         setIsOpen(false);
     }
 

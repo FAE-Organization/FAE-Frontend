@@ -1,14 +1,13 @@
 import { Text } from "@chakra-ui/react";
 
-export default function Subheader({ category, fontSize, width, test }) {
-    const data = test ? 'paul#4251' : category
+export default function Subheader({ category, fontSize, width }) {
     return (
         <Text
             as='b'
             fontSize={fontSize || '18px'}
             width={width || 'auto'}
-        >
-            {data}
+            textTransform={'uppercase'}>
+            { category }
         </Text>
     )
 }

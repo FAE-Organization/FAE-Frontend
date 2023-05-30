@@ -13,20 +13,35 @@ import SocialButtons from '@/components/ui/profile/UserBanner/social-media-butto
 import RegionSelection from '@/components/ui/profile/UserBanner/region';
 import {useSearchParams} from 'next/navigation'
 import { useDispatch, useSelector } from 'react-redux';
-import { setUserData, setSalary } from '@/lib/redux/userProfileSlice';
+import { setUserData } from '@/lib/redux/userProfileSlice';
+import { saveUserProfile } from '@/lib/redux/userProfileSlice';
+
 
 export default function Profile( props ) {
     const [editable, setEditable] = useState(false);
     const dispatch = useDispatch();
+    
+    const userProfileData = useSelector((state) => state.userProfile.userData);
 
     useEffect(() => {
-        // Dispatch the setUserProfile action here
         dispatch(setUserData(props.userResponse));
-        dispatch(setSalary(props.userResponse?.[0]?.salary))
-      }, []);
+    }, []);
+
+    const handleSaveProfile = async () => {
+        const userId = userProfileData.id;
+        await dispatch(saveUserProfile(userId));
+      };
+      
 
     function handleEditProfile() {
-        setEditable(!editable);
+        // handle toggling editable --> static
+        if (editable === true) {
+            handleSaveProfile();
+            setEditable(!editable);
+        } else {
+        // handle static -> editable
+            setEditable(!editable);
+        }
     }
 
     function handleProfilePictureChange(value) {

@@ -202,7 +202,7 @@ export default function NotableEvents({ editable, article_data }) {
                 onChange={handleArticleDataChange}
               />
               <Input
-                placeholder="Event URL"
+                placeholder="Article URL"
                 name="url"
                 value={tempArticleData.url}
                 onChange={handleArticleDataChange}

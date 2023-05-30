@@ -5,8 +5,7 @@ import WorkShowcase from "../WorkShowcase/work-showcase";
 import VideoReel from "../WorkShowcase/video-reel";
 import ArticleSection from '../WorkShowcase/articles';
 import NotableEvents from '../WorkShowcase/notable-events';
-import { useDispatch, useSelector } from 'react-redux';
-import { TEST_PROFILE_RESPONSE_DATA } from '../TEST_DATA';
+import { useSelector } from 'react-redux';
 
 export default function ProfileBody({ editable }) {
     const showcase = useSelector((state) => state.userProfile?.userData?.showcase);
@@ -14,15 +13,10 @@ export default function ProfileBody({ editable }) {
     const article_data = useSelector((state) => state.userProfile?.userData?.articles);
     const design_portfolio_data = useSelector((state) => state.userProfile?.userData?.design);
     
-    const [selectedCategories, setSelectedCategories] = useState(showcase);
-
-    useEffect(() => {
-        setSelectedCategories(showcase)
-    }, [showcase])
 
     // Helper function to check if showcase title is enabled
     function isCategoryEnabled(showcaseCategory) {
-        return selectedCategories.includes(showcaseCategory);
+        return showcase && showcase.includes(showcaseCategory);
     }
 
     return (
@@ -33,7 +27,7 @@ export default function ProfileBody({ editable }) {
             }}
             gap={4} >
             <GridItem p={4} minWidth={'330px'}>
-                <WorkShowcase editable={editable} setSelectedCategories={setSelectedCategories} selectedCategories={selectedCategories} />
+                <WorkShowcase editable={editable}  />
                 {isCategoryEnabled('Notable Events') && (<NotableEvents editable={editable} events_data={events_data} />)}
                 {isCategoryEnabled('Articles') && (<ArticleSection editable={editable} article_data={article_data} />)}
             </GridItem>

@@ -18,17 +18,20 @@ import {
 } from "@chakra-ui/react";
 import { AddIcon } from '@chakra-ui/icons';
 import { ROLES_DATA } from '@/components/ui/profile/TEST_DATA';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setRoles } from "@/lib/redux/userProfileSlice";
+
 
 const roles = ROLES_DATA;
 
 // Render user-selected Role tags & popover toggle
 export default function ProfileRoles({ editable }) {
-    const userData = useSelector((state) => state.userProfile.userData);
-    const { roles: test_roles } = userData;
-    const [selectedRoles, setSelectedRoles] = useState([]); //test_roles || [' ']
+    const test_roles = useSelector((state) => state.userProfile.userData?.roles);
+    const [selectedRoles, setSelectedRoles] = useState(test_roles || ['']);
     const [tempSelectedRoles, setTempSelectedRoles] = useState(selectedRoles);
     const [isOpen, setIsOpen] = useState(false);
+
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if (test_roles && test_roles.length > 0) {
@@ -43,6 +46,7 @@ export default function ProfileRoles({ editable }) {
     }
 
     function handleDone() {
+        dispatch(setRoles(tempSelectedRoles));
         setSelectedRoles(tempSelectedRoles);
         setIsOpen(false);
     }

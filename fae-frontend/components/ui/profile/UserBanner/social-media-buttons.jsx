@@ -17,10 +17,16 @@ import {
 } from '@chakra-ui/react';
 import { FaTwitter, FaYoutube, FaTwitch, FaRegEnvelope } from 'react-icons/fa';
 import { GoPlus } from 'react-icons/go'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setYoutube, setEmail, setTwitter, setTwitch } from '@/lib/redux/userProfileSlice';
+
 
 export default function SocialButtons({ editable }) {
-  const userData = useSelector((state) => state.userProfile.userData);
+  const twitter = useSelector((state) => state.userProfile.userData?.twitter);
+  const youtube = useSelector((state) => state.userProfile.userData?.youtube);
+  const twitch = useSelector((state) => state.userProfile.userData?.twitch);
+  const email = useSelector((state) => state.userProfile.userData?.email);
+
   const [isOpen, setIsOpen] = useState(false);
   const [socialLinks, setSocialLinks] = useState({
     twitter: '',
@@ -28,15 +34,16 @@ export default function SocialButtons({ editable }) {
     twitch: '',
     email: '',
   });
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setSocialLinks({
-      twitter: userData.twitter || '',
-      youtube: userData.youtube || '',
-      twitch: userData.twitch || '',
-      email: userData.email || '',
+      twitter: twitter || '',
+      youtube: youtube || '',
+      twitch: twitch || '',
+      email: email || '',
     });
-  }, [userData]);
+  }, [twitter, youtube, twitch, email]);
 
     function getSocialIcon(name) {
         switch (name.toLowerCase()) {
@@ -57,6 +64,20 @@ export default function SocialButtons({ editable }) {
     const updatedLinks = { ...socialLinks };
     updatedLinks[name] = event.target.value;
     setSocialLinks(updatedLinks);
+  }
+
+  function handleDone() {
+    const {
+      twitter,
+      youtube,
+      twitch,
+      email
+    } = socialLinks;
+    dispatch(setEmail(email));
+    dispatch(setYoutube(youtube));
+    dispatch(setTwitch(twitch));
+    dispatch(setTwitter(twitter));
+    setIsOpen(false);
   }
 
   return (
@@ -94,7 +115,7 @@ export default function SocialButtons({ editable }) {
                   Edit links
                 </Text>
 
-                <Button size="sm" colorScheme="purple" variant="solid" onClick={() => setIsOpen(false)}>
+                <Button size="sm" colorScheme="purple" variant="solid" onClick={handleDone}>
                   Done
                 </Button>
               </Stack>

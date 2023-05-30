@@ -1,49 +1,45 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Input, Flex } from "@chakra-ui/react";
 import Subheader from "../ProfileBody/subheader";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setDiscord } from "@/lib/redux/userProfileSlice";
 
 export default function UserDiscord({ editable }) {
-    const userData = useSelector((state) => state.userProfile.userData);
+  const discord = useSelector((state) => state.userProfile.userData?.discord);
+  const [discordData, setDiscordData] = useState(discord || '');
 
-    const { discord } = userData;
-    const [discordData, setDiscordData] = useState(discord || '');
-    const [isFocused, setIsFocused] = useState(false);
+  const dispatch = useDispatch();
 
-    const handleChange = (event) => {
-        setDiscordData(event.target.value);
-    };
+  useEffect(() => {
+    setDiscordData(discord || '');
+  }, [discord]);
 
-    const handleFocus = () => {
-        setIsFocused(true);
-    };
+  const handleChange = (event) => {
+    setDiscordData(event.target.value);
+  };
 
-    const handleBlur = () => {
-        setIsFocused(false);
-    };
+  const handleBlur = () => {
+    dispatch(setDiscord(discordData));
+  };
 
-    return (
-        <Flex direction='column' gap={3}>
-            {test ? (
-                <Subheader category='Discord' test={test} />
-            ) : (
-                <Input
-                    value={discord}
-                    isReadOnly={!editable}
-                    variant={editable ? 'outline' : 'unstyled'}
-                    cursor={editable ? 'text' : 'default'}
-                    borderColor={editable ? 'black' : 'transparent'}
-                    focusBorderColor={editable ? 'black' : 'transparent'}
-                    resize='none'
-                    borderRadius={'lg'}
-                    size={'md'}
-                    fontWeight={'bold'}
-                    onChange={handleChange}
-                    onFocus={handleFocus}
-                    onBlur={handleBlur}
-                    placeholder='user#0000'
-                />
-            )}
-        </Flex>
-    );
+  return (
+    <Flex direction='column' gap={3}>
+      <Subheader category='Discord' />
+      <Input
+        value={discordData}
+        isReadOnly={!editable}
+        variant={editable ? 'outline' : 'unstyled'}
+        cursor={editable ? 'text' : 'default'}
+        borderColor={editable ? 'black' : 'transparent'}
+        focusBorderColor={editable ? 'black' : 'transparent'}
+        resize='none'
+        borderRadius={'lg'}
+        size={'md'}
+        fontWeight={'bold'}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        placeholder='user#0000'
+      />
+    </Flex>
+  );
 };

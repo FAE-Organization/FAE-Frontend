@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { Textarea, Box, Text } from "@chakra-ui/react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setBio } from "@/lib/redux/userProfileSlice";
+
 
 export default function UserBio({ editable }) {
-    const userData = useSelector((state) => state.userProfile.userData);
-    const [bio, setBio] = useState('');
+    const bio = useSelector((state) => state.userProfile.userData?.bio);
+    const [bioText, setBioText] = useState('');
+    const [setFocused, setIsFocused] = useState(false);
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        setBio(userData.bio || '');
-    }, [userData]);
+        setBioText(bio || '');
+    }, [bio]);
 
     const handleChange = (event) => {
-        setBio(event.target.value);
+        setBioText(event.target.value);
     };
 
     const handleFocus = () => {
@@ -19,6 +23,7 @@ export default function UserBio({ editable }) {
     };
 
     const handleBlur = () => {
+        dispatch(setBio(bioText));
         setIsFocused(false);
     };
 
@@ -32,7 +37,7 @@ export default function UserBio({ editable }) {
                 Bio
             </Text>
             <Textarea
-                value={bio}
+                value={bioText}
                 isReadOnly={!editable}
                 variant={editable ? 'outline' : 'unstyled'}
                 cursor={editable ? 'text' : 'default'}

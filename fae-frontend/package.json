@@ -17,6 +17,7 @@
     "@fontsource/poppins": "^4.5.10",
     "@next/font": "^13.3.1",
     "@reduxjs/toolkit": "^1.9.5",
+    "axios": "^1.4.0",
     "contentful": "^10.1.1",
     "eslint": "8.33.0",
     "eslint-config-next": "13.1.6",

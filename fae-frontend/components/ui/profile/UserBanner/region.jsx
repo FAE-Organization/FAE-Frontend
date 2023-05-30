@@ -17,14 +17,16 @@ import {
 import { MdSettings } from 'react-icons/md';
 import { useState, useEffect } from 'react';
 import Subheader from '../ProfileBody/subheader';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setRegion } from '@/lib/redux/userProfileSlice';
+
 
 export default function Region({ editable }) {
-    const userData = useSelector((state) => state.userProfile.userData);
-    const { region } = userData;
+    const region = useSelector((state) => state.userProfile.userData?.region);
     const [selectedRegion, setSelectedRegion] = useState(region ? [region] : ['']);
     const [tempSelectedRegion, setTempSelectedRegion] = useState(selectedRegion);
     const [isOpen, setIsOpen] = useState(false);
+    const dispatch = useDispatch();
 
 
 
@@ -81,9 +83,12 @@ export default function Region({ editable }) {
     }
 
     function handlePopoverClose() {
+        const selectedRegionString = tempSelectedRegion[0] || '';
         setSelectedRegion(tempSelectedRegion);
+        dispatch(setRegion(selectedRegionString));
         setIsOpen(false);
-    }
+      }
+      
 
     function getButtonText() {
         if (selectedRegion.length === 0) {

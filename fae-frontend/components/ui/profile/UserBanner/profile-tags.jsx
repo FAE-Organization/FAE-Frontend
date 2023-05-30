@@ -20,16 +20,18 @@ import {
 import { MinusIcon, AddIcon } from '@chakra-ui/icons'
 import { FiTag } from "react-icons/fi";
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setTags } from '@/lib/redux/userProfileSlice';
+
 
 // Renders profile tags section & editable popover
 export default function UserTags({ editable }) {
-    const userData = useSelector((state) => state.userProfile.userData);
-    const { tags: userTags } = userData;
+    const userTags = useSelector((state) => state.userProfile.userData?.tags);
     const [tags, setTags] = useState(userTags || ['']);
     const [tagInput, setTagInput] = useState('');
     const [tempTags, setTempTags] = useState(tags);
     const [isOpen, setIsOpen] = useState(false);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         setTags(userTags || ['']);
@@ -39,6 +41,7 @@ export default function UserTags({ editable }) {
     // Handle done button & updates tags
     function handleDone() {
         setTagInput('');
+        dispatch(setTags(tempTags));
         setTags(tempTags);
         setIsOpen(false);
     }

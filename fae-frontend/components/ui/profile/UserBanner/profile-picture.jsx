@@ -1,12 +1,15 @@
+import { setProfilePic } from '@/lib/redux/userProfileSlice';
 import { Box, IconButton, Image, GridItem, useBreakpointValue } from '@chakra-ui/react';
 import { MdOutlineAddPhotoAlternate } from "react-icons/md";
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+
 
 export default function ProfilePicture({ editable, onChange }) {
-    const userData = useSelector((state) => state.userProfile.userData);
-    const { profilePic: value } = userData;
+    const value = useSelector((state) => state.userProfile?.userData?.profilePic);
     const imageSize = useBreakpointValue({ base: '100%', md: 'auto' });
     const containerSize = useBreakpointValue({ base: '100%', md: '350px' });
+
+    const dispatch = useDispatch();
 
     function handleImageChange(event) {
         const file = event.target.files[0];
@@ -15,6 +18,7 @@ export default function ProfilePicture({ editable, onChange }) {
             onChange(reader.result);
         };
         reader.readAsDataURL(file);
+        dispatch(setProfilePic(file));
     }
 
     return (
