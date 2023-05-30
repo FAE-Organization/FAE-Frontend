@@ -126,7 +126,7 @@ export async function getServerSideProps({ query }) {
     const userId = query?.id ?? '645163982b93e4decabe5bae'; 
 
     const data = await (await fetch(
-        `http://localhost:3001/api/profile?id=${userId}`, {
+        `https://fae-backend.onrender.com/api/profile?id=${userId}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',

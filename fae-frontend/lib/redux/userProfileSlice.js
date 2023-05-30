@@ -38,7 +38,8 @@ const initialState = {
 export const saveUserProfile = createAsyncThunk(
     "userProfile/saveUserProfile",
     async (userId, thunkAPI) => {
-        const url = `http://localhost:3001/api/profile?id=${userId}`;
+        const url = process.env.NODE_ENV == 'development' ?
+        `http://localhost:3001/api/profile?id=${userId}` : `${process.env.NEXT_PUBLIC_BACKEND_BASE_URI}/api/profile?id=${userId}`;
         const { userData } = thunkAPI.getState().userProfile;
 
         try {
