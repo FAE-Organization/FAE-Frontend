@@ -285,9 +285,12 @@ function UserActions({ isSmallScreen }) {
                         fontWeight={600}
                         color={'white'}
                         bg={'purple.600'}
-                        href={'#'}
                         _hover={{
                             bg: 'purple.500',
+                            curosr: 'pointer'
+                        }}
+                        onClick={() => {
+                            window.location = 'https://fae-org.us.auth0.com/u/signup?state=hKFo2SBqbjRRY0psU0NpWFMxbU5hYTZaM3RGazBBTTRPOE9ia6Fur3VuaXZlcnNhbC1sb2dpbqN0aWTZIFV0Z1dWZGVvRFFRMmQ5dmx4cDllcEUyMGsxU1o2NWRio2NpZNkga3k0RllqVm1JWGhENUNEWXBUWHVFOHlsR1ZNbVRaRU8'
                         }}
                     >
                         Sign Up
