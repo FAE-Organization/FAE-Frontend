@@ -38,7 +38,6 @@ export default function Profile(props) {
             let redirectTimeout = 3
             const interval = setInterval(() => {
                 redirectTimeout -= 1
-                // Commenting this out due to bug redirecting user to homepage
                 // if (redirectTimeout <= 0) {
                 //     router.push('/api/auth/login')
                 // }
@@ -47,6 +46,7 @@ export default function Profile(props) {
             return () => clearInterval(interval)
         }
     }, []);
+    
 
     const handleSaveProfile = async () => {
         const userId = userProfileData.id;
