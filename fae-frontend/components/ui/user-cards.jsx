@@ -55,8 +55,6 @@ export default function UserCards() {
         dispatch(setIsUserCardLoading(false))
     }, [currentUserDataByFilter, currentUserDataBySearch])
 
-    console.log(cardVals)
-
     return (
         <Stack width='100%'>
             {cardValsLength > 0 && (
