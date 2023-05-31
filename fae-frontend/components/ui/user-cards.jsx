@@ -5,6 +5,7 @@ import Link from "next/link";
 import { BiDollarCircle } from 'react-icons/bi'
 import { setIsUserCardLoading } from "@/lib/redux/loadingSlice";
 import Paginator from "../utils/Paginator";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 export default function UserCards() {
     const [cardVals, setCardVals] = useState()
@@ -15,6 +16,25 @@ export default function UserCards() {
     const userLength = useSelector((state) => state.user.users)
 
     const dispatch = useDispatch()
+
+    const queryClient = useQueryClient()
+    const tenMinutes = 1000 * 60 * 10
+
+    const { isLoading, isError, data, error } = useQuery({
+        queryKey: ['users'],
+        queryFn: async () => {
+            if (cardVals) {
+                return cardVals
+            } else {
+                throw new Error
+            }
+        },
+        retry: 5,
+        staleTime: tenMinutes,
+        refetchInterval: tenMinutes + 5000
+    })
+
+    console.log(data)
 
     useEffect(() => {
         const searchMap = new Map()
@@ -40,6 +60,7 @@ export default function UserCards() {
             {cardValsLength > 0 && (
                 <Paginator totalItems={userLength} itemsPerPage={8} />
             )}
+
             <Grid
                 templateColumns={{
                     base: '1fr',
@@ -144,9 +165,15 @@ export default function UserCards() {
                                 <Stack height='100px' padding='10px 0px'>
                                     <Text fontSize='12px' fontWeight={600}>NOTABLE EVENTS</Text>
                                     <Stack lineHeight='10px' fontSize='12px'>
-                                        {card.events.map((events, index) => (
-                                            <Text key={index}>{events.title}</Text>
-                                        ))}
+                                        {card.events && (
+                                            <>
+                                                {
+                                                    card.events.map((events, index) => (
+                                                        <Text key={index}>{events.title}</Text>
+                                                    ))
+                                                }
+                                            </>
+                                        )}
                                     </Stack>
                                 </Stack>
                                 <Stack>

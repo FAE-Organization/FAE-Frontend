@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Button, Flex, Box, Grid, GridItem, useBreakpointValue } from '@chakra-ui/react';
+import { Button, Flex, Box, Grid, GridItem, useBreakpointValue, Stack, Text } from '@chakra-ui/react';
 import ProfilePicture from '@/components/ui/profile/UserBanner/profile-picture';
 import ProfileUsername from '@/components/ui/profile/UserBanner/profile-username';
 import PronounSelection from '@/components/ui/profile/UserBanner/profile-pronouns';
@@ -24,15 +24,26 @@ export default function Profile(props) {
     const [editable, setEditable] = useState(false);
     // const [profilePicture, setProfilePicture] = useState(null);
     const dispatch = useDispatch();
-    // const [searchParams] = useSearchParams();
-    const router = useRouter();
-    const user = useUser();
+    const { user } = useUser();
+    const showEditButton = useBreakpointValue({ base: false, lg: true }) && !!user;
 
-    const showEditButton = useBreakpointValue({ base: false, lg: true }) && !router.query.id;
+    // const showEditButton = useBreakpointValue({ base: false, lg: true }) && !router.query.id;
     const userProfileData = useSelector((state) => state.userProfile.userData);
+    const router = useRouter()
 
     useEffect(() => {
         dispatch(setUserData(props.userResponse));
+        if (!user) {
+            let redirectTimeout = 3
+            const interval = setInterval(() => {
+                redirectTimeout -= 1
+                if (redirectTimeout <= 0) {
+                    router.push('/api/auth/login')
+                }
+            }, 1000)
+
+            return () => clearInterval(interval)
+        }
     }, []);
 
     const handleSaveProfile = async () => {
@@ -54,25 +65,24 @@ export default function Profile(props) {
 
     function handleProfilePictureChange(value) {
         dispatch(setProfilePic(value));
-    }    
-
-    // Render null if user is not authenticated
-    if (!user) {
-        useEffect(() => {
-            if (!user) {
-                router.push('http://localhost:3000/api/auth/login');
-            }
-        }, [user, router]);
     }
 
-        return (
-            <Box px={'3rem'} py={'4rem'}>
+    return (
+        <Box px={'3rem'} py={'4rem'}>
+            {!user && (
+                <Stack width='100%' height='85vh' alignItems='center'>
+                    <Text>
+                        You must be logged in to view your profile
+                    </Text>
+                    <Text>Redirecting ...</Text>
+                </Stack>
+            )}
+            {user && (
                 <Grid
                     // templateRows={{ base: 'repeat(3, 1fr)', lg: '1fr' }}
                     rowGap={{ base: 5, md: 0 }}
                     columnGap={5}
-                    templateColumns={{ base: '1fr', lg: 'repeat(5, 1fr)' }}
-                >
+                    templateColumns={{ base: '1fr', lg: 'repeat(5, 1fr)' }}>
                     <GridItem>
                         <ProfilePicture editable={editable} onChange={handleProfilePictureChange} />
                     </GridItem>
@@ -91,8 +101,7 @@ export default function Profile(props) {
                                     <Button
                                         onClick={handleEditProfile}
                                         variant={editable ? 'solid' : 'outline'}
-                                        colorScheme="purple"
-                                    >
+                                        colorScheme="purple" >
                                         {editable ? 'Save Profile' : 'Edit Profile'}
                                     </Button>
                                 </Flex>
@@ -105,7 +114,6 @@ export default function Profile(props) {
                                 <GridItem colSpan={2}>
                                     <ProfileRoles editable={editable} />
                                 </GridItem>
-
                                 <GridItem colSpan={2}>
                                     <UserTags editable={editable} />
                                 </GridItem>
@@ -127,9 +135,10 @@ export default function Profile(props) {
                         <ProfileBody editable={editable} />
                     </GridItem>
                 </Grid>
-            </Box>
-        );
-    }
+            )}
+        </Box>
+    );
+}
 
 export async function getServerSideProps({ query }) {
     // if null render paul

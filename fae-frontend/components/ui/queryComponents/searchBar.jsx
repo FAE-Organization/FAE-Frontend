@@ -6,6 +6,7 @@ import { useForm, FormProvider, Controller } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { AiOutlineClose } from 'react-icons/ai'
 import { setIsUserCardLoading } from '@/lib/redux/loadingSlice'
+import { fetchSearch } from '@/lib/functions/fetchSearch'
 
 /**
  * 
@@ -64,6 +65,7 @@ export default function SearchBar() {
         dispatch(setIsUserCardLoading(true))
         setTrigger(false)
         if (data) {
+
             const result = await (await fetch(
                 `https://fae-backend.onrender.com/api/filter/search?category=${data.category.toLowerCase()}&value=${data.input.toLowerCase()}`
             )).json()
