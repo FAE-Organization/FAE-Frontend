@@ -17,9 +17,13 @@ export default function ProfileUsername({ editable }) {
     dispatch(setUsername(tempSelectedName));
   };
 
-  const handleChange = (e) => {
-    setTempSelectedName(e.target.value);
+  // const handleChange = (e) => {
+  //   setTempSelectedName(e.target.value);
+  // };
+  const handleChange = (value) => {
+    setTempSelectedName(value);
   };
+  
 
   return (
     <Editable
@@ -32,11 +36,11 @@ export default function ProfileUsername({ editable }) {
       cursor={editable ? 'text' : 'default'}
       border={editable ? `2px solid ${realPurple}` : 'none'}
       onBlur={handleBlur}
-      onChange={handleChange}
+      // onChange={handleChange}
       px={3}
     >
       <EditablePreview />
-      <EditableInput />
+      <EditableInput onChange={handleChange} />
     </Editable>
   );
 }
