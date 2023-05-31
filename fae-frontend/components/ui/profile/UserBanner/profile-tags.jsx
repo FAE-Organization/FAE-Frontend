@@ -27,14 +27,14 @@ import { setTags } from '@/lib/redux/userProfileSlice';
 // Renders profile tags section & editable popover
 export default function UserTags({ editable }) {
     const userTags = useSelector((state) => state.userProfile.userData?.tags);
-    const [tags, setTags] = useState(userTags || ['']);
+    const [tags, setLocalTags] = useState(userTags || ['']);
     const [tagInput, setTagInput] = useState('');
     const [tempTags, setTempTags] = useState(tags);
     const [isOpen, setIsOpen] = useState(false);
     const dispatch = useDispatch();
 
     useEffect(() => {
-        setTags(userTags || ['']);
+        setLocalTags(userTags || ['']);
         setTempTags(userTags || ['']);
     }, [userTags]);
 
@@ -42,7 +42,6 @@ export default function UserTags({ editable }) {
     function handleDone() {
         setTagInput('');
         dispatch(setTags(tempTags));
-        setTags(tempTags);
         setIsOpen(false);
     }
 
