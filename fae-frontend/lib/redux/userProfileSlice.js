@@ -121,13 +121,8 @@ export const userProfileSlice = createSlice({
           };
     },
     setProfilePic: (state, action) => {
-        return {
-            ...state,
-            userData: {
-              ...state.userData,
-              profilePic: action.payload
-            }
-          };
+      const { payload } = action;
+      state.userData.profilePic = payload;
     },
     setEmail: (state, action) => {
         return {

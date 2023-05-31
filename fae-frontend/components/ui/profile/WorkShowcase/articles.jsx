@@ -19,7 +19,8 @@ import {
 import Subheader from '../ProfileBody/subheader';
 import { FaEllipsisH, FaPlus } from 'react-icons/fa';
 
-export default function NotableEvents({ editable, article_data }) {
+
+export default function ArticleSection({ editable, article_data }) {
   const [articles, setArticles] = useState(article_data);
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [tempArticleData, setTempArticleData] = useState(getInitialArticleData());
@@ -77,7 +78,7 @@ export default function NotableEvents({ editable, article_data }) {
   }
 
   function handleEdit(article) {
-    setTempArticleData(article);
+    setTempArticleData({ ...article });
     setIsPopoverOpen(true);
   }
 
@@ -87,6 +88,12 @@ export default function NotableEvents({ editable, article_data }) {
   }
 
   function renderArticles() {
+    const handleArticleClick = (url) => {
+      if (!editable) {
+        window.open(url, '_blank');
+      }
+    };
+
     return articles.map(article => (
       <Box 
         key={article.id} 
@@ -95,16 +102,20 @@ export default function NotableEvents({ editable, article_data }) {
         borderRadius="md" 
         cursor="pointer" 
         variant={editable ? "outline" : 'unstyled'}
-        border={editable ? '1px solid black' : '0px'}
+        border={editable ? '1px solid black' : '1px solid #DCDCDC'}
+        onClick={() => handleArticleClick(article.url)}
       >
         <Flex justify="space-between" align="center" spacing={10}>
-          <Box flex={1} marginRight={4}>
+          {/* <Box flex={1} marginRight={4}>
             <Image src={article.thumbnail} alt={article.title} minW={100}/>
-          </Box>
-          <Box flex={4}>
-            <Heading as="h3" size="sm" marginBottom={2}>
+          </Box> */}
+          <Box p={3}>
+            <Heading as="h3" size="sm" >
               {article.title}
             </Heading>
+            <Box fontWeight={'bold'} color="gray.700">
+              {article.website}
+            </Box>
             <Box fontSize="sm" color="gray.500">
               {article.date}
             </Box>
@@ -126,7 +137,7 @@ export default function NotableEvents({ editable, article_data }) {
                   color="purple.600"
                   aria-label="Remove Image"
                   icon={<FaEllipsisH />}
-                  onClick={() => handleEdit(event)}
+                  onClick={() => handleEdit(article)}
                 />
               </Box>
             </Box>
@@ -137,7 +148,7 @@ export default function NotableEvents({ editable, article_data }) {
   }
 
   return (
-    <VStack align="stretch" pt={8}>
+    <VStack align="stretch">
       <Subheader category="Articles" />
       <VStack spacing={6} pb={4} align="stretch" >
         {renderArticles()}
@@ -187,18 +198,18 @@ export default function NotableEvents({ editable, article_data }) {
                 name="title"
                 value={tempArticleData.title}
                 onChange={handleArticleDataChange}
-              />
+                />
+                <Input
+                  placeholder="Website"
+                  name="website"
+                  value={tempArticleData.website}
+                  onChange={handleArticleDataChange}
+                />
               <Input
                 type="date"
                 placeholder="Article Date"
                 name="date"
                 value={tempArticleData.date}
-                onChange={handleArticleDataChange}
-              />
-              <Input
-                placeholder="Thumbnail URL"
-                name="thumbnail"
-                value={tempArticleData.thumbnail}
                 onChange={handleArticleDataChange}
               />
               <Input
