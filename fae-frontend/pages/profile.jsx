@@ -24,7 +24,7 @@ export default function Profile(props) {
     // const [profilePicture, setProfilePicture] = useState(null);
     const dispatch = useDispatch();
     const { user } = useUser();
-    const showEditButton = user ? useBreakpointValue({ base: false, lg: true }) : false;
+    const showEditButton = useBreakpointValue({ base: false, lg: true }) && !!user;
 
     const userProfileData = useSelector((state) => state.userProfile.userData);
 
