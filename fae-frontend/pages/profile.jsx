@@ -16,12 +16,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setUserData } from '@/lib/redux/userProfileSlice';
 import { saveUserProfile } from '@/lib/redux/userProfileSlice';
 import { setProfilePic } from '@/lib/redux/userProfileSlice';
+import { useUser } from '@auth0/nextjs-auth0/client'
 
 
 export default function Profile(props) {
     const [editable, setEditable] = useState(false);
     // const [profilePicture, setProfilePicture] = useState(null);
     const dispatch = useDispatch();
+    const { user } = useUser();
+    const showEditButton = user ? useBreakpointValue({ base: false, lg: true }) : false;
 
     const userProfileData = useSelector((state) => state.userProfile.userData);
 
@@ -50,8 +53,6 @@ export default function Profile(props) {
         dispatch(setProfilePic(value));
     }
 
-    const showEditButton = useBreakpointValue({ base: false, lg: true });
-
     return (
         <Box px={'3rem'} py={'4rem'}>
             <Grid
@@ -73,18 +74,17 @@ export default function Profile(props) {
                             <Salary editable={editable} />
                         </Flex>
 
-                        {/* Edit mode button -- Hidden on small screens */}
-                        {showEditButton && (
-                            <Flex>
-                                <Button
-                                    onClick={handleEditProfile}
-                                    variant={editable ? 'solid' : 'outline'}
-                                    colorScheme="purple"
-                                >
-                                    {editable ? 'Save Profile' : 'Edit Profile'}
-                                </Button>
-                            </Flex>
-                        )}
+                            { showEditButton && (
+                                <Flex>
+                                    <Button
+                                        onClick={handleEditProfile}
+                                        variant={editable ? 'solid' : 'outline'}
+                                        colorScheme="purple"
+                                    >
+                                        {editable ? 'Save Profile' : 'Edit Profile'}
+                                    </Button>
+                                </Flex>
+                            )}
                     </Flex>
 
                     <Box>
