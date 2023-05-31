@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setUserData } from '@/lib/redux/userProfileSlice';
 import { saveUserProfile } from '@/lib/redux/userProfileSlice';
 import { setProfilePic } from '@/lib/redux/userProfileSlice';
-import { useUser } from '@auth0/nextjs-auth0/client'
+import { useUser } from '@auth0/nextjs-auth0/client';
 import { useRouter } from 'next/router';
 
 
@@ -24,12 +24,13 @@ export default function Profile(props) {
     const [editable, setEditable] = useState(false);
     // const [profilePicture, setProfilePicture] = useState(null);
     const dispatch = useDispatch();
-    const { user } = useUser();
+    // const { user } = useUser();
     // const showEditButton = useBreakpointValue({ base: false, lg: true }) && !!user;
 
-    const showEditButton = useBreakpointValue({ base: false, lg: true }) && !router.query.id;
     const userProfileData = useSelector((state) => state.userProfile.userData);
-    const router = useRouter()
+    const { user } = useUser();
+    const router = useRouter();
+    const showEditButton = useBreakpointValue({ base: false, lg: true }) && user?.email === userProfileData.email;
 
     useEffect(() => {
         dispatch(setUserData(props.userResponse));
@@ -37,9 +38,10 @@ export default function Profile(props) {
             let redirectTimeout = 3
             const interval = setInterval(() => {
                 redirectTimeout -= 1
-                if (redirectTimeout <= 0) {
-                    router.push('/api/auth/login')
-                }
+                // Commenting this out due to bug redirecting user to homepage
+                // if (redirectTimeout <= 0) {
+                //     router.push('/api/auth/login')
+                // }
             }, 1000)
 
             return () => clearInterval(interval)

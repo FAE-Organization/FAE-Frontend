@@ -299,19 +299,20 @@ function UserActions({ isSmallScreen }) {
             )}
             {user && !error && !isLoading && (
                 <HStack
-                    width={{ base: 'fit-content', md: '200px', lg: '250px' }}
+                    width={{ base: 'fit-content', md: '200px', lg: 'fit-content' }}
                     justifyContent='space-between'
                 >
                     {!isSmallScreen && (
                         <Text
                             fontSize={{ base: '16px', md: '18px', lg: '20px' }}
                             fontWeight={600}
+                            pr={5}
                         >
                             {user.name}
                         </Text>
                     )}
                     <HStack>
-                        <Link href='/profile'>
+                        <Link href='/profile?id=645163982b93e4decabe5bae'>
                             <Stack
                                 width={{ base: '30px', md: '40px', lg: '50px' }}
                                 maxHeight={{ base: '30px', md: '40px', lg: '50px' }}
@@ -340,13 +341,13 @@ function UserActions({ isSmallScreen }) {
                                     />
                                     <MenuList>
                                         <MenuItem
-                                            onClick={() => router.push('/profile')}
+                                            onClick={() => router.push('/profile?id=645163982b93e4decabe5bae')}
                                             borderBottom='1px solid #BBB'
                                         >
                                             Profile
                                         </MenuItem>
                                         <MenuItem
-                                            onClick={() => router.push('/profile')}
+                                            onClick={() => router.push('/profile?id=645163982b93e4decabe5bae')}
                                             borderBottom='1px solid #BBB'
                                         >
                                             Settings
