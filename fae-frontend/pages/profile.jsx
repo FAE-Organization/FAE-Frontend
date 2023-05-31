@@ -45,7 +45,7 @@ export default function Profile(props) {
 
             return () => clearInterval(interval)
         }
-    }, []);
+    }, [dispatch, user, props.userResponse]);
     
 
     const handleSaveProfile = async () => {
