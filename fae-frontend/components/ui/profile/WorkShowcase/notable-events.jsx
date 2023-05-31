@@ -34,7 +34,7 @@ export default function NotableEvents({ editable, events_data }) {
   const fileInputRef = useRef(null);
 
   function handleUpload() {
-    setTempEventData(() => ({}));
+    setTempEventData({ id: 0, title: '', subtitle: '', role: '', thumbnail: '' });
     setIsPopoverOpen(true);
   }
 
@@ -43,23 +43,24 @@ export default function NotableEvents({ editable, events_data }) {
     setIsPopoverOpen(false);
   }
 
+  
   function handleEventDataChange(event) {
     const { name, value } = event.target;
-    setTempEventData((prevData) => (() => ({ ...prevData, [name]: value })));
+    setTempEventData((prevData) => ({ ...prevData, [name]: value }));
   }
 
   function handleFileInputChange(event) {
     const file = event.target.files[0];
-    setTempEventData((prevData) => (() => ({ ...prevData, thumbnail: file || '' })));
+    setTempEventData((prevData) => ({ ...prevData, thumbnail: file || undefined }));
   }
 
   function handleConfirmUpload() {
-    const { id, title, subtitle, role, thumbnail} = tempEventData;
-
+    const { id, title, subtitle, role, thumbnail } = tempEventData;
+  
     if (!title || !subtitle || !role || !thumbnail) {
       return;
     }
-
+  
     if (id) {
       // Update existing event
       const updatedEvents = events.map((event) =>
@@ -72,18 +73,24 @@ export default function NotableEvents({ editable, events_data }) {
         id: Date.now(),
         title,
         subtitle,
-        role, 
+        role,
         thumbnail,
       };
       setEvents([...events, newEvent]);
     }
-    
-    setTempEventData(() => ({}));
+  
+    setTempEventData({
+      id: 1,
+      title: "",
+      subtitle: "",
+      role: "",
+      thumbnail: "",
+    });
     setIsPopoverOpen(false);
   }
-
+ 
   function handleEdit(event) {
-    setTempEventData(() => ({ ...event }));
+    setTempEventData({ ...event, thumbnail: event.thumbnail || '' });
     setIsPopoverOpen(true);
   }
 
@@ -108,7 +115,7 @@ export default function NotableEvents({ editable, events_data }) {
             <Image src={event.thumbnail} alt={event.title} minW={100}/>
           </Box>
           <Box flex={4}>
-            <Heading as="h3" size="sm" marginBottom={1}>
+            <Heading as="h3" size="sm" mb={1}>
               {event.title}
             </Heading>
             <Box fontWeight={'bold'}>
@@ -146,7 +153,7 @@ export default function NotableEvents({ editable, events_data }) {
   }
 
   return (
-    <VStack align="stretch" spacing={4}>
+    <VStack align="stretch" spacing={4} pb={8}>
       <Subheader category="Past Events" />
       <VStack spacing={6} pb={3} align="stretch" >
         {renderEvents()}
@@ -221,15 +228,14 @@ export default function NotableEvents({ editable, events_data }) {
                   onChange={handleEventDataChange}
                 />
                 <Button colorScheme="purple" onClick={handleConfirmUpload}>
-                  {tempEventData.id ? 'Update' : 'Upload'}
+                  {tempEventData.id ? "Update" : "Upload"}
                 </Button>
                 {tempEventData.id && (
                   <Button
                     aria-label="Delete Event"
                     variant="outline"
                     colorScheme="red"
-                    onClick={() => handleRemove(tempEventData.id)}
-                  >
+                    onClick={() => handleRemove(tempEventData.id)} >
                     Delete Event
                   </Button>
                 )}

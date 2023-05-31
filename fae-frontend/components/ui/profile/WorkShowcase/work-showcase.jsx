@@ -48,10 +48,6 @@ export default function WorkShowcase({ editable }) {
         }
     };
 
-    // function isCategoryEnabled(item) {
-    //     return tempSelectedCategories.includes(item);
-    // }
-
     return (
         <Flex align="start" spacing={4}>
             <Stack pb={7}>

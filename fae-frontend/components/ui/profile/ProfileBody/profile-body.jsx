@@ -24,8 +24,7 @@ export default function ProfileBody({ editable }) {
             templateColumns={{
                 base: '1fr',
                 md: '1fr 1fr 1fr 1fr',
-            }}
-            gap={4} >
+            }} >
             <GridItem p={4} minWidth={'330px'}>
                 <WorkShowcase editable={editable}  />
                 {isCategoryEnabled('Notable Events') && (<NotableEvents editable={editable} events_data={events_data} />)}
