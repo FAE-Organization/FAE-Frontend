@@ -50,34 +50,37 @@ export default function NotableEvents({ editable, events_data }) {
   }
 
   function handleFileInputChange(event) {
-    const file = event.target.files[0];
-    setTempEventData((prevData) => ({ ...prevData, thumbnail: file || undefined }));
+  const file = event.target.files[0];
+  setTempEventData((prevData) => ({
+    ...prevData,
+    thumbnail: URL.createObjectURL(file) || undefined,
+  }));
+}
+
+function handleConfirmUpload() {
+  const { id, title, subtitle, role, thumbnail } = tempEventData;
+
+  if (!title || !subtitle || !role || !thumbnail) {
+    return;
   }
 
-  function handleConfirmUpload() {
-    const { id, title, subtitle, role, thumbnail } = tempEventData;
-  
-    if (!title || !subtitle || !role || !thumbnail) {
-      return;
-    }
-  
-    if (id) {
-      // Update existing event
-      const updatedEvents = events.map((event) =>
-        event.id === id ? { ...event, title, subtitle, role, thumbnail } : event
-      );
-      setEvents(updatedEvents);
-    } else {
-      // Add new event
-      const newEvent = {
-        id: Date.now(),
-        title,
-        subtitle,
-        role,
-        thumbnail,
-      };
-      setEvents([...events, newEvent]);
-    }
+  if (id) {
+    // Update existing event
+    const updatedEvents = events.map((event) =>
+      event.id === id ? { ...event, title, subtitle, role, thumbnail } : event
+    );
+    setEvents(updatedEvents);
+  } else {
+    // Add new event
+    const newEvent = {
+      id: Date.now(),
+      title,
+      subtitle,
+      role,
+      thumbnail,
+    };
+    setEvents([...events, newEvent]);
+  }
   
     setTempEventData({
       id: 1,
